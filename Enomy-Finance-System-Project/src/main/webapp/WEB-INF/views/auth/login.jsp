@@ -10,19 +10,18 @@
     <title>Login | Enomy Finance</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/theme.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/authentication.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/navbar.css">
-    
-    
 </head>
 
 <body class="auth-page">
 
     <jsp:include page="/WEB-INF/components/navbar.jsp"/>
 
-    <main class="auth-wrapper">
+     <main class="auth-wrapper">
         <div class="container">
             <div class="row justify-content-center align-items-center">
                 <div class="col-lg-5 col-md-7 col-sm-10">
@@ -41,7 +40,7 @@
                         
                         <!-- error message -->
                         
-                       <%--  <c:if test="${not empty success}">
+                        <%-- <c:if test="${not empty success}">
 						    <div class="alert alert-success" role="alert">
 						        ${success}
 						    </div>
@@ -68,9 +67,21 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="password" class="form-label auth-label">Password</label>
-                                <input type="password" id="password" name="password" class="form-control auth-input" placeholder="Enter your password" required>
-                            </div>
+							    <label for="password" class="form-label auth-label">Password</label>
+							
+							    <div class="password-wrapper">
+							        <input type="password"
+							               id="password"
+							               name="password"
+							               class="form-control auth-input"
+							               placeholder="Enter your password"
+							               required>
+							
+							        <span class="toggle-password" onclick="togglePassword('password', this)">
+							            <i class="bi bi-eye"></i>
+							        </span>
+							    </div>
+							</div>
 
                             <button type="submit" class="btn btn-glow auth-submit-btn w-100">
                                 Login
@@ -80,7 +91,7 @@
                         <div class="auth-footer text-center">
                             <p class="mb-0">
                                 Don’t have an account?
-                                <a href="${pageContext.request.contextPath}/signup" class="auth-link">Sign up here</a>
+                                <a href="/signup" class="auth-link">Sign up here</a>
                             </p>
                         </div>
                     </div>
@@ -89,9 +100,9 @@
             </div>
         </div>
     </main>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/navbar-behaviour.js"></script>
-
+	 <script src="${pageContext.request.contextPath}/resources/js/auth.js"></script>
+	
 </body>
 </html>
