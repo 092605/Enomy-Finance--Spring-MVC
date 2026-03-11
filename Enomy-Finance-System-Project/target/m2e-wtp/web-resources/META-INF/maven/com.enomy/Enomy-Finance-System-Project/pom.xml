@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Root configuration file for Maven.
+Defines project structure, dependencies, and build process.
+-->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <!-- Maven project model version -->
+  <modelVersion>4.0.0</modelVersion>
+
+
+  <!-- Unique identifier for the organization/project group -->
+  <groupId>com.enomy</groupId>
+
+  <!-- Name of the project -->
+  <artifactId>Enomy-Finance-System-Project</artifactId>
+
+  <!-- Version of the project -->
+  <version>0.0.1-SNAPSHOT</version>
+
+  <!--
+  Packaging type.
+  WAR = Web Application Archive (for Tomcat deployment)
+  -->
+  <packaging>war</packaging>
+
+
+  <!-- Project display name -->
+  <name>Enomy-Finance-System-Project Maven Webapp</name>
+
+  <!-- Optional project website -->
+  <url>http://www.example.com</url>
+
+
+
+  <!--
+  Properties section
+  Used to define reusable variables across the POM
+  -->
+  <properties>
+
+    <!-- Character encoding for project files -->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <!-- Java version used to compile the project -->
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+
+    <!-- Spring Framework version used for all Spring dependencies -->
+    <spring.version>6.1.8</spring.version>
+
+  </properties>
+
+
+
+  <!--
+  Dependencies section
+  Libraries required by the application
+  Maven will automatically download these
+  -->
+  <dependencies>
+
+    <!--
+    JUnit library
+    Used for unit testing the application
+    Only available in test environment
+    -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.13.1</version>
+      <scope>test</scope>
+    </dependency>
+
+
+    <!--
+    Spring MVC Framework
+    Provides:
+    - Controllers
+    - DispatcherServlet
+    - MVC architecture
+    - Model View Controller pattern
+    -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+
+
+    <!--
+    Jakarta Servlet API
+    Required for web applications running on Tomcat
+    Provides classes like:
+    - HttpServlet
+    - HttpServletRequest
+    - HttpServletResponse
+
+    "provided" means Tomcat already includes it
+    -->
+    <dependency>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
+      <version>6.0.0</version>
+      <scope>provided</scope>
+    </dependency>
+
+
+    <!--
+    JSP API
+    Required to compile JSP pages
+    Provided by the server (Tomcat)
+    -->
+    <dependency>
+      <groupId>jakarta.servlet.jsp</groupId>
+      <artifactId>jakarta.servlet.jsp-api</artifactId>
+      <version>3.1.1</version>
+      <scope>provided</scope>
+    </dependency>
+
+
+    <!--
+    JSTL (JavaServer Pages Standard Tag Library)
+
+    Allows use of JSP tags like:
+    - <c:forEach>
+    - <c:if>
+    - <c:choose>
+    - <c:out>
+
+    Useful for dynamic content rendering
+    -->
+    <dependency>
+      <groupId>org.glassfish.web</groupId>
+      <artifactId>jakarta.servlet.jsp.jstl</artifactId>
+      <version>3.0.1</version>
+    </dependency>
+
+  </dependencies>
+
+
+
+  <!--
+  Build section
+  Controls how Maven builds the project
+  -->
+  <build>
+
+    <!-- Final WAR file name -->
+    <finalName>Enomy-Finance-System-Project</finalName>
+
+
+    <!--
+    Plugin Management
+    Locks plugin versions to avoid compatibility problems
+    -->
+    <pluginManagement>
+
+      <plugins>
+
+        <!-- Cleans compiled files -->
+        <plugin>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>3.4.0</version>
+        </plugin>
+
+
+        <!-- Handles project resources -->
+        <plugin>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>3.3.1</version>
+        </plugin>
+
+
+        <!-- Compiles Java code -->
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.13.0</version>
+        </plugin>
+
+
+        <!-- Runs unit tests -->
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>3.3.0</version>
+        </plugin>
+
+
+        <!-- Packages project as WAR file -->
+        <plugin>
+          <artifactId>maven-war-plugin</artifactId>
+          <version>3.4.0</version>
+        </plugin>
+
+
+        <!-- Installs project into local Maven repository -->
+        <plugin>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>3.1.2</version>
+        </plugin>
+
+
+        <!-- Deploys project to remote repository -->
+        <plugin>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>3.1.2</version>
+        </plugin>
+
+      </plugins>
+
+    </pluginManagement>
+
+  </build>
+
+</project>
