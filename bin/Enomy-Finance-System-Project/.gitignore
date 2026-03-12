@@ -1,0 +1,17 @@
+# Maven build folder
+target/
+
+# Eclipse IDE files
+.settings/
+.classpath
+.project
+
+# Maven wrapper
+.mvn/wrapper/maven-wrapper.jar
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

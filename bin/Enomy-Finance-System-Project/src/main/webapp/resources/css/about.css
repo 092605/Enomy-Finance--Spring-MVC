@@ -1,0 +1,348 @@
+/* ===================================== */
+/* ABOUT PAGE HERO                       */
+/* ===================================== */
+
+.about-page-hero {
+    margin-top:150px;
+    min-height: calc(100vh - 120px);
+    padding-bottom: 0;
+}
+
+.about-page-content{
+    max-width: 600px;
+}
+
+.about-badge{
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.10);
+    color: var(--accent-primary);
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+.about-page-title{
+    font-size: 3rem;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--text-main);
+    margin-bottom: 1.2rem;
+}
+
+.about-page-text{
+    color: var(--text-muted);
+    font-size: 1.02rem;
+    line-height: 1.9;
+    margin-bottom: 1rem;
+}
+
+.about-page-image-wrap{
+    padding: 2rem;
+    border-radius: 30px;
+    text-align: center;
+}
+
+.about-page-image{
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    border-radius: 30px;
+}
+
+/* ===================================== */
+/* SHARED SECTION HEADER                 */
+/* ===================================== */
+
+.section-header{
+    margin-bottom: 3rem;
+}
+
+.section-title{
+    font-size: 2.4rem;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 0.8rem;
+}
+
+.section-subtitle{
+    color: var(--text-muted);
+    font-size: 1rem;
+    line-height: 1.8;
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+.left-subtitle{
+    margin: 0 0 1.5rem 0;
+    max-width: 100%;
+}
+
+/* ===================================== */
+/* MISSION VISION                        */
+/* ===================================== */
+
+.mission-vision-section{
+    margin-top: 0px;
+    padding-top: 0;
+}
+
+.info-card{
+    padding: 2rem;
+    text-align: left;
+}
+
+.info-icon{
+    width: 60px;
+    height: 60px;
+    border-radius: 18px;
+    background: var(--gradient-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+    box-shadow: 0 0 20px rgba(255,45,170,0.2);
+}
+
+.info-card h3{
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 0.8rem;
+}
+
+.info-card p{
+    color: var(--text-muted);
+    line-height: 1.8;
+    margin: 0;
+}
+
+/* ===================================== */
+/* WHAT WE OFFER                         */
+/* ===================================== */
+
+.about-offer-section{
+    padding: 70px 0;
+}
+
+.offer-card{
+    padding: 2rem;
+    text-align: center;
+}
+
+.offer-icon{
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 1.2rem;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gradient-primary);
+    font-size: 1.8rem;
+    box-shadow: 0 0 20px rgba(255,45,170,0.2);
+}
+
+
+.offer-icon img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+.offer-card h4{
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 0.8rem;
+}
+
+.offer-card p{
+    color: var(--text-muted);
+    line-height: 1.8;
+    margin: 0;
+}
+
+/* ===================================== */
+/* WHY SECTION                           */
+/* ===================================== */
+
+.about-why-section{
+    margin-top: 150px;
+    min-height: 90vh;
+    padding-bottom: 0;
+}
+
+.about-why-image-wrap{
+    padding: 2rem;
+    border-radius: 30px;
+    text-align: center;
+}
+
+.about-why-image{
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    border-radius: 30px;
+}
+
+.why-points{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.why-point{
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 1rem 1.1rem;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+.why-check{
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    border-radius: 12px;
+    background: var(--gradient-primary);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    font-weight: 700;
+    box-shadow: 0 0 16px rgba(255,45,170,0.18);
+}
+
+.why-point span{
+    color: var(--text-main);
+    line-height: 1.6;
+}
+
+/* ===================================== */
+/* CTA SECTION                           */
+/* ===================================== */
+
+.about-cta-section{
+    
+    padding-top: 0;
+    
+}
+
+.about-cta-section .section{
+	
+	 padding:0rem;
+}
+
+.about-cta-card{
+    padding: 3rem 2rem;
+    border-radius: 30px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.about-cta-card h2{
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 1rem;
+}
+
+.about-cta-card p{
+    color: var(--text-muted);
+    font-size: 1rem;
+    line-height: 1.8;
+    max-width: 650px;
+    margin: 0 auto 1.8rem;
+}
+
+.cta-buttons{
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+/* ===================================== */
+/* RESPONSIVE                            */
+/* ===================================== */
+
+@media (max-width: 991px){
+
+    .about-page-hero{
+        padding: 80px 0 60px;
+    }
+
+    .about-page-content{
+        max-width: 100%;
+        text-align: center;
+    }
+
+    .about-page-title{
+        font-size: 2.4rem;
+    }
+
+    .section-title{
+        font-size: 2rem;
+    }
+
+    .about-why-content{
+        text-align: center;
+    }
+
+    .left-subtitle{
+        margin: 0 auto 1.5rem;
+    }
+
+    .why-point{
+        text-align: left;
+    }
+}
+
+@media (max-width: 767px){
+
+    .about-page-hero,
+    .mission-vision-section,
+    .about-offer-section,
+    .about-why-section,
+    .about-cta-section{
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .about-page-title{
+        font-size: 2rem;
+    }
+
+    .section-title{
+        font-size: 1.7rem;
+    }
+
+    .about-page-image-wrap,
+    .about-why-image-wrap,
+    .about-cta-card{
+        padding: 1.5rem;
+        border-radius: 24px;
+    }
+
+    .info-card,
+    .offer-card{
+        padding: 1.5rem;
+    }
+
+    .about-cta-card h2{
+        font-size: 1.7rem;
+    }
+
+    .about-cta-card p{
+        font-size: 0.95rem;
+    }
+}
