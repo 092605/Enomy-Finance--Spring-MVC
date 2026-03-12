@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 
 <!DOCTYPE html>
@@ -40,7 +41,7 @@
                         
                         <!-- error message -->
                         
-                        <%-- <c:if test="${not empty success}">
+                         <c:if test="${not empty success}">
 						    <div class="alert alert-success" role="alert">
 						        ${success}
 						    </div>
@@ -56,7 +57,7 @@
 						    <div class="alert alert-success" role="alert">
 						        You have been logged out successfully.
 						    </div>
-						</c:if> --%>
+						</c:if> 
 						
 						 <!-- FORM METHOD -->
 

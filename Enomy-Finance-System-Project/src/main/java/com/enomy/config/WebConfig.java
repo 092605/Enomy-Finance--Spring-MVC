@@ -15,6 +15,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 // View resolver for JSP
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+// SPRING SECURITY
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 
 /*
  * This class configures Spring MVC for the application.
@@ -28,6 +31,11 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 // for components like @Controller, @Service, @Repository
 
 public class WebConfig implements WebMvcConfigurer {
+	
+	@Bean
+	public BCryptPasswordEncoder passwordEncoder() {
+	    return new BCryptPasswordEncoder();
+	}
 
     
     /*
