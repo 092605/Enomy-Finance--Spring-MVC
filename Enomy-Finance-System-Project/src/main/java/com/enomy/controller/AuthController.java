@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.enomy.dao.UserDao;
 import com.enomy.model.User;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Controller
 public class AuthController {
@@ -19,8 +19,8 @@ public class AuthController {
     private UserDao userDao;
     
 
-	@Autowired
-	private BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping("/login")
     public String loginPage(Model model) {

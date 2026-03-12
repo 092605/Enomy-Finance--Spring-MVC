@@ -191,6 +191,13 @@ Defines project structure, dependencies, and build process.
 		    <artifactId>spring-security-crypto</artifactId>
 		    <version>6.2.4</version>
 		</dependency>
+		
+		<!-- Spring Security Taglib -->
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-taglibs</artifactId>
+		    <version>6.2.4</version>
+		</dependency>
 		    
 
   </dependencies>
