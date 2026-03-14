@@ -201,6 +201,8 @@ Defines project structure, dependencies, and build process.
 		    
 
   </dependencies>
+  
+  
 
 
 
@@ -209,6 +211,9 @@ Defines project structure, dependencies, and build process.
   Controls how Maven builds the project
   -->
   <build>
+  
+  
+  	
 
     <!-- Final WAR file name -->
     <finalName>Enomy-Finance-System-Project</finalName>
@@ -275,5 +280,7 @@ Defines project structure, dependencies, and build process.
     </pluginManagement>
 
   </build>
+  
+  
 
 </project>
