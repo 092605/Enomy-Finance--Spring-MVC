@@ -35,10 +35,10 @@
         <!-- User -->
         <div class="topbar-user card-glass">
             <div class="user-avatar">
-			    ${user.fullName.substring(0,1)}
+			    ${fullName.substring(0,1)}
 			</div>
             <div class="user-meta">
-                <span class="user-name">${user.fullName}</span>
+                <span class="user-name"> ${fullName}</span>
                 <small class="text-muted">Client Account</small>
             </div>
         </div>

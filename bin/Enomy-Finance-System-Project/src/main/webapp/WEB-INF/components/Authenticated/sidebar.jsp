@@ -2,16 +2,23 @@
 
 <aside class="app-sidebar" id="appSidebar">
 
-    <div class="sidebar-header">
-        <a href="${pageContext.request.contextPath}/client/dashboard" class="sidebar-brand">
-            <span class="brand-icon">✦</span>
-            <span class="brand-text">Enomy Finance</span>
-        </a>
+   <div class="sidebar-header">
 
-        <button type="button" class="sidebar-toggle-btn" id="sidebarToggle" aria-label="Toggle sidebar">
-            ☰
-        </button>
-    </div>
+	    <a href="#" class="sidebar-brand">
+		    <img src="${pageContext.request.contextPath}/resources/images/Enomy Finance Logo.png"
+		         class="brand-logo"
+		         alt="Enomy Finance Logo">
+		
+		    <span class="brand-text">Enomy Finance</span>
+		</a>
+		
+		
+	
+	</div>
+
+	<button class="sidebar-edge-toggle" id="sidebarToggle">
+	    <span id="sidebarArrow">></span>
+	</button>
 
     <nav class="sidebar-nav">
         <ul class="sidebar-menu">

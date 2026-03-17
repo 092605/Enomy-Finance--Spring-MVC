@@ -19,23 +19,21 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        // Find user by email
         User user = userDao.findByEmail(email);
 
-        // If user is not found, stop login
         if (user == null) {
             throw new UsernameNotFoundException("User not found with email: " + email);
         }
 
-        // Return user details to Spring Security
-        return new org.springframework.security.core.userdetails.User(
+        return new CustomUserDetails(
             user.getEmail(),
             user.getPassword(),
             user.isEnabled(),
             true,
             true,
             true,
-            Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRole()))
+            Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRole())),
+            user.getFullName()
         );
     }
 }

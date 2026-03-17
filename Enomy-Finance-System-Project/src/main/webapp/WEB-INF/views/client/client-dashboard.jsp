@@ -29,7 +29,7 @@
 
                 <!-- Welcome Section -->
                 <section class="dashboard-welcome">
-                    <h1>Hello, ${user.fullName}</h1>
+                    <h1>Hello, ${fullName}</h1>
                     <p class="text-muted">Here is an overview of your financial activity.</p>
                 </section>
 
