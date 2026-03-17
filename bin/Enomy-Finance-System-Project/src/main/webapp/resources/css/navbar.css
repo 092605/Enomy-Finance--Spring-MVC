@@ -1,0 +1,276 @@
+/* ========================================= */
+/* LANDING PAGE NAVBAR                       */
+/* ========================================= */
+
+
+
+
+/* NAVBAR BEHAVIOUR */
+.navbar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+
+    transition: transform 0.3s ease;
+}
+
+.navbar-hide{
+    transform: translateY(-120%);
+}
+
+
+/* NAVBAR BEHAVIOUR */
+
+
+
+
+
+
+
+
+.navbar-glass{
+    background: rgba(5,7,15,0.45);
+    border: 1px solid rgba(255,255,255,0.06);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    border-radius: 22px;
+}
+
+
+/* Brand Logo*/
+
+
+  .brand-glow{
+    color: var(--text-main);
+    font-size: 1.5rem;
+    font-weight: 600;
+    position: relative;
+    text-decoration: none;
+}  
+
+.brand-glow::after{
+    content: "";
+
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+
+    width: 0%;
+    height: 2px;
+
+    background: var(--gradient-primary);
+
+    transition: width 0.5s ease;
+}
+
+.brand-glow:hover::after{
+    width: 100%;
+    box-shadow: 0 0 8px rgba(255,45,170,0.6);
+}
+
+.brand-glow:hover{
+    color: var(--accent-primary);
+}
+
+
+/* Navbar Link */
+
+
+
+.nav-link-glass{
+    color: var(--text-muted);
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+    text-decoration: none;
+}
+
+.nav-link-glass::after{
+    content: "";
+
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+
+    width: 0%;
+    height: 2px;
+
+    background: var(--gradient-primary);
+
+    transition: width 0.5s ease;
+}
+
+.nav-link-glass:hover::after{
+    width: 100%;
+    box-shadow: 0 0 8px rgba(255,45,170,0.6);
+}
+
+
+.nav-link-glass:hover{
+    color: var(--accent-primary);
+}
+
+
+
+/* Navbar Link Active */
+
+
+.nav-link.nav-link-glass.active{
+    color: var(--text-main);
+}
+
+.nav-link.nav-link-glass.active::after{
+    width: 100%;
+    box-shadow: 0 0 8px rgba(255,45,170,0.6);
+}
+
+
+
+
+
+
+/* Account Button */
+
+
+.account-btn{
+    background: var(xry);
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    padding: 0.55rem 1.2rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.account-btn:hover{
+    color: #ffffff;
+    opacity: 0.92;
+}
+
+
+/* ===================================== */
+/* ACCOUNT DROPDOWN                      */
+/* ===================================== */
+
+.account-dropdown{
+    position: relative;
+}
+
+.account-dropdown-toggle{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* remove bootstrap default arrow */
+.account-dropdown-toggle::after{
+    display: none !important;
+    content: none !important;
+}
+
+/* default arrow (down) */
+.account-dropdown-toggle::before{
+    content: "▼";
+    font-size: 0.7rem;
+    margin-left: 6px;
+}
+
+/* arrow when dropdown is open */
+.account-dropdown-toggle.arrow-up::before{
+    content: "▲";
+}
+
+
+/* MENU BUTTO  */
+
+/* menu aligned exactly under button */
+.account-menu{
+    --bs-dropdown-min-width: 140px;
+    min-width: 100%;
+    width: 100%;
+    margin-top: 0.45rem !important;
+    padding: 0.5rem;
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(8,10,20,0.92);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.28);
+    
+     opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.account-menu.dropdown-animate-in{
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.account-menu.dropdown-animate-out{
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+/* force bootstrap popper alignment */
+.account-dropdown .dropdown-menu[data-bs-popper]{
+    top: calc(100% + 6px);
+    left: 0;
+    right: auto;
+    margin-top: 0 !important;
+    
+}
+
+/* menu items */
+.account-item{
+    display: block;
+    width: 100%;
+    color: var(--text-main);
+    border-radius: 12px;
+    padding: 0.75rem 0.95rem;
+    font-weight: 500;
+    transition: all 0.25s ease;
+}
+
+.account-item:hover,
+.account-item:focus{
+    background: rgba(255,255,255,0.06);
+    color: var(--accent-primary);
+}
+
+.account-item:active{
+    background: rgba(255,255,255,0.08);
+    color: var(--accent-primary);
+}
+
+/* remove bootstrap blue */
+.dropdown-item.active,
+.dropdown-item:active{
+    background-color: rgba(255,255,255,0.08);
+}
+
+/* MOBILE */
+@media (max-width: 991.98px){
+
+    .account-toggle{
+        width: fit-content;
+        min-width: 140px;
+    }
+
+    .account-dropdown .dropdown-menu,
+    .account-dropdown .dropdown-menu[data-bs-popper]{
+        position: static !important;
+        inset: auto !important;
+        transform: none !important;
+        width: 100%;
+        min-width: 100%;
+        margin-top: 0.6rem !important;
+    }
+
+    .account-menu{
+        padding: 0.5rem;
+    }
+}
