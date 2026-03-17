@@ -39,7 +39,7 @@
 			</div>
             <div class="user-meta">
                 <span class="user-name"> ${fullName}</span>
-                <small class="text-muted">Client Account</small>
+                <small class="Account-Type">Client Account</small>
             </div>
         </div>
 
