@@ -14,7 +14,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "com.enomy.controller")
+@ComponentScan(basePackages = "com.enomy")
 public class WebConfig implements WebMvcConfigurer {
 
     @Bean
