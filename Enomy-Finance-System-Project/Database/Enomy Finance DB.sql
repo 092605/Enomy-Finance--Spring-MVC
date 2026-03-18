@@ -21,7 +21,7 @@ SET @@SESSION.SQL_LOG_BIN= 0;
 -- GTID state at the beginning of the backup 
 --
 
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'ea55e609-f201-11f0-9233-58112294d6c7:1-4679';
+SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'ea55e609-f201-11f0-9233-58112294d6c7:1-4682';
 
 --
 -- Table structure for table `currency_conversion`
@@ -76,7 +76,7 @@ CREATE TABLE `investment_quotes` (
   KEY `fk_investment_quotes_plan_rules` (`plan_rules_id`),
   CONSTRAINT `fk_investment_quotes_plan_rules` FOREIGN KEY (`plan_rules_id`) REFERENCES `plan_rules` (`id`),
   CONSTRAINT `fk_investment_quotes_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -85,6 +85,7 @@ CREATE TABLE `investment_quotes` (
 
 LOCK TABLES `investment_quotes` WRITE;
 /*!40000 ALTER TABLE `investment_quotes` DISABLE KEYS */;
+INSERT INTO `investment_quotes` VALUES (1,7,'SAVINGS_PLUS',300.00,50.00,2,'2026-03-18 20:25:41');
 /*!40000 ALTER TABLE `investment_quotes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -110,7 +111,7 @@ CREATE TABLE `plan_rules` (
   PRIMARY KEY (`id`),
   KEY `fk_plan_rules_tax` (`tax_settings_id`),
   CONSTRAINT `fk_plan_rules_tax` FOREIGN KEY (`tax_settings_id`) REFERENCES `tax_settings` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -119,6 +120,7 @@ CREATE TABLE `plan_rules` (
 
 LOCK TABLES `plan_rules` WRITE;
 /*!40000 ALTER TABLE `plan_rules` DISABLE KEYS */;
+INSERT INTO `plan_rules` VALUES (1,'BASIC_SAVINGS',0.0120,0.0240,0.0025,20000.00,50.00,0.00,1,1,'2026-03-18 20:15:00'),(2,'SAVINGS_PLUS',0.0300,0.0550,0.0030,30000.00,50.00,300.00,2,1,'2026-03-18 20:15:00'),(3,'MANAGED_STOCKS',0.0400,0.2300,0.0130,NULL,150.00,1000.00,3,1,'2026-03-18 20:15:00');
 /*!40000 ALTER TABLE `plan_rules` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -168,7 +170,7 @@ CREATE TABLE `tax_settings` (
   `active` tinyint(1) DEFAULT '1',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -177,6 +179,7 @@ CREATE TABLE `tax_settings` (
 
 LOCK TABLES `tax_settings` WRITE;
 /*!40000 ALTER TABLE `tax_settings` DISABLE KEYS */;
+INSERT INTO `tax_settings` VALUES (1,'NONE',0.00,0.0000,NULL,0.0000,NULL,1,'2026-03-18 20:14:54'),(2,'FLAT',12000.00,0.1000,NULL,0.0000,NULL,1,'2026-03-18 20:14:54'),(3,'PROGRESSIVE',12000.00,0.1000,40000.00,0.2000,40000.00,1,'2026-03-18 20:14:54');
 /*!40000 ALTER TABLE `tax_settings` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -221,4 +224,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-03-19  2:37:01
+-- Dump completed on 2026-03-19  4:38:58
