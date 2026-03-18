@@ -193,9 +193,115 @@ transparent 45%
 
 
 
+/* ===================================== */
+/* REUSABLE CUSTOM DROPDOWN              */
+/* ===================================== */
+
+.custom-dropdown {
+    position: relative;
+    min-width: 150px;
+}
+
+.custom-dropdown-toggle {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    color: var(--text-main);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 14px;
+    padding: 0.7rem 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    cursor: pointer;
+    min-height: 48px;
+    width: 100%;
+}
+
+.custom-dropdown-toggle:hover {
+    color: #ffffff;
+    border-color: rgba(255,45,170,0.45);
+    box-shadow: 0 0 18px rgba(255,45,170,0.18);
+}
+
+.custom-dropdown.active .custom-dropdown-toggle {
+    color: #ffffff;
+    border-color: rgba(255,45,170,0.55);
+    box-shadow: 0 0 0 3px rgba(255,45,170,0.10);
+}
+
+.selected-value {
+    white-space: nowrap;
+}
 
 
 
+.custom-dropdown.active .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.dropdown-arrow svg {
+    width: 18px;
+    height: 18px;
+}
+
+.custom-dropdown-menu {
+    position: absolute;
+     top: calc(100% + 4px);
+    left: 0;
+    width: 100%;
+    max-width: 150px;
+    background: #131a36;
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 16px;
+    padding: 0.35rem;
+    gap: 4px;
+    box-shadow: 0 16px 35px rgba(0,0,0,0.35);
+    z-index: 9999;
+
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+    transition: all 0.25s ease;
+    
+    display: flex;
+    flex-direction: column;
+    margin-top: -2px;
+}
+
+.custom-dropdown.active .custom-dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.custom-dropdown-item {
+    padding: 0.55rem 0.8rem;
+    border-radius: 10px;
+    font-size: 14px;
+    color: var(--text-main);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.22s ease;
+    
+}
+
+.custom-dropdown-item:hover {
+    background: rgba(255,255,255,0.06);
+    color: #ffffff;
+    box-shadow: 0 0 12px rgba(255,45,170,0.08);
+}
+
+.custom-dropdown-item.active {
+    background: linear-gradient(90deg, rgba(255,45,170,0.22), rgba(124,58,237,0.22));
+    color: #ffffff;
+    border: 1px solid rgba(255,45,170,0.20);
+}
 
 /* ================================================= */
 /* GLOBAL BODY STYLE                                 */

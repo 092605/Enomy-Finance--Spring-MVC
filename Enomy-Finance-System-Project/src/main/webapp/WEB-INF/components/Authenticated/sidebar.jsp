@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
+
 <aside class="app-sidebar" id="appSidebar">
 
    <div class="sidebar-header">
@@ -11,8 +12,6 @@
 		
 		    <span class="brand-text">Enomy Finance</span>
 		</a>
-		
-		
 	
 	</div>
 
@@ -23,28 +22,28 @@
     <nav class="sidebar-nav">
         <ul class="sidebar-menu">
 
-            <li class="sidebar-item active">
+            <li class="sidebar-item ${activePage == 'dashboard' ? 'active' : ''}">
                 <a href="${pageContext.request.contextPath}/client/dashboard" class="sidebar-link">
                     <span class="sidebar-icon">⌂</span>
                     <span class="sidebar-label">Dashboard</span>
                 </a>
             </li>
 
-            <li class="sidebar-item">
+            <li class="sidebar-item ${activePage == 'currency' ? 'active' : ''}">
                 <a href="${pageContext.request.contextPath}/client/currency" class="sidebar-link">
                     <span class="sidebar-icon">⇄</span>
                     <span class="sidebar-label">Currency Converter</span>
                 </a>
             </li>
 
-            <li class="sidebar-item">
-                <a href="${pageContext.request.contextPath}/client/investment" class="sidebar-link">
-                    <span class="sidebar-icon">↗</span>
-                    <span class="sidebar-label">Savings &amp; Investment</span>
-                </a>
-            </li>
+            <li class="sidebar-item ${activePage == 'investment' ? 'active' : ''}">
+			    <a href="${pageContext.request.contextPath}/client/investment" class="sidebar-link">
+			        <span class="sidebar-icon">↗</span>
+			        <span class="sidebar-label">Savings &amp; Investment</span>
+			    </a>
+			</li>
 
-            <li class="sidebar-item">
+            <li class="sidebar-item ${activePage == 'profile' ? 'active' : ''}">
                 <a href="${pageContext.request.contextPath}/client/profile" class="sidebar-link">
                     <span class="sidebar-icon">◉</span>
                     <span class="sidebar-label">Profile</span>
