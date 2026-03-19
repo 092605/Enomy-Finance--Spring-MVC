@@ -13,9 +13,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.enomy.dao.UserDao;
 import com.enomy.dto.InvestmentRequestDTO;
 import com.enomy.dto.InvestmentResponseDTO;
+import com.enomy.dto.PlanDetailsDTO;
 import com.enomy.model.InvestmentQuote;
 import com.enomy.model.User;
 import com.enomy.service.InvestmentService;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Controller
 public class InvestmentController {
@@ -32,39 +36,63 @@ public class InvestmentController {
     @GetMapping("/client/investment")
     public String showInvestmentPage(Model model, Principal principal) {
         initializeDefaultInvestmentPage(model, principal);
-        return "client/savings-investment"; // ✅ UPDATED
+        addTopbarUserData(model, principal, "investment");
+        model.addAttribute("currentPlanType", "");
+        model.addAttribute("allPlanDetails", investmentService.getAllActivePlanDetails());
+        model.addAttribute("planDetails", investmentService.getActivePlanDetails("BASIC_SAVINGS"));
+        return "client/savings-investment";
     }
+    
+    
+	 // =========================
+	 // TOPBAR USER DATA
+	 // =========================
+	 private void addTopbarUserData(Model model, Principal principal, String activePage) {
+	     User user = getLoggedInUser(principal);
+	
+	     model.addAttribute("fullName", user.getFullName());
+	     model.addAttribute("loggedInEmail", user.getEmail());
+	     model.addAttribute("activePage", activePage);
+	 }
 
-    // =========================
-    // CALCULATE PROJECTION
-    // =========================
-    @PostMapping("/client/investment/calculate")
-    public String calculateProjection(
-            @ModelAttribute InvestmentRequestDTO request,
-            Model model,
-            Principal principal) {
+	// =========================
+	// CALCULATE PROJECTION
+	// =========================
+	@PostMapping("/client/investment/calculate")
+	public String calculateProjection(
+	        @ModelAttribute InvestmentRequestDTO request,
+	        Model model,
+	        Principal principal) {
 
-        try {
-            InvestmentResponseDTO response = investmentService.calculateProjection(request);
+	    try {
+	        InvestmentResponseDTO response = investmentService.calculateProjection(request);
 
-            model.addAttribute("investmentRequest", request);
-            model.addAttribute("investmentResponse", response);
-            model.addAttribute("selectedYear", "oneYear");
-            model.addAttribute("hasCalculated", true);
+	        model.addAttribute("investmentRequest", request);
+	        model.addAttribute("investmentResponse", response);
+	        model.addAttribute("selectedYear", "oneYear");
+	        model.addAttribute("hasCalculated", true);
+	        model.addAttribute("allPlanDetails", investmentService.getAllActivePlanDetails());
+	        model.addAttribute("planDetails", investmentService.getActivePlanDetails(request.getPlanType()));
+	        
 
-            addSavedQuotesData(model, principal);
+	        addTopbarUserData(model, principal, "investment");
+	        addSavedQuotesData(model, principal);
 
-            return "client/savings-investment"; // ✅ UPDATED
+	        return "client/savings-investment";
 
-        } catch (IllegalArgumentException e) {
+	    } catch (IllegalArgumentException e) {
 
-            initializeDefaultInvestmentPage(model, principal);
-            model.addAttribute("calculationError", e.getMessage());
-            model.addAttribute("investmentRequest", request);
+	        initializeDefaultInvestmentPage(model, principal);
+	        model.addAttribute("calculationError", e.getMessage());
+	        model.addAttribute("investmentRequest", request);
+	        model.addAttribute("allPlanDetails", investmentService.getAllActivePlanDetails());
+	        model.addAttribute("planDetails", investmentService.getActivePlanDetails(request.getPlanType()));
 
-            return "client/savings-investment"; // ✅ UPDATED
-        }
-    }
+	        addTopbarUserData(model, principal, "investment");
+
+	        return "client/savings-investment";
+	    }
+	}
 
     // =========================
     // SAVE QUOTE
@@ -185,4 +213,6 @@ public class InvestmentController {
 
         return user;
     }
+
+
 }

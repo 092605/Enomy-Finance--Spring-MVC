@@ -5,6 +5,8 @@ import java.util.List;
 import com.enomy.dto.InvestmentRequestDTO;
 import com.enomy.dto.InvestmentResponseDTO;
 import com.enomy.model.InvestmentQuote;
+import java.util.Map;
+import com.enomy.dto.PlanDetailsDTO;
 
 public interface InvestmentService {
 
@@ -17,4 +19,8 @@ public interface InvestmentService {
     List<InvestmentQuote> getSavedQuotes(Long userId);
 
     InvestmentResponseDTO getSavedQuoteDetails(Long quoteId, Long userId);
+    
+    PlanDetailsDTO getActivePlanDetails(String planType);
+
+    Map<String, PlanDetailsDTO> getAllActivePlanDetails();
 }

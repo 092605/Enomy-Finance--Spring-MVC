@@ -2,7 +2,9 @@ package com.enomy.service.impl;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,7 @@ import com.enomy.dao.InvestmentQuoteDao;
 import com.enomy.dao.PlanRulesDao;
 import com.enomy.dto.InvestmentRequestDTO;
 import com.enomy.dto.InvestmentResponseDTO;
+import com.enomy.dto.PlanDetailsDTO;
 import com.enomy.dto.YearlyInvestmentResultDTO;
 import com.enomy.model.InvestmentQuote;
 import com.enomy.model.PlanRules;
@@ -101,6 +104,53 @@ public class InvestmentServiceImpl implements InvestmentService {
         response.setTenYears(calculateForYears(request, planRules, 10));
 
         return response;
+    }
+
+    @Override
+    public PlanDetailsDTO getActivePlanDetails(String planType) {
+        PlanRules planRules = planRulesDao.findActiveByPlanType(planType);
+
+        if (planRules == null) {
+            return null;
+        }
+
+        PlanDetailsDTO dto = new PlanDetailsDTO();
+        dto.setTitle(resolvePlanTitle(planType));
+
+        if (planRules.getYearlyInvestmentLimit() == null) {
+            dto.setMaximumInvestmentPerYear("Unlimited");
+        } else {
+            dto.setMaximumInvestmentPerYear("£" + String.format("%,.0f", planRules.getYearlyInvestmentLimit()));
+        }
+
+        dto.setMinimumMonthlyInvestment("£" + String.format("%,.0f", planRules.getMinMonthlyRequired()));
+
+        if (planRules.getMinInitialRequired() <= 0) {
+            dto.setMinimumInitialInvestmentLumpSum("N/A");
+        } else {
+            dto.setMinimumInitialInvestmentLumpSum("£" + String.format("%,.0f", planRules.getMinInitialRequired()));
+        }
+
+        dto.setPredictedReturnsPerYear(
+            formatPercentage(planRules.getMinReturnRate()) + " to " + formatPercentage(planRules.getMaxReturnRate())
+        );
+
+        dto.setGroupFeesPerMonth(formatPercentage(planRules.getMonthlyFeeRate()));
+
+        dto.setEstimatedTax(buildEstimatedTaxText(planRules));
+
+        return dto;
+    }
+
+    @Override
+    public Map<String, PlanDetailsDTO> getAllActivePlanDetails() {
+        Map<String, PlanDetailsDTO> allPlans = new LinkedHashMap<>();
+
+        allPlans.put("BASIC_SAVINGS", getActivePlanDetails("BASIC_SAVINGS"));
+        allPlans.put("SAVINGS_PLUS", getActivePlanDetails("SAVINGS_PLUS"));
+        allPlans.put("MANAGED_STOCKS", getActivePlanDetails("MANAGED_STOCKS"));
+
+        return allPlans;
     }
 
     private void validateRequest(InvestmentRequestDTO request) {
@@ -219,6 +269,58 @@ public class InvestmentServiceImpl implements InvestmentService {
         }
 
         return 0.0;
+    }
+
+    private String resolvePlanTitle(String planType) {
+        switch (planType) {
+            case "SAVINGS_PLUS":
+                return "Option 2 – Savings Plan Plus";
+            case "MANAGED_STOCKS":
+                return "Option 3 – Managed Stock Investments";
+            case "BASIC_SAVINGS":
+            default:
+                return "Option 1 – Basic Savings Plan";
+        }
+    }
+
+    private String buildEstimatedTaxText(PlanRules planRules) {
+        TaxSettings taxSettings = planRules.getTaxSettings();
+
+        if (taxSettings == null || "NONE".equalsIgnoreCase(taxSettings.getTaxType())) {
+            return "0%";
+        }
+
+        Double lowerThreshold = taxSettings.getLowerTaxThreshold();
+        Double upperThreshold = taxSettings.getUpperTaxThreshold();
+        double lowerRate = taxSettings.getLowerTaxRate();
+        double upperRate = taxSettings.getUpperTaxRate();
+
+        if ("FLAT".equalsIgnoreCase(taxSettings.getTaxType())) {
+            if (lowerThreshold != null) {
+                return String.format("%.0f%% on profits above £%,.0f", lowerRate * 100, lowerThreshold);
+            }
+            return String.format("%.0f%%", lowerRate * 100);
+        }
+
+        if ("PROGRESSIVE".equalsIgnoreCase(taxSettings.getTaxType())) {
+            if (lowerThreshold != null && upperThreshold != null) {
+                return String.format("%.0f%% above £%,.0f and %.0f%% above £%,.0f",
+                        lowerRate * 100, lowerThreshold, upperRate * 100, upperThreshold);
+            }
+            if (lowerThreshold != null) {
+                return String.format("%.0f%% on profits above £%,.0f", lowerRate * 100, lowerThreshold);
+            }
+        }
+
+        return "See tax settings";
+    }
+
+    private String formatPercentage(double value) {
+        double percent = value * 100;
+        if (percent == Math.floor(percent)) {
+            return String.format("%.0f%%", percent);
+        }
+        return String.format("%.1f%%", percent);
     }
 
     private double round(double value) {

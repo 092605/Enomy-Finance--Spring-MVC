@@ -36,9 +36,12 @@
                     <h2 class="investment-page-subtitle">Investment Plan</h2>
                 </div>
 
-                <c:if test="${not empty calculationError}">
-                    <div class="alert alert-danger">${calculationError}</div>
-                </c:if>
+              <c:if test="${not empty calculationError}">
+		    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+		        ${calculationError}
+		        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+		    </div>
+		</c:if>
 
                 <c:if test="${not empty saveSuccessMessage}">
                     <div class="alert alert-success">${saveSuccessMessage}</div>
@@ -106,37 +109,39 @@
 
                                                             <!-- Row 2: Dropdown + Button -->
                                                             <div class="row align-items-end">
-                                                                <div class="col-md-6">
-                                                                    <div class="investment-form-group">
-                                                                        <label>Select Investment Plan</label>
+                                                                <c:set var="selectedPlanType" value="${empty investmentRequest.planType ? 'BASIC_SAVINGS' : investmentRequest.planType}" />
 
-                                                                        <div class="custom-dropdown investment-dropdown" id="investmentPlanDropdown">
-                                                                            <button class="custom-dropdown-toggle" type="button">
-                                                                                <span class="selected-value">
-                                                                                    <c:choose>
-                                                                                        <c:when test="${currentPlanType eq 'BASIC_SAVINGS'}">Basic Savings Plan</c:when>
-                                                                                        <c:when test="${currentPlanType eq 'SAVINGS_PLUS'}">Savings Plan Plus</c:when>
-                                                                                        <c:when test="${currentPlanType eq 'MANAGED_STOCKS'}">Managed Stock Investments</c:when>
-                                                                                        <c:otherwise>Basic Savings Plan</c:otherwise>
-                                                                                    </c:choose>
-                                                                                </span>
-                                                                                <span class="dropdown-arrow">
-                                                                                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
-                                                                                        <path d="M6 8L10 12L14 8" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                                                                                    </svg>
-                                                                                </span>
-                                                                            </button>
-
-                                                                            <div class="custom-dropdown-menu">
-                                                                                <div class="custom-dropdown-item ${currentPlanType eq 'BASIC_SAVINGS' ? 'active' : ''}" data-value="BASIC_SAVINGS">Basic Savings Plan</div>
-                                                                                <div class="custom-dropdown-item ${currentPlanType eq 'SAVINGS_PLUS' ? 'active' : ''}" data-value="SAVINGS_PLUS">Savings Plan Plus</div>
-                                                                                <div class="custom-dropdown-item ${currentPlanType eq 'MANAGED_STOCKS' ? 'active' : ''}" data-value="MANAGED_STOCKS">Managed Stock Investments</div>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <input type="hidden" name="planType" id="investmentPlanValue" value="${currentPlanType}">
-                                                                    </div>
-                                                                </div>
+																	<div class="col-md-6">
+																	    <div class="investment-form-group">
+																	        <label>Select Investment Plan</label>
+																	
+																	        <div class="custom-dropdown investment-dropdown" id="investmentPlanDropdown">
+																	            <button class="custom-dropdown-toggle" type="button">
+																	                <span class="selected-value">
+																	                    <c:choose>
+																	                        <c:when test="${selectedPlanType eq 'BASIC_SAVINGS'}">Basic Savings Plan</c:when>
+																	                        <c:when test="${selectedPlanType eq 'SAVINGS_PLUS'}">Savings Plan Plus</c:when>
+																	                        <c:when test="${selectedPlanType eq 'MANAGED_STOCKS'}">Managed Stock Investments</c:when>
+																	                        <c:otherwise>Investment Quote Result</c:otherwise>
+																	                    </c:choose>
+																	                </span>
+																	                <span class="dropdown-arrow">
+																	                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+																	                        <path d="M6 8L10 12L14 8" stroke="white" stroke-width="2" stroke-linecap="round"/>
+																	                    </svg>
+																	                </span>
+																	            </button>
+																	
+																	            <div class="custom-dropdown-menu">
+																	                <div class="custom-dropdown-item ${selectedPlanType eq 'BASIC_SAVINGS' ? 'active' : ''}" data-value="BASIC_SAVINGS">Basic Savings Plan</div>
+																	                <div class="custom-dropdown-item ${selectedPlanType eq 'SAVINGS_PLUS' ? 'active' : ''}" data-value="SAVINGS_PLUS">Savings Plan Plus</div>
+																	                <div class="custom-dropdown-item ${selectedPlanType eq 'MANAGED_STOCKS' ? 'active' : ''}" data-value="MANAGED_STOCKS">Managed Stock Investments</div>
+																	            </div>
+																	        </div>
+																	
+																	        <input type="hidden" name="planType" id="investmentPlanValue" value="${selectedPlanType}">
+																	    </div>
+																	</div>
 
                                                                 <div class="col-md-6">
                                                                     <div class="investment-form-group">
@@ -154,164 +159,219 @@
                                             </div>
                                         </div>
 
-                                        <!-- Plan Details -->
-                                        <div class="col-12">
-                                            <div class="investment-middle-panel">
-                                                <div class="investment-card-inner plan-details-box">
-
-                                                    <c:choose>
-                                                        <c:when test="${currentPlanType eq 'BASIC_SAVINGS'}">
-                                                            <h3 class="plan-details-title">Option 1 – Basic Savings Plan</h3>
-                                                            <ul class="plan-details-list">
-                                                                <li><span class="plan-bullet"></span><span>Maximum investment per year: <span class="plan-strong">£20,000</span></span></li>
-                                                                <li><span class="plan-bullet"></span><span>Minimum monthly investment: <span class="plan-strong">£50</span></span></li>
-                                                                <li><span class="plan-bullet"></span><span>Minimum initial investment lump sum: <span class="plan-strong">N/A</span></span></li>
-                                                                <li><span class="plan-bullet"></span><span>Predicted returns per year: <span class="plan-highlight">1.2% to 2.4%</span></span></li>
-                                                                <li><span class="plan-bullet"></span><span>Estimated tax: <span class="plan-strong">0%</span></span></li>
-                                                                <li><span class="plan-bullet"></span><span>RBSX group fees per month: <span class="plan-strong">0.25%</span></span></li>
-                                                            </ul>
-                                                        </c:when>
-
-                                                        <c:when test="${currentPlanType eq 'SAVINGS_PLUS'}">
-                                                            <h3 class="plan-details-title">Option 2 – Savings Plan Plus</h3>
-                                                            <ul class="plan-details-list">
-                                                                <li><span class="plan-bullet"></span><span>Maximum investment per year: <span class="plan-strong">£30,000</span></span></li>
-                                                                <li><span class="plan-bullet"></span><span>Minimum monthly investment: <span class="plan-strong">£50</span></span></li>
-                                                                <li><span class="plan-bullet"></span><span>Minimum initial investment lump sum: <span class="plan-strong">£300</span></span></li>
-                                                                <li><span class="plan-bullet"></span><span>Predicted returns per year: <span class="plan-highlight">3% to 5.5%</span></span></li>
-                                                                <li><span class="plan-bullet"></span><span>Estimated tax: <span class="plan-strong">10% on profits above £12,000</span></span></li>
-                                                                <li><span class="plan-bullet"></span><span>RBSX group fees per month: <span class="plan-strong">0.3%</span></span></li>
-                                                            </ul>
-                                                        </c:when>
-
-                                                        <c:when test="${currentPlanType eq 'MANAGED_STOCKS'}">
-                                                            <h3 class="plan-details-title">Option 3 – Managed Stock Investments</h3>
-                                                            <ul class="plan-details-list">
-                                                                <li><span class="plan-bullet"></span><span>Maximum investment per year: <span class="plan-strong">Unlimited</span></span></li>
-                                                                <li><span class="plan-bullet"></span><span>Minimum monthly investment: <span class="plan-strong">£150</span></span></li>
-                                                                <li><span class="plan-bullet"></span><span>Minimum initial investment lump sum: <span class="plan-strong">£1000</span></span></li>
-                                                                <li><span class="plan-bullet"></span><span>Predicted returns per year: <span class="plan-highlight">4% to 23%</span></span></li>
-                                                                <li><span class="plan-bullet"></span><span>Estimated tax: <span class="plan-strong">10% above £12,000 and 20% above £40,000</span></span></li>
-                                                                <li><span class="plan-bullet"></span><span>RBSX group fees per month: <span class="plan-strong">1.3%</span></span></li>
-                                                            </ul>
-                                                        </c:when>
-                                                    </c:choose>
-
-                                                </div>
-                                            </div>
-                                        </div>
-
+                                     <!-- Plan Details -->
+										<div class="col-12">
+										    <div class="investment-middle-panel">
+										        <div class="investment-card-inner plan-details-box" id="planDetailsBox">
+										
+										            <h3 class="plan-details-title" id="planDetailsTitle">${planDetails.title}</h3>
+										
+										            <ul class="plan-details-list">
+										                <li>
+										                    <span class="plan-bullet"></span>
+										                    <span>Maximum investment per year:
+										                        <span class="plan-strong" id="planMaxInvestment">${planDetails.maximumInvestmentPerYear}</span>
+										                    </span>
+										                </li>
+										                <li>
+										                    <span class="plan-bullet"></span>
+										                    <span>Minimum monthly investment:
+										                        <span class="plan-strong" id="planMinMonthly">${planDetails.minimumMonthlyInvestment}</span>
+										                    </span>
+										                </li>
+										                <li>
+										                    <span class="plan-bullet"></span>
+										                    <span>Minimum initial investment lump sum:
+										                        <span class="plan-strong" id="planMinLumpSum">${planDetails.minimumInitialInvestmentLumpSum}</span>
+										                    </span>
+										                </li>
+										                <li>
+										                    <span class="plan-bullet"></span>
+										                    <span>Predicted returns per year:
+										                        <span class="plan-highlight" id="planReturns">${planDetails.predictedReturnsPerYear}</span>
+										                    </span>
+										                </li>
+										                <li>
+										                    <span class="plan-bullet"></span>
+										                    <span>Estimated tax:
+										                        <span class="plan-strong" id="planTax">${planDetails.estimatedTax}</span>
+										                    </span>
+										                </li>
+										                <li>
+										                    <span class="plan-bullet"></span>
+										                    <span>RBSX group fees per month:
+										                        <span class="plan-strong" id="planFees">${planDetails.groupFeesPerMonth}</span>
+										                    </span>
+										                </li>
+										            </ul>
+										
+										        </div>
+										    </div>
+										</div>
                                     </div>
                                 </div>
 
                                 <!-- Result -->
-                                <div class="col-lg-6">
-                                    <div class="investment-result-panel">
-                                        <div class="investment-card-inner result-box">
-
-                                            <h3 class="result-plan-title">
-                                                <c:choose>
-                                                    <c:when test="${currentPlanType eq 'BASIC_SAVINGS'}">Basic Savings Plan</c:when>
-                                                    <c:when test="${currentPlanType eq 'SAVINGS_PLUS'}">Savings Plan Plus</c:when>
-                                                    <c:when test="${currentPlanType eq 'MANAGED_STOCKS'}">Managed Stock Investments</c:when>
-                                                    <c:otherwise>Basic Savings Plan</c:otherwise>
-                                                </c:choose>
-                                            </h3>
-
-                                            <div class="result-range-tabs">
-                                                <button type="button" class="result-tab-btn active">1 Year</button>
-                                                <button type="button" class="result-tab-btn">5 Years</button>
-                                                <button type="button" class="result-tab-btn">10 Years</button>
-                                            </div>
-
-                                            <div class="result-summary-table">
-                                                <div class="result-summary-row">
-                                                    <span class="result-label">Initial Lump Sum</span>
-                                                    <span class="result-value">
-                                                        £<fmt:formatNumber value="${hasCalculated ? currentResult.initialLumpSum : 0}" type="number" minFractionDigits="2" maxFractionDigits="2"/>
-                                                    </span>
-                                                </div>
-                                                <div class="result-summary-row">
-                                                    <span class="result-label">Monthly Investment</span>
-                                                    <span class="result-value">
-                                                        £<fmt:formatNumber value="${hasCalculated ? currentResult.monthlyInvestment : 0}" type="number" minFractionDigits="2" maxFractionDigits="2"/>
-                                                    </span>
-                                                </div>
-                                            </div>
-
-                                            <div class="result-total-invested">
-                                                <span>Total Invested Amount</span>
-                                                <strong>
-                                                    £<fmt:formatNumber value="${hasCalculated ? currentResult.totalInvested : 0}" type="number" minFractionDigits="2" maxFractionDigits="2"/>
-                                                </strong>
-                                            </div>
-
-                                            <div class="result-dashed-divider"></div>
-
-                                            <div class="result-section">
-                                                <h4 class="result-section-title">Return &amp; Profits</h4>
-                                                <div class="result-grid-two">
-                                                    <div class="result-metric-block">
-                                                        <span class="result-metric-label">Min Return</span>
-                                                        <span class="result-metric-value">£<fmt:formatNumber value="${hasCalculated ? currentResult.minReturn : 0}" type="number" minFractionDigits="2" maxFractionDigits="2"/></span>
-                                                    </div>
-                                                    <div class="result-metric-block">
-                                                        <span class="result-metric-label">Min Profit</span>
-                                                        <span class="result-metric-value">£<fmt:formatNumber value="${hasCalculated ? currentResult.minProfit : 0}" type="number" minFractionDigits="2" maxFractionDigits="2"/></span>
-                                                    </div>
-                                                    <div class="result-metric-block">
-                                                        <span class="result-metric-label">Max Return</span>
-                                                        <span class="result-metric-value">£<fmt:formatNumber value="${hasCalculated ? currentResult.maxReturn : 0}" type="number" minFractionDigits="2" maxFractionDigits="2"/></span>
-                                                    </div>
-                                                    <div class="result-metric-block">
-                                                        <span class="result-metric-label">Max Profit</span>
-                                                        <span class="result-metric-value">£<fmt:formatNumber value="${hasCalculated ? currentResult.maxProfit : 0}" type="number" minFractionDigits="2" maxFractionDigits="2"/></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="result-dashed-divider"></div>
-
-                                            <div class="result-section">
-                                                <h4 class="result-section-title">Tax &amp; Fee</h4>
-                                                <div class="result-grid-two">
-                                                    <div class="result-metric-block">
-                                                        <span class="result-metric-label">Min Tax</span>
-                                                        <span class="result-metric-value">£<fmt:formatNumber value="${hasCalculated ? currentResult.minTax : 0}" type="number" minFractionDigits="2" maxFractionDigits="2"/></span>
-                                                    </div>
-                                                    <div class="result-metric-block">
-                                                        <span class="result-metric-label">Monthly Fee</span>
-                                                        <span class="result-metric-value">£<fmt:formatNumber value="${hasCalculated ? currentResult.monthlyFee : 0}" type="number" minFractionDigits="2" maxFractionDigits="2"/></span>
-                                                    </div>
-                                                    <div class="result-metric-block">
-                                                        <span class="result-metric-label">Max Tax</span>
-                                                        <span class="result-metric-value">£<fmt:formatNumber value="${hasCalculated ? currentResult.maxTax : 0}" type="number" minFractionDigits="2" maxFractionDigits="2"/></span>
-                                                    </div>
-                                                    <div class="result-metric-block">
-                                                        <span class="result-metric-label">Total Fee</span>
-                                                        <span class="result-metric-value">£<fmt:formatNumber value="${hasCalculated ? currentResult.totalFee : 0}" type="number" minFractionDigits="2" maxFractionDigits="2"/></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="result-actions ${hasCalculated ? '' : 'd-none'}">
-
-                                                <a href="${pageContext.request.contextPath}/client/investment" class="btn-glow-outline result-discard-btn text-decoration-none text-center">
-                                                    Discard
-                                                </a>
-
-                                                <form action="${pageContext.request.contextPath}/client/investment/save" method="post" class="m-0">
-                                                    <input type="hidden" name="planType" value="${investmentRequest.planType}">
-                                                    <input type="hidden" name="initialLumpSum" value="${investmentRequest.initialLumpSum}">
-                                                    <input type="hidden" name="monthlyInvestment" value="${investmentRequest.monthlyInvestment}">
-                                                    <button type="submit" class="btn-glow result-save-btn">Save Quote</button>
-                                                </form>
-
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
+								<!-- Result -->
+								<div class="col-lg-6">
+								    <div class="investment-result-panel">
+								        <div class="investment-card-inner result-box">
+								
+								            <h3 class="result-plan-title" id="resultPlanTitle">
+								                <c:choose>
+								                    <c:when test="${hasCalculated eq false}">
+								                        Investment Result
+								                    </c:when>
+								                    <c:when test="${currentPlanType eq 'BASIC_SAVINGS'}">
+								                        Basic Savings Plan
+								                    </c:when>
+								                    <c:when test="${currentPlanType eq 'SAVINGS_PLUS'}">
+								                        Savings Plan Plus
+								                    </c:when>
+								                    <c:when test="${currentPlanType eq 'MANAGED_STOCKS'}">
+								                        Managed Stock Investments
+								                    </c:when>
+								                    <c:otherwise>
+								                        Investment Result
+								                    </c:otherwise>
+								                </c:choose>
+								            </h3>
+								
+								            <div class="result-range-tabs">
+								                <button type="button" class="result-tab-btn active" data-year="oneYear">1 Year</button>
+								                <button type="button" class="result-tab-btn" data-year="fiveYears">5 Years</button>
+								                <button type="button" class="result-tab-btn" data-year="tenYears">10 Years</button>
+								            </div>
+								
+								            <div class="result-summary-table">
+								                <div class="result-summary-row">
+								                    <span class="result-label">Initial Lump Sum</span>
+								                    <span class="result-value" id="resultInitialLumpSum">
+								                        £<fmt:formatNumber value="${hasCalculated ? currentResult.initialLumpSum : 0}" type="number" minFractionDigits="2" maxFractionDigits="2"/>
+								                    </span>
+								                </div>
+								                <div class="result-summary-row">
+								                    <span class="result-label">Monthly Investment</span>
+								                    <span class="result-value" id="resultMonthlyInvestment">
+								                        £<fmt:formatNumber value="${hasCalculated ? currentResult.monthlyInvestment : 0}" type="number" minFractionDigits="2" maxFractionDigits="2"/>
+								                    </span>
+								                </div>
+								            </div>
+								
+								            <div class="result-total-invested">
+								                <span>Total Invested Amount</span>
+								                <strong id="resultTotalInvested">
+								                    £<fmt:formatNumber value="${hasCalculated ? currentResult.totalInvested : 0}" type="number" minFractionDigits="2" maxFractionDigits="2"/>
+								                </strong>
+								            </div>
+								
+								            <div class="result-dashed-divider"></div>
+								
+								            <div class="result-section">
+								                <h4 class="result-section-title">Return &amp; Profits</h4>
+								                <div class="result-grid-two">
+								                    <div class="result-metric-block">
+								                        <span class="result-metric-label">Min Return</span>
+								                        <span class="result-metric-value" id="resultMinReturn">£<fmt:formatNumber value="${hasCalculated ? currentResult.minReturn : 0}" type="number" minFractionDigits="2" maxFractionDigits="2"/></span>
+								                    </div>
+								                    <div class="result-metric-block">
+								                        <span class="result-metric-label">Min Profit</span>
+								                        <span class="result-metric-value" id="resultMinProfit">£<fmt:formatNumber value="${hasCalculated ? currentResult.minProfit : 0}" type="number" minFractionDigits="2" maxFractionDigits="2"/></span>
+								                    </div>
+								                    <div class="result-metric-block">
+								                        <span class="result-metric-label">Max Return</span>
+								                        <span class="result-metric-value" id="resultMaxReturn">£<fmt:formatNumber value="${hasCalculated ? currentResult.maxReturn : 0}" type="number" minFractionDigits="2" maxFractionDigits="2"/></span>
+								                    </div>
+								                    <div class="result-metric-block">
+								                        <span class="result-metric-label">Max Profit</span>
+								                        <span class="result-metric-value" id="resultMaxProfit">£<fmt:formatNumber value="${hasCalculated ? currentResult.maxProfit : 0}" type="number" minFractionDigits="2" maxFractionDigits="2"/></span>
+								                    </div>
+								                </div>
+								            </div>
+								
+								            <div class="result-dashed-divider"></div>
+								
+								            <div class="result-section">
+								                <h4 class="result-section-title">Tax &amp; Fee</h4>
+								                <div class="result-grid-two">
+								                    <div class="result-metric-block">
+								                        <span class="result-metric-label">Min Tax</span>
+								                        <span class="result-metric-value" id="resultMinTax">£<fmt:formatNumber value="${hasCalculated ? currentResult.minTax : 0}" type="number" minFractionDigits="2" maxFractionDigits="2"/></span>
+								                    </div>
+								                    <div class="result-metric-block">
+								                        <span class="result-metric-label">Monthly Fee</span>
+								                        <span class="result-metric-value" id="resultMonthlyFee">£<fmt:formatNumber value="${hasCalculated ? currentResult.monthlyFee : 0}" type="number" minFractionDigits="2" maxFractionDigits="2"/></span>
+								                    </div>
+								                    <div class="result-metric-block">
+								                        <span class="result-metric-label">Max Tax</span>
+								                        <span class="result-metric-value" id="resultMaxTax">£<fmt:formatNumber value="${hasCalculated ? currentResult.maxTax : 0}" type="number" minFractionDigits="2" maxFractionDigits="2"/></span>
+								                    </div>
+								                    <div class="result-metric-block">
+								                        <span class="result-metric-label">Total Fee</span>
+								                        <span class="result-metric-value" id="resultTotalFee">£<fmt:formatNumber value="${hasCalculated ? currentResult.totalFee : 0}" type="number" minFractionDigits="2" maxFractionDigits="2"/></span>
+								                    </div>
+								                </div>
+								            </div>
+								
+								            <div class="result-actions ${hasCalculated ? '' : 'd-none'}">
+								
+								                <a href="${pageContext.request.contextPath}/client/investment" class="btn-glow-outline result-discard-btn text-decoration-none text-center">
+								                    Discard
+								                </a>
+								
+								                <form action="${pageContext.request.contextPath}/client/investment/save" method="post" class="m-0">
+								                    <input type="hidden" name="planType" value="${investmentRequest.planType}">
+								                    <input type="hidden" name="initialLumpSum" value="${investmentRequest.initialLumpSum}">
+								                    <input type="hidden" name="monthlyInvestment" value="${investmentRequest.monthlyInvestment}">
+								                    <button type="submit" class="btn-glow result-save-btn">Save Quote</button>
+								                </form>
+								
+								            </div>
+								
+								        </div>
+								    </div>
+								</div>
+								
+								<!-- HIDDEN RESULTS 1YR, 5YRS, 10YRS  -->
+								<div id="resultDataStore" class="d-none"
+								     data-plan-type="${investmentResponse.planType}"
+								
+								     data-one-initial="${hasCalculated ? investmentResponse.oneYear.initialLumpSum : 0}"
+								     data-one-monthly="${hasCalculated ? investmentResponse.oneYear.monthlyInvestment : 0}"
+								     data-one-total="${hasCalculated ? investmentResponse.oneYear.totalInvested : 0}"
+								     data-one-min-return="${hasCalculated ? investmentResponse.oneYear.minReturn : 0}"
+								     data-one-max-return="${hasCalculated ? investmentResponse.oneYear.maxReturn : 0}"
+								     data-one-min-profit="${hasCalculated ? investmentResponse.oneYear.minProfit : 0}"
+								     data-one-max-profit="${hasCalculated ? investmentResponse.oneYear.maxProfit : 0}"
+								     data-one-min-tax="${hasCalculated ? investmentResponse.oneYear.minTax : 0}"
+								     data-one-max-tax="${hasCalculated ? investmentResponse.oneYear.maxTax : 0}"
+								     data-one-monthly-fee="${hasCalculated ? investmentResponse.oneYear.monthlyFee : 0}"
+								     data-one-total-fee="${hasCalculated ? investmentResponse.oneYear.totalFee : 0}"
+								
+								     data-five-initial="${hasCalculated ? investmentResponse.fiveYears.initialLumpSum : 0}"
+								     data-five-monthly="${hasCalculated ? investmentResponse.fiveYears.monthlyInvestment : 0}"
+								     data-five-total="${hasCalculated ? investmentResponse.fiveYears.totalInvested : 0}"
+								     data-five-min-return="${hasCalculated ? investmentResponse.fiveYears.minReturn : 0}"
+								     data-five-max-return="${hasCalculated ? investmentResponse.fiveYears.maxReturn : 0}"
+								     data-five-min-profit="${hasCalculated ? investmentResponse.fiveYears.minProfit : 0}"
+								     data-five-max-profit="${hasCalculated ? investmentResponse.fiveYears.maxProfit : 0}"
+								     data-five-min-tax="${hasCalculated ? investmentResponse.fiveYears.minTax : 0}"
+								     data-five-max-tax="${hasCalculated ? investmentResponse.fiveYears.maxTax : 0}"
+								     data-five-monthly-fee="${hasCalculated ? investmentResponse.fiveYears.monthlyFee : 0}"
+								     data-five-total-fee="${hasCalculated ? investmentResponse.fiveYears.totalFee : 0}"
+								
+								     data-ten-initial="${hasCalculated ? investmentResponse.tenYears.initialLumpSum : 0}"
+								     data-ten-monthly="${hasCalculated ? investmentResponse.tenYears.monthlyInvestment : 0}"
+								     data-ten-total="${hasCalculated ? investmentResponse.tenYears.totalInvested : 0}"
+								     data-ten-min-return="${hasCalculated ? investmentResponse.tenYears.minReturn : 0}"
+								     data-ten-max-return="${hasCalculated ? investmentResponse.tenYears.maxReturn : 0}"
+								     data-ten-min-profit="${hasCalculated ? investmentResponse.tenYears.minProfit : 0}"
+								     data-ten-max-profit="${hasCalculated ? investmentResponse.tenYears.maxProfit : 0}"
+								     data-ten-min-tax="${hasCalculated ? investmentResponse.tenYears.minTax : 0}"
+								     data-ten-max-tax="${hasCalculated ? investmentResponse.tenYears.maxTax : 0}"
+								     data-ten-monthly-fee="${hasCalculated ? investmentResponse.tenYears.monthlyFee : 0}"
+								     data-ten-total-fee="${hasCalculated ? investmentResponse.tenYears.totalFee : 0}">
+								</div>
 
                             </div>
 
@@ -348,9 +408,47 @@
 
         </div>
     </div>
+    
+    
+    
+    <script>
+    window.planDetailsData = {
+        BASIC_SAVINGS: {
+            title: "${allPlanDetails['BASIC_SAVINGS'].title}",
+            maximumInvestmentPerYear: "${allPlanDetails['BASIC_SAVINGS'].maximumInvestmentPerYear}",
+            minimumMonthlyInvestment: "${allPlanDetails['BASIC_SAVINGS'].minimumMonthlyInvestment}",
+            minimumInitialInvestmentLumpSum: "${allPlanDetails['BASIC_SAVINGS'].minimumInitialInvestmentLumpSum}",
+            predictedReturnsPerYear: "${allPlanDetails['BASIC_SAVINGS'].predictedReturnsPerYear}",
+            estimatedTax: "${allPlanDetails['BASIC_SAVINGS'].estimatedTax}",
+            groupFeesPerMonth: "${allPlanDetails['BASIC_SAVINGS'].groupFeesPerMonth}"
+        },
+        SAVINGS_PLUS: {
+            title: "${allPlanDetails['SAVINGS_PLUS'].title}",
+            maximumInvestmentPerYear: "${allPlanDetails['SAVINGS_PLUS'].maximumInvestmentPerYear}",
+            minimumMonthlyInvestment: "${allPlanDetails['SAVINGS_PLUS'].minimumMonthlyInvestment}",
+            minimumInitialInvestmentLumpSum: "${allPlanDetails['SAVINGS_PLUS'].minimumInitialInvestmentLumpSum}",
+            predictedReturnsPerYear: "${allPlanDetails['SAVINGS_PLUS'].predictedReturnsPerYear}",
+            estimatedTax: "${allPlanDetails['SAVINGS_PLUS'].estimatedTax}",
+            groupFeesPerMonth: "${allPlanDetails['SAVINGS_PLUS'].groupFeesPerMonth}"
+        },
+        MANAGED_STOCKS: {
+            title: "${allPlanDetails['MANAGED_STOCKS'].title}",
+            maximumInvestmentPerYear: "${allPlanDetails['MANAGED_STOCKS'].maximumInvestmentPerYear}",
+            minimumMonthlyInvestment: "${allPlanDetails['MANAGED_STOCKS'].minimumMonthlyInvestment}",
+            minimumInitialInvestmentLumpSum: "${allPlanDetails['MANAGED_STOCKS'].minimumInitialInvestmentLumpSum}",
+            predictedReturnsPerYear: "${allPlanDetails['MANAGED_STOCKS'].predictedReturnsPerYear}",
+            estimatedTax: "${allPlanDetails['MANAGED_STOCKS'].estimatedTax}",
+            groupFeesPerMonth: "${allPlanDetails['MANAGED_STOCKS'].groupFeesPerMonth}"
+        }
+    };
+</script>
 
-    <script src="${pageContext.request.contextPath}/resources/js/dashboard.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/Investment-Main.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/dashboard.js"></script>
+    
+    
+    
+	
 
 </body>
 </html>
