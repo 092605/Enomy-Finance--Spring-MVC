@@ -45,7 +45,7 @@ public class ClientDashboardController {
         model.addAttribute("loggedInEmail", userDetails.getUsername());
         model.addAttribute("activePage", "currency");
 
-        return "client/client-dashboard"; // temporary placeholder
+        return "client/currency-converter"; // temporary placeholder
     }
 
     @GetMapping("/client/profile")
