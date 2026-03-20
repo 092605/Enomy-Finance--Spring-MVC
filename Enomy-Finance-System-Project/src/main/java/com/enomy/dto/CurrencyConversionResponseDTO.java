@@ -1,5 +1,7 @@
 package com.enomy.dto;
 
+import java.util.Date;
+
 public class CurrencyConversionResponseDTO {
 
     private String transactionType;
@@ -14,6 +16,7 @@ public class CurrencyConversionResponseDTO {
     private String finalLabel;
     private boolean valid;
     private String message;
+    private Date retrievedAt;
 
     public CurrencyConversionResponseDTO() {
     }
@@ -112,5 +115,13 @@ public class CurrencyConversionResponseDTO {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Date getRetrievedAt() {
+        return retrievedAt;
+    }
+
+    public void setRetrievedAt(Date retrievedAt) {
+        this.retrievedAt = retrievedAt;
     }
 }

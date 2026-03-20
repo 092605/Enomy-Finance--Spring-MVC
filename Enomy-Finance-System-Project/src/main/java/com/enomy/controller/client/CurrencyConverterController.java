@@ -19,6 +19,7 @@ import com.enomy.dto.CurrencyConversionResponseDTO;
 import com.enomy.dto.TransactionReceiptDTO;
 import com.enomy.model.User;
 import com.enomy.service.CurrencyConverterService;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/client/currency-converter")
@@ -187,30 +188,45 @@ public class CurrencyConverterController {
     // CANCEL -> RESET CONVERTER SECTION
     // =========================
     @GetMapping("/cancel")
-    public String cancelConversion(Model model, Principal principal) {
+    public String cancelConversion(@RequestParam(value = "transactionType", required = false) String transactionType,
+                                   Model model,
+                                   Principal principal) {
+
         prepareDefaultModel(model);
         addTopbarUserData(model, principal, "currency-converter");
 
         CurrencyConversionRequestDTO request = new CurrencyConversionRequestDTO();
+        request.setTransactionType(transactionType);
 
         model.addAttribute("conversionRequest", request);
         model.addAttribute("activeSection", "converter");
-        model.addAttribute("activeNav", "home");
+        model.addAttribute("activeNav",
+                "BUY".equalsIgnoreCase(transactionType) ? "buy" :
+                "SELL".equalsIgnoreCase(transactionType) ? "sell" : "home");
         model.addAttribute("cardMode", "default");
 
         return "client/currency-converter";
     }
-
+    
     // =========================
-    // OKAY FROM RECEIPT -> BACK TO WELCOME VIEW
+    // OKAY FROM RECEIPT 
     // =========================
     @GetMapping("/okay")
-    public String resetAfterReceipt(Model model, Principal principal) {
+    public String resetAfterReceipt(@RequestParam(value = "transactionType", required = false) String transactionType,
+                                    Model model,
+                                    Principal principal) {
         prepareDefaultModel(model);
         addTopbarUserData(model, principal, "currency-converter");
 
-        model.addAttribute("activeSection", "welcome");
-        model.addAttribute("activeNav", "home");
+        CurrencyConversionRequestDTO request = new CurrencyConversionRequestDTO();
+        request.setTransactionType(transactionType);
+
+        model.addAttribute("conversionRequest", request);
+        model.addAttribute("activeSection", "converter");
+        model.addAttribute("activeNav",
+                "BUY".equalsIgnoreCase(transactionType) ? "buy" :
+                "SELL".equalsIgnoreCase(transactionType) ? "sell" : "home");
+        model.addAttribute("cardMode", "default");
 
         return "client/currency-converter";
     }

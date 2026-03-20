@@ -47,7 +47,7 @@
                         <!-- =========================
                              WELCOME SECTION
                         ========================= -->
-                        <c:if test="${activeSection eq 'welcome'}">
+                        <c:if test="${empty activeSection or activeSection eq 'welcome'}">
 
                             <div class="currency-title-card">
                                 <h3>Currency Converter</h3>
@@ -187,7 +187,8 @@
                                                     <h3 class="currency-card-title">Converter Form / Calculator</h3>
 
                                                     <form action="${pageContext.request.contextPath}/client/currency-converter/calculate"
-                                                          method="post">
+			      method="post"
+			      data-partial-form="true">
 
                                                         <div class="row g-3">
                                                             <div class="col-12">
@@ -305,106 +306,337 @@
                                     </div>
                                 </div>
 
-                                <!-- RESULT / RECEIPT -->
-                                <div class="col-lg-7">
-                                    <div class="currency-panel-card currency-result-card">
-                                        <div class="currency-card-inner">
+                               
+<!-- RESULT / RECEIPT -->
 
-                                            <!-- DEFAULT -->
-                                            <c:if test="${cardMode eq 'default'}">
-                                                <h3 class="currency-card-title">Result Card</h3>
+  <div class="col-lg-7">
+    <div id="resultReceiptArea">
+        <div class="currency-panel-card currency-result-card cc-narrow">
+            <div class="currency-card-inner">
 
-                                                <div class="currency-summary-grid">
-                                                    <div class="currency-summary-item"><span>Transaction Type</span><strong>—</strong></div>
-                                                    <div class="currency-summary-item"><span>Base Currency</span><strong>—</strong></div>
-                                                    <div class="currency-summary-item"><span>Target Currency</span><strong>—</strong></div>
-                                                    <div class="currency-summary-item"><span>Input Amount</span><strong>0.00</strong></div>
-                                                    <div class="currency-summary-item"><span>Exchange Rate Used</span><strong>0.00</strong></div>
-                                                    <div class="currency-summary-item"><span>Converted Amount</span><strong>0.00</strong></div>
-                                                    <div class="currency-summary-item"><span>Fee Rate Applied</span><strong>0.00%</strong></div>
-                                                    <div class="currency-summary-item"><span>Fee Value</span><strong>0.00</strong></div>
-                                                    <div class="currency-summary-item summary-item-full"><span>Final Amount</span><strong>0.00</strong></div>
-                                                </div>
-                                            </c:if>
+                <!-- DEFAULT -->
+                <c:if test="${cardMode eq 'default'}">
+                    <div class="cc-card-shell">
+                        <h3 class="currency-card-title cc-card-title-main">Result Card</h3>
 
-                                            <!-- RESULT -->
-                                            <c:if test="${cardMode eq 'result' and not empty conversionResult}">
-                                                <h3 class="currency-card-title">Result Card</h3>
+                        <div class="cc-top-strip--grid">
+                            <div class="cc-top-cell">
+                                <span class="cc-top-label">Transaction Type</span>
+                                <strong class="cc-top-value">-</strong>
+                            </div>
+                            <div class="cc-top-cell">
+                                <span class="cc-top-label">Base Currency</span>
+                                <strong class="cc-top-value">-</strong>
+                            </div>
+                            <div class="cc-top-cell">
+                                <span class="cc-top-label">Target Currency</span>
+                                <strong class="cc-top-value">-</strong>
+                            </div>
+                        </div>
 
-                                                <div class="currency-summary-grid">
-                                                    <div class="currency-summary-item"><span>Transaction Type</span><strong>${conversionResult.transactionType}</strong></div>
-                                                    <div class="currency-summary-item"><span>Base Currency</span><strong>${conversionResult.baseCurrency}</strong></div>
-                                                    <div class="currency-summary-item"><span>Target Currency</span><strong>${conversionResult.targetCurrency}</strong></div>
-                                                    <div class="currency-summary-item"><span>Input Amount</span><strong><fmt:formatNumber value="${conversionResult.inputAmount}" minFractionDigits="2" maxFractionDigits="2"/></strong></div>
-                                                    <div class="currency-summary-item"><span>Exchange Rate Used</span><strong><fmt:formatNumber value="${conversionResult.exchangeRateUsed}" minFractionDigits="2" maxFractionDigits="6"/></strong></div>
-                                                    <div class="currency-summary-item"><span>Converted Amount</span><strong><fmt:formatNumber value="${conversionResult.convertedAmount}" minFractionDigits="2" maxFractionDigits="2"/></strong></div>
-                                                    <div class="currency-summary-item"><span>Fee Rate Applied</span><strong><fmt:formatNumber value="${conversionResult.feeRateApplied}" minFractionDigits="1" maxFractionDigits="2"/>%</strong></div>
-                                                    <div class="currency-summary-item"><span>Fee Value</span><strong><fmt:formatNumber value="${conversionResult.feeValue}" minFractionDigits="2" maxFractionDigits="2"/></strong></div>
-                                                    <div class="currency-summary-item summary-item-full">
-                                                        <span>${conversionResult.finalLabel}</span>
-                                                        <strong><fmt:formatNumber value="${conversionResult.finalAmount}" minFractionDigits="2" maxFractionDigits="2"/></strong>
-                                                    </div>
-                                                </div>
+                        <div class="cc-amount-bar">
+                            <span class="cc-bar-label">Amount to Convert</span>
+                            <strong class="cc-bar-value">0.00</strong>
+                        </div>
 
-                                                <div class="currency-result-actions">
-                                                    <form action="${pageContext.request.contextPath}/client/currency-converter/confirm" method="post" class="m-0">
-                                                        <input type="hidden" name="transactionType" value="${conversionRequest.transactionType}">
-                                                        <input type="hidden" name="baseCurrency" value="${conversionRequest.baseCurrency}">
-                                                        <input type="hidden" name="targetCurrency" value="${conversionRequest.targetCurrency}">
-                                                        <input type="hidden" name="amount" value="${conversionRequest.amount}">
+                        <div class="cc-section-divider"></div>
 
-                                                        <button type="submit" class="btn-glow">
-                                                            <c:choose>
-                                                                <c:when test="${conversionRequest.transactionType eq 'BUY'}">Buy Now</c:when>
-                                                                <c:otherwise>Sell Now</c:otherwise>
-                                                            </c:choose>
-                                                        </button>
-                                                    </form>
+                        <div class="cc-section-block">
+                            <h4 class="cc-section-title">Exchange Rate Details</h4>
 
-                                                    <a href="${pageContext.request.contextPath}/client/currency-converter/cancel"
-                                                       class="btn-glow-outline text-decoration-none text-center">
-                                                        Cancel
-                                                    </a>
-                                                </div>
-                                            </c:if>
+                            <div class="cc-detail-grid">
+                                <div class="cc-detail-labels">
+                                    <div>Exchange Rate:</div>
+                                    <div>Date Rate Retrieved:</div>
+                                    <div>Time Retrieved:</div>
+                                </div>
 
-                                            <!-- RECEIPT -->
-                                            <c:if test="${cardMode eq 'receipt' and not empty receipt}">
-                                                <h3 class="currency-card-title">Transaction Receipt</h3>
+                                <div class="cc-detail-values">
+                                    <div>0.00</div>
+                                    <div>—</div>
+                                    <div>—</div>
+                                </div>
+                            </div>
+                        </div>
 
-                                                <div class="currency-receipt-badge">Successfully Saved</div>
+                        <div class="cc-section-divider"></div>
 
-                                                <div class="currency-summary-grid">
-                                                    <div class="currency-summary-item"><span>Transaction Number</span><strong>${receipt.transactionNumber}</strong></div>
-                                                    <div class="currency-summary-item"><span>Transaction Type</span><strong>${receipt.transactionType}</strong></div>
-                                                    <div class="currency-summary-item"><span>Date</span><strong><fmt:formatDate value="${receipt.date}" pattern="MMM dd, yyyy hh:mm a"/></strong></div>
-                                                    <div class="currency-summary-item"><span>Base Currency</span><strong>${receipt.baseCurrency}</strong></div>
-                                                    <div class="currency-summary-item"><span>Target Currency</span><strong>${receipt.targetCurrency}</strong></div>
-                                                    <div class="currency-summary-item"><span>Input Amount</span><strong><fmt:formatNumber value="${receipt.inputAmount}" minFractionDigits="2" maxFractionDigits="2"/></strong></div>
-                                                    <div class="currency-summary-item"><span>Exchange Rate Used</span><strong><fmt:formatNumber value="${receipt.exchangeRateUsed}" minFractionDigits="2" maxFractionDigits="6"/></strong></div>
-                                                    <div class="currency-summary-item"><span>Converted Amount</span><strong><fmt:formatNumber value="${receipt.convertedAmount}" minFractionDigits="2" maxFractionDigits="2"/></strong></div>
-                                                    <div class="currency-summary-item"><span>Fee Rate Applied</span><strong><fmt:formatNumber value="${receipt.feeRateApplied}" minFractionDigits="1" maxFractionDigits="2"/>%</strong></div>
-                                                    <div class="currency-summary-item"><span>Fee Value</span><strong><fmt:formatNumber value="${receipt.feeValue}" minFractionDigits="2" maxFractionDigits="2"/></strong></div>
-                                                    <div class="currency-summary-item summary-item-full">
-                                                        <span>${receipt.label}</span>
-                                                        <strong><fmt:formatNumber value="${receipt.finalAmount}" minFractionDigits="2" maxFractionDigits="2"/></strong>
-                                                    </div>
-                                                </div>
+                        <div class="cc-section-block">
+                            <h4 class="cc-section-title">Fee &amp; Converted Amount</h4>
 
-                                                <div class="currency-receipt-note">
-                                                    ${receipt.message}
-                                                </div>
+                            <div class="cc-detail-grid">
+                                <div class="cc-detail-labels">
+                                    <div class="cc-accent-label">Converted Amount:</div>
+                                    <div>Fee Rate Applied:</div>
+                                    <div>Fee Value:</div>
+                                </div>
 
-                                                <div class="currency-result-actions">
-                                                    <a href="${pageContext.request.contextPath}/client/currency-converter/okay"
-                                                       class="btn-glow text-decoration-none text-center">
-                                                        Okay
-                                                    </a>
-                                                </div>
-                                            </c:if>
-                                        </div>
+                                <div class="cc-detail-values">
+                                    <div>0.00</div>
+                                    <div>0.00%</div>
+                                    <div>0.00</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cc-total-bar cc-total-bar--green">
+                            <span class="cc-bar-label">Final Payable</span>
+                            <strong class="cc-bar-value">0.00</strong>
+                        </div>
+
+                        <div class="currency-result-actions d-none">
+                            <button type="button" class="btn-glow-outline">Cancel</button>
+                            <button type="button" class="btn-glow">Buy Now</button>
+                        </div>
+                    </div>
+                </c:if>
+
+                <!-- RESULT -->
+                <c:if test="${cardMode eq 'result' and not empty conversionResult}">
+                    <div class="cc-card-shell">
+                        <h3 class="currency-card-title cc-card-title-main">Result Card</h3>
+
+                        <div class="cc-top-strip--grid">
+                            <div class="cc-top-cell">
+                                <span class="cc-top-label">Transaction Type</span>
+                                <strong class="cc-top-value">
+                                    <c:out value="${conversionResult.transactionType}" default="-"/>
+                                </strong>
+                            </div>
+                            <div class="cc-top-cell">
+                                <span class="cc-top-label">Base Currency</span>
+                                <strong class="cc-top-value">
+                                    <c:out value="${conversionResult.baseCurrency}" default="-"/>
+                                </strong>
+                            </div>
+                            <div class="cc-top-cell">
+                                <span class="cc-top-label">Target Currency</span>
+                                <strong class="cc-top-value">
+                                    <c:out value="${conversionResult.targetCurrency}" default="-"/>
+                                </strong>
+                            </div>
+                        </div>
+
+                        <div class="cc-amount-bar">
+                            <span class="cc-bar-label">Amount to Convert</span>
+                            <strong class="cc-bar-value">
+                                <fmt:formatNumber value="${conversionResult.inputAmount}" minFractionDigits="2" maxFractionDigits="2"/>
+                            </strong>
+                        </div>
+
+                        <div class="cc-section-divider"></div>
+
+                        <div class="cc-section-block">
+                            <h4 class="cc-section-title">Exchange Rate Details</h4>
+
+                            <div class="cc-detail-grid">
+                                <div class="cc-detail-labels">
+                                    <div>Exchange Rate:</div>
+                                    <div>Date Rate Retrieved:</div>
+                                    <div>Time Retrieved:</div>
+                                </div>
+
+                               <div class="cc-detail-values">
+								    <div>
+								        <fmt:formatNumber value="${conversionResult.exchangeRateUsed}" minFractionDigits="2" maxFractionDigits="6"/>
+								    </div>
+								    <div>
+								        <fmt:formatDate value="${conversionResult.retrievedAt}" pattern="MMM dd, yyyy"/>
+								    </div>
+								    <div>
+								        <fmt:formatDate value="${conversionResult.retrievedAt}" pattern="hh:mm a"/>
+								    </div>
+								</div>
+                            </div>
+                        </div>
+
+                        <div class="cc-section-divider"></div>
+
+                        <div class="cc-section-block">
+                            <h4 class="cc-section-title">Fee &amp; Converted Amount</h4>
+
+                            <div class="cc-detail-grid">
+                                <div class="cc-detail-labels">
+                                    <div class="cc-accent-label">Converted Amount:</div>
+                                    <div>Fee Rate Applied:</div>
+                                    <div>Fee Value:</div>
+                                </div>
+
+                                <div class="cc-detail-values">
+                                    <div>
+                                        <fmt:formatNumber value="${conversionResult.convertedAmount}" minFractionDigits="2" maxFractionDigits="2"/>
+                                    </div>
+                                    <div>
+                                        <fmt:formatNumber value="${conversionResult.feeRateApplied}" minFractionDigits="1" maxFractionDigits="2"/>%
+                                    </div>
+                                    <div>
+                                        <fmt:formatNumber value="${conversionResult.feeValue}" minFractionDigits="2" maxFractionDigits="2"/>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="cc-total-bar cc-total-bar--green">
+                            <span class="cc-bar-label">
+                                <c:out value="${conversionResult.finalLabel}" default="Final Payable"/>
+                            </span>
+                            <strong class="cc-bar-value">
+                                <fmt:formatNumber value="${conversionResult.finalAmount}" minFractionDigits="2" maxFractionDigits="2"/>
+                            </strong>
+                        </div>
+
+                        <div class="currency-result-actions cc-action-row">
+                            <a href="${pageContext.request.contextPath}/client/currency-converter/cancel?transactionType=${conversionRequest.transactionType}"
+                               class="btn-glow-outline text-decoration-none text-center cc-action-btn"
+                               data-partial-link="true">
+                                Cancel
+                            </a>
+
+                            <form action="${pageContext.request.contextPath}/client/currency-converter/confirm"
+                                  method="post"
+                                  class="m-0"
+                                  data-partial-form="true">
+                                <input type="hidden" name="transactionType" value="${conversionRequest.transactionType}">
+                                <input type="hidden" name="baseCurrency" value="${conversionRequest.baseCurrency}">
+                                <input type="hidden" name="targetCurrency" value="${conversionRequest.targetCurrency}">
+                                <input type="hidden" name="amount" value="${conversionRequest.amount}">
+
+                                <button type="submit" class="btn-glow cc-action-btn">
+                                    <c:choose>
+                                        <c:when test="${conversionRequest.transactionType eq 'BUY'}">Buy Now</c:when>
+                                        <c:otherwise>Sell Now</c:otherwise>
+                                    </c:choose>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </c:if>
+
+                <!-- RECEIPT -->
+                <c:if test="${cardMode eq 'receipt' and not empty receipt}">
+                    <div class="cc-card-shell">
+                        <h3 class="currency-card-title cc-card-title-main">Transaction Receipt</h3>
+
+                        <div class="cc-meta-block">
+                            <div class="cc-meta-row">
+                                <span class="cc-meta-label">Transaction Number</span>
+                                <strong class="cc-meta-value">${receipt.transactionNumber}</strong>
+                            </div>
+                            <div class="cc-meta-row">
+                                <span class="cc-meta-label">Date:</span>
+                                <strong class="cc-meta-value">
+                                    <fmt:formatDate value="${receipt.date}" pattern="MMM dd, yyyy"/>
+                                </strong>
+                            </div>
+                        </div>
+
+                        <div class="cc-top-strip--grid">
+                            <div class="cc-top-cell">
+                                <span class="cc-top-label">Transaction Type</span>
+                                <strong class="cc-top-value">
+                                    <c:out value="${receipt.transactionType}" default="-"/>
+                                </strong>
+                            </div>
+                            <div class="cc-top-cell">
+                                <span class="cc-top-label">Base Currency</span>
+                                <strong class="cc-top-value">
+                                    <c:out value="${receipt.baseCurrency}" default="-"/>
+                                </strong>
+                            </div>
+                            <div class="cc-top-cell">
+                                <span class="cc-top-label">Target Currency</span>
+                                <strong class="cc-top-value">
+                                    <c:out value="${receipt.targetCurrency}" default="-"/>
+                                </strong>
+                            </div>
+                        </div>
+
+                        <div class="cc-amount-bar">
+                            <span class="cc-bar-label">Amount to Convert</span>
+                            <strong class="cc-bar-value">
+                                <fmt:formatNumber value="${receipt.inputAmount}" minFractionDigits="2" maxFractionDigits="2"/>
+                            </strong>
+                        </div>
+
+                        <div class="cc-section-divider"></div>
+
+                        <div class="cc-section-block">
+                            <h4 class="cc-section-title">Exchange Rate Details</h4>
+
+                            <div class="cc-detail-grid">
+                                <div class="cc-detail-labels">
+                                    <div>Exchange Rate:</div>
+                                    <div>Date Rate Retrieved:</div>
+                                    <div>Time Retrieved:</div>
+                                </div>
+
+                                <div class="cc-detail-values">
+                                    <div>
+                                        <fmt:formatNumber value="${receipt.exchangeRateUsed}" minFractionDigits="2" maxFractionDigits="6"/>
+                                    </div>
+                                    <div>
+                                        <fmt:formatDate value="${receipt.date}" pattern="MMM dd, yyyy"/>
+                                    </div>
+                                    <div>
+                                        <fmt:formatDate value="${receipt.date}" pattern="hh:mm a"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cc-section-divider"></div>
+
+                        <div class="cc-section-block">
+                            <h4 class="cc-section-title">Fee &amp; Converted Amount</h4>
+
+                            <div class="cc-detail-grid">
+                                <div class="cc-detail-labels">
+                                    <div class="cc-accent-label">Converted Amount:</div>
+                                    <div>Fee Rate Applied:</div>
+                                    <div>Fee Value:</div>
+                                </div>
+
+                                <div class="cc-detail-values">
+                                    <div>
+                                        <fmt:formatNumber value="${receipt.convertedAmount}" minFractionDigits="2" maxFractionDigits="2"/>
+                                    </div>
+                                    <div>
+                                        <fmt:formatNumber value="${receipt.feeRateApplied}" minFractionDigits="1" maxFractionDigits="2"/>%
+                                    </div>
+                                    <div>
+                                        <fmt:formatNumber value="${receipt.feeValue}" minFractionDigits="2" maxFractionDigits="2"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cc-total-bar cc-total-bar--green">
+                            <span class="cc-bar-label">
+                                <c:out value="${receipt.label}" default="Paid Amount"/>
+                            </span>
+                            <strong class="cc-bar-value">
+                                <fmt:formatNumber value="${receipt.finalAmount}" minFractionDigits="2" maxFractionDigits="2"/>
+                            </strong>
+                        </div>
+
+                        <div class="currency-result-actions cc-action-row cc-action-row--center">
+                            <a href="${pageContext.request.contextPath}/client/currency-converter/okay?transactionType=${receipt.transactionType}"
+                               class="btn-glow text-decoration-none text-center cc-action-btn"
+                               data-partial-link="true">
+                                Okay
+                            </a>
+                        </div>
+                    </div>
+                </c:if>
+
+            </div>
+        </div>
+    </div>
+</div>                              
+                                
+                                
+                                
+                                
                             </div>
                         </c:if>
 
@@ -509,9 +741,14 @@
     </div>
 </div>
 
+
+
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/dashboard.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/currency-converter.js"></script>
+
+
 
 </body>
 </html>

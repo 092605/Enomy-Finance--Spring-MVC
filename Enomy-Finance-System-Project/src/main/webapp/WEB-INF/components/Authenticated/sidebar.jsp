@@ -29,12 +29,12 @@
                 </a>
             </li>
 
-            <li class="sidebar-item ${activePage == 'currency' ? 'active' : ''}">
-                <a href="${pageContext.request.contextPath}/client/currency" class="sidebar-link">
-                    <span class="sidebar-icon">⇄</span>
-                    <span class="sidebar-label">Currency Converter</span>
-                </a>
-            </li>
+            <li class="sidebar-item ${activePage == 'currency-converter' ? 'active' : ''}">
+				    <a href="${pageContext.request.contextPath}/client/currency-converter/home" class="sidebar-link">
+				        <span class="sidebar-icon">⇄</span>
+				        <span class="sidebar-label">Currency Converter</span>
+				    </a>
+				</li>
 
             <li class="sidebar-item ${activePage == 'investment' ? 'active' : ''}">
 			    <a href="${pageContext.request.contextPath}/client/investment" class="sidebar-link">

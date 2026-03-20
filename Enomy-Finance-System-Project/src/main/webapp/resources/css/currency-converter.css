@@ -1,6 +1,20 @@
 .currency-page {
     padding: 24px;
+     min-height: calc(100vh - 220px);
+    
 }
+
+.cc-narrow {
+    max-width: 550px;   /* 🔥 control width here */
+    margin: 0 auto;     /* center inside column */
+}
+
+
+.currency-result-card 
+.currency-card-inner {
+    padding: 42px 46px;  /* top/bottom | left/right */
+}
+
 
 .currency-page-header {
     margin-bottom: 24px;
@@ -311,6 +325,295 @@
     margin-top: 16px;
 }
 
+
+
+
+
+
+/* =========================
+   RESULT CARD / RECEIPT REDESIGN
+========================= */
+
+.cc-card-shell {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+}
+
+.cc-card-title-main {
+    font-size: 2.1rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 0.15rem;
+    color: #fff;
+}
+
+.cc-meta-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.cc-meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+
+
+.cc-meta-label,
+.cc-meta-value {
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.02rem;
+}
+
+
+
+
+
+/* amount bars */
+.cc-amount-bar,
+.cc-total-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.4rem;
+    border-radius: 18px;
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+
+.cc-amount-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 0.85rem;
+    margin-bottom: 1rem;
+    border-radius: 12px;
+
+    /* 🎯 blue → purple → pink gradient */
+    background: linear-gradient(90deg, #2563eb 0%, #7c3aed 50%, #d946ef 100%);
+
+   border: none;
+    box-shadow: 0 8px 20px rgba(124, 58, 237, 0.35);
+}
+
+/* make payable / paid exactly closer to investment card */
+.cc-total-bar--green {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 0.85rem;
+    margin-bottom: 1rem;
+    border-radius: 12px;
+    background: linear-gradient(90deg, rgba(34,197,94,0.24), rgba(34,197,94,0.06));
+    border: 1px solid rgba(34,197,94,0.25);
+}
+
+.cc-bar-label {
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.cc-bar-value {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #fff;
+}
+
+/* dashed divider like investment card */
+.cc-section-divider {
+    border-top: 3px dashed rgba(255,255,255,0.26);
+    height: 0;
+    background: none;
+    opacity: 1;
+}
+
+/* sections */
+.cc-section-block {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.cc-section-title {
+    margin: 0;
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: #fff;
+}
+
+.cc-detail-grid {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+}
+
+.cc-detail-labels,
+.cc-detail-values {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.cc-detail-labels {
+    color: rgba(255,255,255,0.95);
+}
+
+.cc-detail-values {
+    text-align: right;
+    min-width: 130px;
+    color: #fff;
+}
+
+.cc-accent-label {
+    background: linear-gradient(90deg, #2d7cff 0%, #d17cf5 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.cc-action-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 0.35rem;
+}
+
+.cc-action-row--center {
+    justify-content: center;
+}
+
+.cc-action-btn {
+    min-width: 160px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cc-actions-hidden {
+    display: none !important;
+}
+
+/* =========================
+   TOP STRIP ONLY
+========================= */
+
+/* =========================
+   TOP STRIP (TABLE STYLE)
+========================= */
+
+.cc-top-strip--grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    /* remove pill look */
+    border-radius: 10px;
+    overflow: hidden;
+
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.04);
+}
+
+/* each cell */
+.cc-top-cell {
+    padding: 0;
+    text-align: center;
+
+    border-right: 1px solid rgba(255,255,255,0.12);
+}
+
+.cc-top-cell:last-child {
+    border-right: 0;
+}
+
+/* HEADER (label part) */
+.cc-top-label {
+    display: block;
+    padding: 10px 8px;
+
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+
+    font-size: 0.9rem;
+    font-weight: 700;
+
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+
+/* VALUE (bottom part) */
+.cc-top-value {
+    display: block;
+    padding: 12px 8px;
+
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #fff;
+}
+
+/* ONLY header (label) of 2nd & 3rd column */
+.cc-top-cell:nth-child(2) .cc-top-label,
+.cc-top-cell:nth-child(3) .cc-top-label {
+    background: rgba(255, 255, 255, 0.18);
+}
+
+@media (max-width: 991.98px) {
+    .cc-top-strip--grid {
+        grid-template-columns: 1fr;
+        border-radius: 1.2rem;
+    }
+
+    .cc-top-cell {
+        border-right: 0;
+        border-bottom: 1px solid rgba(214, 156, 255, 0.25);
+    }
+
+    .cc-top-cell:last-child {
+        border-bottom: 0;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .cc-card-title-main {
+        font-size: 1.8rem;
+    }
+
+ 
+
+
+    .cc-detail-grid {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .cc-detail-values {
+        text-align: left;
+        min-width: auto;
+    }
+
+    .cc-action-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .cc-action-btn {
+        width: 100%;
+        min-width: auto;
+    }
+}
 @media (max-width: 991px) {
     .currency-summary-grid {
         grid-template-columns: 1fr;

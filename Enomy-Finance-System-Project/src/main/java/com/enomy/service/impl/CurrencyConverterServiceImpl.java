@@ -170,6 +170,7 @@ public class CurrencyConverterServiceImpl implements CurrencyConverterService {
         response.setFeeRateApplied(matchingFeeRule.getFeeRate());
         response.setFeeValue(feeValue);
         response.setFinalAmount(finalAmount);
+        response.setRetrievedAt(new Date());
 
         if ("BUY".equalsIgnoreCase(request.getTransactionType())) {
             response.setFinalLabel("Final Payable");
