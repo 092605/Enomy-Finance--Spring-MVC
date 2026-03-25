@@ -44,120 +44,148 @@
                     <!-- MAIN CONTENT AREA -->
                     <div class="col-lg-9">
 
-                        <!-- =========================
-                             WELCOME SECTION
-                        ========================= -->
-                        <c:if test="${empty activeSection or activeSection eq 'welcome'}">
-
-                            <div class="currency-title-card">
-                                <h3>Currency Converter</h3>
-                                <p>Buy or sell supported currencies using the latest available exchange rate.</p>
-                            </div>
-
-                            <div class="row g-4">
-
-                                <!-- Welcome Hero -->
-                                <div class="col-lg-6">
-                                    <div class="currency-panel-card currency-welcome-card">
-                                        <div class="currency-card-inner">
-                                            <span class="currency-badge">Quick Action</span>
-                                            <h3 class="currency-card-title">Buy or Sell Currency</h3>
-                                            <p class="currency-card-text">
-                                                Start your transaction by selecting whether you want to buy or sell currency.
-                                                The system will prepare the converter automatically for your chosen transaction type.
-                                            </p>
-
-                                            <div class="currency-hero-actions">
-                                                <a href="${pageContext.request.contextPath}/client/currency-converter/buy"
-                                                   class="btn-glow text-decoration-none text-center">
-                                                    Buy Currency
-                                                </a>
-
-                                                <a href="${pageContext.request.contextPath}/client/currency-converter/sell"
-                                                   class="btn-glow-outline text-decoration-none text-center">
-                                                    Sell Currency
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Check Rate Card -->
-                                <div class="col-lg-6">
-                                    <div class="currency-panel-card currency-checkrate-card">
-                                        <div class="currency-card-inner">
-                                            <div class="currency-card-header-row">
-                                                <h3 class="currency-card-title">Check Rate Calculator</h3>
-                                                <span class="currency-mini-badge">Base Amount: 1</span>
-                                            </div>
-
-                                            <form action="${pageContext.request.contextPath}/client/currency-converter/check-rate" method="post">
-                                                <div class="row g-3">
-                                                    <div class="col-md-6">
-                                                        <label class="currency-label">Base Currency</label>
-                                                        <select name="baseCurrency" class="currency-select" required>
-                                                            <option value="">Select</option>
-                                                            <option value="GBP">GBP</option>
-                                                            <option value="USD">USD</option>
-                                                            <option value="EUR">EUR</option>
-                                                            <option value="BRL">BRL</option>
-                                                            <option value="JPY">JPY</option>
-                                                            <option value="TRY">TRY</option>
-                                                        </select>
-                                                    </div>
-
-                                                    <div class="col-md-6">
-                                                        <label class="currency-label">Target Currency</label>
-                                                        <select name="targetCurrency" class="currency-select" required>
-                                                            <option value="">Select</option>
-                                                            <option value="GBP">GBP</option>
-                                                            <option value="USD">USD</option>
-                                                            <option value="EUR">EUR</option>
-                                                            <option value="BRL">BRL</option>
-                                                            <option value="JPY">JPY</option>
-                                                            <option value="TRY">TRY</option>
-                                                        </select>
-                                                    </div>
-
-                                                    <div class="col-12">
-                                                        <button type="submit" class="btn-glow w-100">
-                                                            Check Rate
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </form>
-
-                                            <c:if test="${not empty checkRateResult}">
-                                                <div id="checkRateMessage" class="currency-checkrate-result">
-                                                    <div class="currency-checkrate-top">
-                                                        <strong>Rate Retrieved</strong>
-                                                        <span id="checkRateTimestamp"></span>
-                                                    </div>
-
-                                                    <p class="currency-checkrate-note">
-                                                        This is the current available rate for
-                                                        <strong>${checkRateResult.baseCurrency}</strong>
-                                                        to
-                                                        <strong>${checkRateResult.targetCurrency}</strong>.
-                                                        This rate may change over time.
-                                                    </p>
-
-                                                    <div class="currency-checkrate-value">
-                                                        1 ${checkRateResult.baseCurrency}
-                                                        =
-                                                        <strong>
-                                                            <fmt:formatNumber value="${checkRateResult.rate}" minFractionDigits="2" maxFractionDigits="6"/>
-                                                        </strong>
-                                                        ${checkRateResult.targetCurrency}
-                                                    </div>
-                                                </div>
-                                            </c:if>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </c:if>
-
+			<!-- =========================
+			     WELCOME SECTION
+			========================= -->
+			<c:if test="${empty activeSection or activeSection eq 'welcome'}">
+			
+			    <div class="currency-title-card">
+			        <h3>Currency Converter</h3>
+			        <p>Buy or sell supported currencies using the latest available exchange rate.</p>
+			    </div>
+			
+			    <div class="row g-4 align-items-stretch">
+			
+			        <!-- Welcome Hero -->
+			        <div class="col-lg-7 d-flex">
+			            <div class="currency-panel-card currency-welcome-card w-100 h-100">
+			                <div class="currency-card-inner">
+			                    <span class="currency-badge">Quick Action</span>
+			                    <h3 class="currency-card-title welcome">Buy or Sell Currency</h3>
+			                    <p class="currency-card-text">
+			                        Start your transaction by selecting whether you want to buy or sell currency.
+			                        The system will prepare the converter automatically for your chosen transaction type.
+			                    </p>
+			
+			                    <div class="currency-hero-actions">
+			                        <a href="${pageContext.request.contextPath}/client/currency-converter/buy"
+			                           class="btn-glow text-decoration-none text-center">
+			                            Buy Currency
+			                        </a>
+			
+			                        <a href="${pageContext.request.contextPath}/client/currency-converter/sell"
+			                           class="btn-glow-outline text-decoration-none text-center">
+			                            Sell Currency
+			                        </a>
+			                    </div>
+			                </div>
+			            </div>
+			        </div>
+			        
+			       <!-- CHECK RATE -->
+			        <div class="col-lg-5 d-flex">
+			            <div class="currency-panel-card currency-checkrate-card w-100 h-100">
+			                <div class="currency-card-inner">
+			                    <div class="currency-card-header-row">
+			                        <h3 class="currency-card-title">Check Rate Calculator</h3>
+			                        <span class="currency-mini-badge">Base Amount: 1</span>
+			                    </div>
+			
+			                    <div class="row g-3">
+			
+			                        <!-- Base Currency -->
+			                        <div class="col-md-6">
+			                            <label class="currency-label">Base Currency</label>
+			
+			                            <div class="custom-dropdown currency-dropdown">
+			                                <input type="hidden" name="baseCurrency" id="checkRateBaseCurrency" value="" />
+			
+			                                <button class="custom-dropdown-toggle" type="button">
+			                                    <span class="selected-value">Select</span>
+			                                    <span class="dropdown-arrow">
+			                                        <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+			                                            <path d="M6 8L10 12L14 8" stroke="white" stroke-width="2" stroke-linecap="round"/>
+			                                        </svg>
+			                                    </span>
+			                                </button>
+			
+			                                <div class="custom-dropdown-menu">
+			                                    <div class="custom-dropdown-item" data-value="GBP">GBP</div>
+			                                    <div class="custom-dropdown-item" data-value="USD">USD</div>
+			                                    <div class="custom-dropdown-item" data-value="EUR">EUR</div>
+			                                    <div class="custom-dropdown-item" data-value="BRL">BRL</div>
+			                                    <div class="custom-dropdown-item" data-value="JPY">JPY</div>
+			                                    <div class="custom-dropdown-item" data-value="TRY">TRY</div>
+			                                </div>
+			                            </div>
+			                        </div>
+			
+			                        <!-- Target Currency -->
+			                        <div class="col-md-6">
+			                            <label class="currency-label">Target Currency</label>
+			
+			                            <div class="custom-dropdown currency-dropdown">
+			                                <input type="hidden" name="targetCurrency" id="checkRateTargetCurrency" value="" />
+			
+			                                <button class="custom-dropdown-toggle" type="button">
+			                                    <span class="selected-value">Select</span>
+			                                    <span class="dropdown-arrow">
+			                                        <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+			                                            <path d="M6 8L10 12L14 8" stroke="white" stroke-width="2" stroke-linecap="round"/>
+			                                        </svg>
+			                                    </span>
+			                                </button>
+			
+			                                <div class="custom-dropdown-menu">
+			                                    <div class="custom-dropdown-item" data-value="GBP">GBP</div>
+			                                    <div class="custom-dropdown-item" data-value="USD">USD</div>
+			                                    <div class="custom-dropdown-item" data-value="EUR">EUR</div>
+			                                    <div class="custom-dropdown-item" data-value="BRL">BRL</div>
+			                                    <div class="custom-dropdown-item" data-value="JPY">JPY</div>
+			                                    <div class="custom-dropdown-item" data-value="TRY">TRY</div>
+			                                </div>
+			                            </div>
+			                        </div>
+			
+			                        <!-- Result -->
+			                        <div class="col-12">
+			                            <div class="currency-checkrate-preview-box">
+			                                <div class="currency-checkrate-preview-title">Rate Result</div>
+			                                <div class="currency-checkrate-preview-value" id="checkRateResultValue">
+			                                    Rate Result...
+			                                </div>
+			                            </div>
+			                        </div>
+			
+			                        <!-- Button + sync -->
+			                        <div class="col-12">
+			                            <div class="currency-checkrate-actions">
+			                                <button type="button" class="btn-glow currency-checkrate-btn" id="checkRateBtn">
+			                                    Check Rate
+			                                </button>
+			
+			                                <div class="currency-checkrate-sync">
+			                                    Rate date:<br>
+			                                    <strong id="checkRateRateDate">Not available</strong><br><br>
+			
+			                                    Fetched at:<br>
+			                                    <strong id="checkRateFetchedAt">Not available</strong>
+			                                </div>
+			                            </div>
+			                        </div>
+			
+			                        <!-- inline error -->
+			                        <div class="col-12">
+			                            <div id="checkRateError" class="inline-error-message" style="display:none;"></div>
+			                        </div>
+			
+			                    </div>
+			                </div>
+			            </div>
+			        </div>
+			
+			    </div>
+			</c:if>
                         <!-- =========================
                              CONVERTER SECTION
                         ========================= -->
@@ -741,7 +769,9 @@
     </div>
 </div>
 
-
+<script>
+    window.CONTEXT_PATH = "${pageContext.request.contextPath}";
+</script>
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

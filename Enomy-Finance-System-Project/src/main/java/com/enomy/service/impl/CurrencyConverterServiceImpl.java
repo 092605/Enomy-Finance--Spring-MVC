@@ -22,6 +22,7 @@ import com.enomy.model.ConversionRuleSet;
 import com.enomy.model.CurrencyTransaction;
 import com.enomy.service.CurrencyApiService;
 import com.enomy.service.CurrencyConverterService;
+import com.enomy.dto.CurrencyRateApiDTO;
 
 @Service
 public class CurrencyConverterServiceImpl implements CurrencyConverterService {
@@ -74,25 +75,29 @@ public class CurrencyConverterServiceImpl implements CurrencyConverterService {
         if (!isSupportedCurrency(baseCurrency) || !isSupportedCurrency(targetCurrency)) {
             response.setRate(0.0);
             response.setConvertedAmount(0.0);
+            response.setRateDate(null);
             return response;
         }
 
         if (baseCurrency.equalsIgnoreCase(targetCurrency)) {
             response.setRate(1.0);
             response.setConvertedAmount(1.0);
+            response.setRateDate(java.time.LocalDate.now().toString());
             return response;
         }
 
-        Double rate = currencyApiService.getExchangeRate(baseCurrency, targetCurrency);
+        CurrencyRateApiDTO apiRate = currencyApiService.getExchangeRateWithDate(baseCurrency, targetCurrency);
 
-        if (rate == null) {
+        if (apiRate == null || apiRate.getRate() == null) {
             response.setRate(0.0);
             response.setConvertedAmount(0.0);
+            response.setRateDate(null);
             return response;
         }
 
-        response.setRate(rate);
-        response.setConvertedAmount(rate); // check rate always based on amount = 1
+        response.setRate(apiRate.getRate());
+        response.setConvertedAmount(apiRate.getRate());
+        response.setRateDate(apiRate.getDate());
 
         return response;
     }

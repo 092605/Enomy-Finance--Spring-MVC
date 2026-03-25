@@ -20,6 +20,7 @@ import com.enomy.dto.TransactionReceiptDTO;
 import com.enomy.model.User;
 import com.enomy.service.CurrencyConverterService;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/client/currency-converter")
@@ -135,6 +136,19 @@ public class CurrencyConverterController {
 
         return "client/currency-converter";
     }
+    
+	
+	 @PostMapping("/check-rate-ajax")
+	 
+	 @ResponseBody public CheckRateResponseDTO
+	 checkRateAjax(@RequestParam("baseCurrency") String baseCurrency,
+	 
+	 @RequestParam("targetCurrency") String targetCurrency) {
+	 
+	 return currencyConverterService.checkRate(baseCurrency, targetCurrency); }
+	 
+    
+  
 
     // =========================
     // CALCULATE CONVERSION -> RESULT CARD

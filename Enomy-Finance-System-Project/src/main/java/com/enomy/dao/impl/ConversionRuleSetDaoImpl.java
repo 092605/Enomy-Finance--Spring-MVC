@@ -16,9 +16,9 @@ public class ConversionRuleSetDaoImpl implements ConversionRuleSetDao {
     @Override
     public ConversionRuleSet findActiveRuleSet() {
         String sql = """
-            SELECT id, rule_name, description, is_active, created_at, updated_at
+            SELECT id, rule_name, description, active, created_at, updated_at
             FROM conversion_rule_set
-            WHERE is_active = 1
+            WHERE active = 1
             LIMIT 1
         """;
 
@@ -28,7 +28,7 @@ public class ConversionRuleSetDaoImpl implements ConversionRuleSetDao {
                 ruleSet.setId(rs.getLong("id"));
                 ruleSet.setRuleName(rs.getString("rule_name"));
                 ruleSet.setDescription(rs.getString("description"));
-                ruleSet.setActive(rs.getBoolean("is_active"));
+                ruleSet.setActive(rs.getBoolean("active"));
                 ruleSet.setCreatedAt(rs.getTimestamp("created_at"));
                 ruleSet.setUpdatedAt(rs.getTimestamp("updated_at"));
                 return ruleSet;
@@ -44,7 +44,7 @@ public class ConversionRuleSetDaoImpl implements ConversionRuleSetDao {
             INSERT INTO conversion_rule_set (
                 rule_name,
                 description,
-                is_active
+                active
             ) VALUES (?, ?, ?)
         """;
 
@@ -58,7 +58,7 @@ public class ConversionRuleSetDaoImpl implements ConversionRuleSetDao {
 
     @Override
     public void deactivateAllRuleSets() {
-        String sql = "UPDATE conversion_rule_set SET is_active = 0";
+        String sql = "UPDATE conversion_rule_set SET active = 0";
         jdbcTemplate.update(sql);
     }
 }

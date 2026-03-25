@@ -36,8 +36,6 @@ document.addEventListener("DOMContentLoaded", function () {
 /* Dropdown Behaviour                                */
 /* ================================================= */
 
-
-
 document.addEventListener("DOMContentLoaded", function () {
 
     const dropdowns = document.querySelectorAll(".custom-dropdown");
@@ -46,12 +44,17 @@ document.addEventListener("DOMContentLoaded", function () {
         const toggle = dropdown.querySelector(".custom-dropdown-toggle");
         const selectedValue = dropdown.querySelector(".selected-value");
         const items = dropdown.querySelectorAll(".custom-dropdown-item");
+        const hiddenInput = dropdown.querySelector("input[type='hidden']");
 
         toggle.addEventListener("click", function (e) {
             e.stopPropagation();
 
             // close others
-            dropdowns.forEach(d => d.classList.remove("active"));
+            dropdowns.forEach(d => {
+                if (d !== dropdown) {
+                    d.classList.remove("active");
+                }
+            });
 
             dropdown.classList.toggle("active");
         });
@@ -62,6 +65,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 this.classList.add("active");
 
                 selectedValue.textContent = this.textContent;
+
+                if (hiddenInput) {
+                    hiddenInput.value = this.getAttribute("data-value") || this.textContent.trim();
+                }
+
                 dropdown.classList.remove("active");
             });
         });

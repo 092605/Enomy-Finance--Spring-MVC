@@ -7,6 +7,7 @@ import java.net.URL;
 
 import org.springframework.stereotype.Service;
 
+import com.enomy.dto.CurrencyRateApiDTO;
 import com.enomy.service.CurrencyApiService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,6 +17,12 @@ public class CurrencyApiServiceImpl implements CurrencyApiService {
 
     @Override
     public Double getExchangeRate(String baseCurrency, String targetCurrency) {
+        CurrencyRateApiDTO result = getExchangeRateWithDate(baseCurrency, targetCurrency);
+        return result != null ? result.getRate() : null;
+    }
+
+    @Override
+    public CurrencyRateApiDTO getExchangeRateWithDate(String baseCurrency, String targetCurrency) {
         try {
             String urlString = "https://api.frankfurter.dev/v1/latest?base="
                     + baseCurrency
@@ -30,6 +37,7 @@ public class CurrencyApiServiceImpl implements CurrencyApiService {
 
             int responseCode = connection.getResponseCode();
             if (responseCode != HttpURLConnection.HTTP_OK) {
+                connection.disconnect();
                 return null;
             }
 
@@ -51,8 +59,12 @@ public class CurrencyApiServiceImpl implements CurrencyApiService {
             JsonNode root = mapper.readTree(response.toString());
 
             JsonNode ratesNode = root.get("rates");
+            JsonNode dateNode = root.get("date");
+
             if (ratesNode != null && ratesNode.has(targetCurrency)) {
-                return ratesNode.get(targetCurrency).asDouble();
+                Double rate = ratesNode.get(targetCurrency).asDouble();
+                String date = dateNode != null ? dateNode.asText() : null;
+                return new CurrencyRateApiDTO(rate, date);
             }
 
         } catch (Exception e) {
