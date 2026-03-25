@@ -21,7 +21,7 @@ SET @@SESSION.SQL_LOG_BIN= 0;
 -- GTID state at the beginning of the backup 
 --
 
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'ea55e609-f201-11f0-9233-58112294d6c7:1-4682';
+/*SET @@GLOBAL.GTID_PURGED=!80000 '+' 'ea55e609-f201-11f0-9233-58112294d6c7:1-4682';*/
 
 --
 -- Table structure for table `currency_conversion`

@@ -16,6 +16,9 @@ public class PlanRules {
     private boolean active;
     private Timestamp createdAt;
 
+    // ✅ NEW FIELD (for admin version grouping)
+    private Long planSetId;
+
     private TaxSettings taxSettings;
 
     public PlanRules() {
@@ -107,6 +110,15 @@ public class PlanRules {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
+    }
+
+    // ✅ NEW GETTER/SETTER
+    public Long getPlanSetId() {
+        return planSetId;
+    }
+
+    public void setPlanSetId(Long planSetId) {
+        this.planSetId = planSetId;
     }
 
     public TaxSettings getTaxSettings() {

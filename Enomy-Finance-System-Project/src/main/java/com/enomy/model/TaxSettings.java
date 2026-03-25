@@ -13,6 +13,7 @@ public class TaxSettings {
     private Double upperTaxThreshold;
     private boolean active;
     private Timestamp createdAt;
+    private Long taxSetId;
 
     public TaxSettings() {
     }
@@ -87,5 +88,13 @@ public class TaxSettings {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
+    }
+    
+    public Long getTaxSetId() {
+        return taxSetId;
+    }
+
+    public void setTaxSetId(Long taxSetId) {
+        this.taxSetId = taxSetId;
     }
 }
