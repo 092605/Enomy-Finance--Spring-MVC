@@ -228,15 +228,15 @@ public class AdminInvestmentServiceImpl implements AdminInvestmentService {
 
     // This enforces the fixed mapping between plan types and tax types.
     private String mapPlanTypeToTaxType(String planType) {
-        if ("BASIC".equalsIgnoreCase(planType)) {
-            return "NONE";
-        }
-        if ("PLUS".equalsIgnoreCase(planType)) {
-            return "FLAT";
-        }
-        if ("MANAGED".equalsIgnoreCase(planType)) {
-            return "PROGRESSIVE";
-        }
+    	if ("BASIC_SAVINGS".equalsIgnoreCase(planType)) {
+    	    return "NONE";
+    	}
+    	if ("SAVINGS_PLUS".equalsIgnoreCase(planType)) {
+    	    return "FLAT";
+    	}
+    	if ("MANAGED_STOCKS".equalsIgnoreCase(planType)) {
+    	    return "PROGRESSIVE";
+    	}
 
         throw new IllegalArgumentException("Unknown plan type: " + planType);
     }

@@ -304,9 +304,9 @@ public class AdminInvestmentController {
     // This converts the three plan steps into 3 PlanRules objects.
     private List<PlanRules> buildPlanRulesFromForm(Map<String, String> formData) {
         List<PlanRules> list = new ArrayList<>();
-        list.add(buildSinglePlan(formData, "basic", "BASIC"));
-        list.add(buildSinglePlan(formData, "plus", "PLUS"));
-        list.add(buildSinglePlan(formData, "managed", "MANAGED"));
+        list.add(buildSinglePlan(formData, "basic", "BASIC_SAVINGS"));
+        list.add(buildSinglePlan(formData, "plus", "SAVINGS_PLUS"));
+        list.add(buildSinglePlan(formData, "managed", "MANAGED_STOCKS"));
         return list;
     }
 

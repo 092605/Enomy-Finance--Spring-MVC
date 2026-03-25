@@ -205,11 +205,14 @@ public class InvestmentServiceImpl implements InvestmentService {
 
         double totalInvested = initial + (monthly * 12 * years);
 
-        double monthlyFee = monthly * planRules.getMonthlyFeeRate();
+        double monthlyFee = monthly * (planRules.getMonthlyFeeRate() / 100.0);
         double totalFee = monthlyFee * (years * 12);
 
-        double minReturn = totalInvested * Math.pow(1 + planRules.getMinReturnRate(), years);
-        double maxReturn = totalInvested * Math.pow(1 + planRules.getMaxReturnRate(), years);
+        double minRate = planRules.getMinReturnRate() / 100.0;
+        double maxRate = planRules.getMaxReturnRate() / 100.0;
+
+        double minReturn = totalInvested * Math.pow(1 + minRate, years);
+        double maxReturn = totalInvested * Math.pow(1 + maxRate, years);
 
         double minProfit = minReturn - totalInvested - totalFee;
         double maxProfit = maxReturn - totalInvested - totalFee;
@@ -252,18 +255,18 @@ public class InvestmentServiceImpl implements InvestmentService {
         }
 
         if ("FLAT".equalsIgnoreCase(taxType)) {
-            return (profit - allowance) * taxSettings.getLowerTaxRate();
+            return (profit - allowance) * (taxSettings.getLowerTaxRate() / 100.0);
         }
 
         if ("PROGRESSIVE".equalsIgnoreCase(taxType)) {
             Double upperThreshold = taxSettings.getUpperTaxThreshold();
 
             if (upperThreshold == null || profit <= upperThreshold) {
-                return (profit - allowance) * taxSettings.getLowerTaxRate();
+            	return (profit - allowance) * (taxSettings.getLowerTaxRate() / 100.0);
             }
 
-            double lowerBracketTax = (upperThreshold - allowance) * taxSettings.getLowerTaxRate();
-            double upperBracketTax = (profit - upperThreshold) * taxSettings.getUpperTaxRate();
+            double lowerBracketTax = (upperThreshold - allowance) * (taxSettings.getLowerTaxRate() / 100.0);
+            double upperBracketTax = (profit - upperThreshold) * (taxSettings.getUpperTaxRate() / 100.0);
 
             return lowerBracketTax + upperBracketTax;
         }
@@ -290,25 +293,29 @@ public class InvestmentServiceImpl implements InvestmentService {
             return "0%";
         }
 
+        double allowance = taxSettings.getTaxFreeAllowance();
         Double lowerThreshold = taxSettings.getLowerTaxThreshold();
         Double upperThreshold = taxSettings.getUpperTaxThreshold();
         double lowerRate = taxSettings.getLowerTaxRate();
         double upperRate = taxSettings.getUpperTaxRate();
 
         if ("FLAT".equalsIgnoreCase(taxSettings.getTaxType())) {
-            if (lowerThreshold != null) {
-                return String.format("%.0f%% on profits above £%,.0f", lowerRate * 100, lowerThreshold);
+            if (allowance > 0) {
+                return String.format("%s above £%,.0f",
+                        formatPercentage(lowerRate), allowance);
             }
-            return String.format("%.0f%%", lowerRate * 100);
+            return formatPercentage(lowerRate);
         }
 
         if ("PROGRESSIVE".equalsIgnoreCase(taxSettings.getTaxType())) {
             if (lowerThreshold != null && upperThreshold != null) {
-                return String.format("%.0f%% above £%,.0f and %.0f%% above £%,.0f",
-                        lowerRate * 100, lowerThreshold, upperRate * 100, upperThreshold);
+                return String.format("<br>%s above £%,.0f<br>%s above £%,.0f",
+                        formatPercentage(lowerRate), lowerThreshold,
+                        formatPercentage(upperRate), upperThreshold);
             }
             if (lowerThreshold != null) {
-                return String.format("%.0f%% on profits above £%,.0f", lowerRate * 100, lowerThreshold);
+                return String.format("%s above £%,.0f",
+                        formatPercentage(lowerRate), lowerThreshold);
             }
         }
 
@@ -316,11 +323,10 @@ public class InvestmentServiceImpl implements InvestmentService {
     }
 
     private String formatPercentage(double value) {
-        double percent = value * 100;
-        if (percent == Math.floor(percent)) {
-            return String.format("%.0f%%", percent);
+        if (value == Math.floor(value)) {
+            return String.format("%.0f%%", value);
         }
-        return String.format("%.1f%%", percent);
+        return String.format("%.2f%%", value);
     }
 
     private double round(double value) {

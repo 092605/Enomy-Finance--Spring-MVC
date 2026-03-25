@@ -1,0 +1,939 @@
+/* =========================
+   1. PAGE & MAIN LAYOUT
+========================= */
+.investment-page {
+    padding-bottom: 2rem;
+    color: var(--text-main);
+}
+
+.investment-page-header {
+    margin-bottom: 1.5rem;
+}
+
+.investment-page-title {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.investment-page-subtitle {
+    margin: 0.35rem 0 0;
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--text-main);
+}
+
+.investment-page-layout {
+    width: 100%;
+}
+
+
+/* =========================
+   2. SHARED CARDS & HEADERS
+========================= */
+.investment-title-card {
+    border-radius: 24px;
+    padding: 1.35rem 1.45rem;
+    margin-bottom: 1.25rem;
+    background: rgba(17, 24, 39, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: var(--shadow-soft);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.investment-title-card h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+.investment-title-card p {
+    margin: 0.45rem 0 0;
+    font-size: 0.94rem;
+    color: var(--text-muted);
+}
+
+.investment-panel-card {
+    border-radius: 24px;
+    background: rgba(17, 24, 39, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: var(--shadow-soft);
+    overflow: hidden;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.investment-card-inner {
+    padding: 1.35rem 1.3rem;
+}
+
+.sticky-investment-card {
+    position: sticky;
+    top: 1.25rem;
+}
+
+.investment-card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.investment-card-title {
+    margin: 0;
+    font-size: 1.08rem;
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+.investment-card-text {
+    margin: 0.35rem 0 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.investment-version-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    min-height: 2rem;
+    padding: 0.42rem 0.8rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #fff;
+    background: var(--gradient-primary);
+    box-shadow: 0 10px 22px rgba(255, 77, 166, 0.22);
+}
+
+
+/* =========================
+   3. SHARED ACTIONS, EMPTY STATES, BUTTON HELPERS
+========================= */
+.investment-action-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    align-items: center;
+    margin-top: 1.2rem;
+}
+
+.investment-action-stack {
+    display: grid;
+    gap: 0.85rem;
+}
+
+.investment-secondary-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.85rem;
+    margin-top: 1rem;
+}
+
+.investment-empty-text {
+    margin: 0;
+    font-size: 0.93rem;
+    color: var(--text-muted);
+}
+
+.investment-empty-state {
+    text-align: center;
+    padding: 2rem 1rem;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.investment-empty-state h4 {
+    margin: 0;
+    font-size: 1.02rem;
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+.investment-empty-state p {
+    margin: 0.55rem 0 0;
+    color: var(--text-muted);
+}
+
+.investment-page .btn-glow,
+.investment-page .btn-glow-outline {
+    min-height: 2.9rem;
+    border-radius: 16px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-weight: 800;
+}
+
+
+/* =========================
+   4. PLAN RULE / ACTIVE PLAN TABS
+========================= */
+.investment-plan-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-bottom: 1rem;
+}
+
+.investment-tab-btn {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-muted);
+    border-radius: 999px;
+    padding: 0.6rem 0.95rem;
+    font-size: 0.86rem;
+    font-weight: 700;
+    transition: all 0.2s ease;
+}
+
+.investment-tab-btn:hover {
+    transform: translateY(-1px);
+    color: var(--text-main);
+    border-color: rgba(255, 77, 166, 0.24);
+    box-shadow: 0 0 12px rgba(255, 45, 170, 0.08);
+}
+
+.investment-tab-btn.active {
+    background: var(--gradient-primary);
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 12px 24px rgba(255, 77, 166, 0.22);
+}
+
+.investment-tab-panel {
+    display: none;
+}
+
+.investment-tab-panel.active {
+    display: block;
+}
+
+.investment-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.9rem;
+}
+
+.investment-info-grid.compact {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+}
+
+.investment-info-grid > div {
+    border-radius: 18px;
+    padding: 0.9rem 1rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.investment-info-grid span {
+    display: block;
+    margin-bottom: 0.34rem;
+    font-size: 0.76rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+}
+
+.investment-info-grid strong {
+    display: block;
+    font-size: 0.98rem;
+    font-weight: 800;
+    line-height: 1.35;
+    color: var(--text-main);
+}
+
+
+/* =========================
+   5. PLAN RULE WIZARD
+========================= */
+.investment-wizard-progress {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-bottom: 1.2rem;
+}
+
+.investment-step-chip {
+    border-radius: 999px;
+    padding: 0.52rem 0.82rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--text-muted);
+}
+
+.investment-step-chip.active {
+    color: #fff;
+    background: linear-gradient(90deg, rgba(255, 77, 166, 0.22), rgba(139, 92, 246, 0.22));
+    border-color: rgba(255, 77, 166, 0.2);
+}
+
+.investment-wizard-step {
+    display: none;
+}
+
+.investment-wizard-step.active {
+    display: block;
+}
+
+.investment-form-head {
+    margin-bottom: 1rem;
+}
+
+
+/* =========================
+   6. SHARED FORM ELEMENTS
+========================= */
+.investment-label {
+    display: block;
+    margin-bottom: 0.42rem;
+    font-size: 0.83rem;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+.investment-input,
+.investment-select {
+    width: 100%;
+    min-height: 3rem;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(11, 15, 26, 0.85);
+    color: var(--text-main);
+    padding: 0.78rem 0.95rem;
+    font-size: 0.94rem;
+    transition: all 0.18s ease;
+    outline: none;
+}
+
+.investment-input::placeholder {
+    color: var(--text-muted);
+}
+
+.investment-input:focus,
+.investment-select:focus {
+    border-color: rgba(255, 77, 166, 0.35);
+    box-shadow: 0 0 0 3px rgba(255, 45, 170, 0.1);
+}
+
+
+/* =========================
+   7. PLAN RULE WIZARD - TAX SELECTION
+========================= */
+.investment-tax-selection-card {
+    border-radius: 20px;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.investment-tax-selection-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.investment-mini-label {
+    display: block;
+    margin-bottom: 0.2rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+}
+
+.investment-selection-version {
+    display: block;
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+.investment-radio-group {
+    display: grid;
+    gap: 0.85rem;
+}
+
+.investment-radio-card {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    border-radius: 18px;
+    padding: 0.95rem 1rem;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+    transition: all 0.18s ease;
+}
+
+.investment-radio-card:hover {
+    transform: translateY(-1px);
+    border-color: rgba(255, 77, 166, 0.22);
+    box-shadow: 0 0 12px rgba(255, 45, 170, 0.08);
+}
+
+.investment-radio-card.active {
+    background: linear-gradient(90deg, rgba(255, 77, 166, 0.14), rgba(139, 92, 246, 0.14));
+    border-color: rgba(255, 77, 166, 0.2);
+}
+
+.investment-radio-card input[type="radio"] {
+    margin: 0;
+    accent-color: #ff4da6;
+}
+
+.investment-radio-card span {
+    font-size: 0.93rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.investment-saved-banner {
+    margin-top: 1rem;
+    border-radius: 16px;
+    padding: 0.9rem 1rem;
+    background: rgba(34, 197, 94, 0.12);
+    color: #86efac;
+    border: 1px solid rgba(34, 197, 94, 0.16);
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+
+/* =========================
+   8. TAX SETTINGS SECTION - ACTIVE TAX CARD
+   (NEW GROUPED UI)
+========================= */
+.investment-tax-switcher {
+    margin-bottom: 1rem;
+}
+
+.investment-tax-switch-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.investment-tax-type-select {
+    max-width: 170px;
+    min-width: 140px;
+    min-height: 2.9rem;
+    border-radius: 999px;
+    font-weight: 700;
+    padding-right: 2.2rem;
+}
+
+.investment-tax-rate-preview {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    min-width: 64px;
+}
+
+.investment-tax-rate-preview span {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+.investment-tax-view-panel {
+    display: none;
+}
+
+.investment-tax-view-panel.active {
+    display: block;
+}
+
+.investment-tax-main-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-radius: 18px;
+    padding: 1rem 1.05rem;
+    margin-bottom: 1rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.investment-tax-main-box span {
+    font-size: 0.83rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.investment-tax-main-box strong {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+.investment-tax-subsection {
+    margin-bottom: 1rem;
+}
+
+.investment-tax-subsection:last-child {
+    margin-bottom: 0;
+}
+
+.investment-tax-subsection h4,
+.investment-tax-subsection h5 {
+    margin: 0 0 0.55rem;
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+.investment-tax-input-display {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-radius: 16px;
+    padding: 0.85rem 0.95rem;
+    margin-bottom: 0.7rem;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.investment-tax-input-display:last-child {
+    margin-bottom: 0;
+}
+
+.investment-tax-input-display span {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+.investment-tax-input-display strong {
+    font-size: 0.94rem;
+    font-weight: 800;
+    color: var(--text-main);
+    text-align: right;
+}
+
+
+/* =========================
+   9. TAX SETTINGS SECTION - CREATE GROUPED FORM
+   (NEW GROUPED UI)
+========================= */
+.investment-tax-create-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.investment-tax-create-column {
+    border-radius: 20px;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.investment-tax-create-column h4 {
+    margin: 0 0 0.9rem;
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+.investment-tax-create-column .investment-input {
+    margin-bottom: 0.8rem;
+}
+
+.investment-tax-create-column .investment-tax-subsection {
+    margin-top: 0.9rem;
+}
+
+.investment-tax-create-column .investment-input[readonly] {
+    opacity: 0.8;
+    cursor: not-allowed;
+}
+
+.investment-tax-create-grid + .investment-action-row {
+    justify-content: flex-end;
+}
+
+
+/* =========================
+   10. HISTORY SECTION
+========================= */
+.investment-history-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-bottom: 1rem;
+}
+
+.investment-history-tab {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    border-radius: 999px;
+    padding: 0.65rem 1rem;
+    font-size: 0.86rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.18s ease;
+}
+
+.investment-history-tab:hover {
+    color: var(--text-main);
+    transform: translateY(-1px);
+}
+
+.investment-history-tab.active {
+    background: var(--gradient-primary);
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 12px 24px rgba(255, 77, 166, 0.22);
+}
+
+.investment-history-table {
+    margin: 0;
+    color: var(--text-main);
+    vertical-align: middle;
+}
+
+.investment-history-table thead th {
+    border-bottom: none;
+    font-size: 0.79rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.03);
+    padding: 0.9rem 0.95rem;
+}
+
+.investment-history-table tbody td {
+    padding: 0.95rem;
+    border-color: rgba(255, 255, 255, 0.06);
+    font-size: 0.91rem;
+    color: var(--text-main);
+    background: transparent;
+}
+
+.investment-history-table tbody tr:hover td {
+    background: rgba(255, 255, 255, 0.025);
+}
+
+.investment-status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 88px;
+    border-radius: 999px;
+    padding: 0.4rem 0.7rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.investment-status-badge.active {
+    background: rgba(34, 197, 94, 0.12);
+    color: #86efac;
+    border: 1px solid rgba(34, 197, 94, 0.18);
+}
+
+.investment-status-badge.inactive {
+    background: rgba(148, 163, 184, 0.12);
+    color: #cbd5e1;
+    border: 1px solid rgba(148, 163, 184, 0.16);
+}
+
+.investment-history-table .btn-sm {
+    border-radius: 12px;
+    font-weight: 700;
+    padding: 0.45rem 0.75rem;
+}
+
+
+/* =========================
+   11. RIGHT MODULE SIDEBAR
+========================= */
+.investment-module-sidebar-wrap {
+    position: sticky;
+    top: 1.25rem;
+}
+
+.investment-module-sidebar {
+    border-radius: 24px;
+    padding: 1rem;
+    background: rgba(17, 24, 39, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: var(--shadow-soft);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.investment-module-logo-link {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    text-decoration: none;
+    color: var(--text-main);
+    border-radius: 18px;
+    padding: 0.9rem;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.18s ease;
+    margin-bottom: 1rem;
+}
+
+.investment-module-logo-link:hover {
+    color: var(--text-main);
+    transform: translateY(-1px);
+}
+
+.investment-module-logo-link.active {
+    background: linear-gradient(90deg, rgba(255, 77, 166, 0.14), rgba(139, 92, 246, 0.14));
+    border-color: rgba(255, 77, 166, 0.2);
+}
+
+.module-logo-icon {
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: #fff;
+    background: var(--gradient-primary);
+    box-shadow: 0 12px 24px rgba(255, 77, 166, 0.24);
+}
+
+.investment-module-logo-link strong {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+.investment-module-logo-link small {
+    display: block;
+    margin-top: 0.14rem;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+}
+
+.investment-module-nav {
+    display: grid;
+    gap: 0.7rem;
+}
+
+.investment-module-nav-link {
+    display: block;
+    text-decoration: none;
+    color: var(--text-muted);
+    border-radius: 16px;
+    padding: 0.82rem 0.95rem;
+    font-size: 0.91rem;
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.18s ease;
+}
+
+.investment-module-nav-link:hover {
+    color: var(--text-main);
+    transform: translateY(-1px);
+}
+
+.investment-module-nav-link.active {
+    background: var(--gradient-primary);
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 12px 24px rgba(255, 77, 166, 0.22);
+}
+
+
+/* =========================
+   12. MODALS
+========================= */
+.investment-modal-card {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 22px 60px rgba(0, 0, 0, 0.45);
+    background: rgba(17, 24, 39, 0.92);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.investment-modal-card .modal-body {
+    padding: 1.35rem 1.3rem;
+}
+
+.investment-modal-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.investment-modal-head h3 {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+.modal-tax-display {
+    margin-top: 0.4rem;
+}
+
+.investment-modal-head .btn-close {
+    filter: invert(1) grayscale(100%);
+    opacity: 0.7;
+}
+
+.investment-modal-head .btn-close:hover {
+    opacity: 1;
+}
+
+
+/* =========================
+   13. CONFIRMATION MODAL
+========================= */
+.investment-confirm-box {
+    text-align: center;
+    padding: 0.4rem 0.2rem;
+}
+
+.investment-confirm-box h3 {
+    margin: 0;
+    font-size: 1.16rem;
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+.investment-confirm-box p {
+    margin: 0.7rem 0 0;
+    color: var(--text-muted);
+}
+
+
+/* =========================
+   14. ALERTS
+========================= */
+.investment-alert-success,
+.investment-alert-error,
+.investment-inline-temp-error {
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: var(--shadow-soft);
+}
+
+.investment-alert-success {
+    background: rgba(34, 197, 94, 0.14);
+    color: #bbf7d0;
+}
+
+.investment-alert-error,
+.investment-inline-temp-error {
+    background: rgba(239, 68, 68, 0.14);
+    color: #fecaca;
+}
+
+
+/* =========================
+   15. RESPONSIVE
+========================= */
+@media (max-width: 991.98px) {
+    .sticky-investment-card,
+    .investment-module-sidebar-wrap {
+        position: static;
+        top: auto;
+    }
+
+    .investment-page-subtitle {
+        font-size: 1.7rem;
+    }
+
+    .investment-card-head,
+    .investment-tax-selection-top,
+    .investment-tax-switch-top {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .investment-info-grid,
+    .investment-tax-create-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .investment-tax-rate-preview {
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .investment-card-inner {
+        padding: 1rem;
+    }
+
+    .investment-title-card {
+        padding: 1.05rem 1rem;
+    }
+
+    .investment-page-subtitle {
+        font-size: 1.45rem;
+    }
+
+    .investment-plan-tabs,
+    .investment-history-tabs,
+    .investment-wizard-progress,
+    .investment-action-row,
+    .investment-secondary-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .investment-tax-main-box,
+    .investment-tax-input-display {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .investment-tax-input-display strong,
+    .investment-tax-main-box strong {
+        text-align: left;
+    }
+
+    .investment-tax-type-select {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .investment-module-logo-link {
+        padding: 0.8rem;
+    }
+}

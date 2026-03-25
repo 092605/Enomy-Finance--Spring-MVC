@@ -25,13 +25,13 @@ document.addEventListener("DOMContentLoaded", function () {
         minMonthlyEl.textContent = plan.minimumMonthlyInvestment;
         minLumpSumEl.textContent = plan.minimumInitialInvestmentLumpSum;
         returnsEl.textContent = plan.predictedReturnsPerYear;
-        taxEl.textContent = plan.estimatedTax;
+        taxEl.innerHTML = plan.estimatedTax;
         feesEl.textContent = plan.groupFeesPerMonth;
     }
 
     toggle.addEventListener("click", function () {
         menu.classList.toggle("show");
-    });
+    });	
 
     items.forEach(item => {
         item.addEventListener("click", function () {

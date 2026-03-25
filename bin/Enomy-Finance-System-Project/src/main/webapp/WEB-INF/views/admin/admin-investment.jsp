@@ -62,13 +62,13 @@
             <c:set var="activeManaged" value="${null}" />
 
             <c:forEach var="plan" items="${activePlanSet}">
-                <c:if test="${plan.planType eq 'BASIC_SAVINGS'}">
+                <c:if test="${plan.planType eq 'BASIC'}">
                     <c:set var="activeBasic" value="${plan}" />
                 </c:if>
-                <c:if test="${plan.planType eq 'SAVINGS_PLUS'}">
+                <c:if test="${plan.planType eq 'PLUS'}">
                     <c:set var="activePlus" value="${plan}" />
                 </c:if>
-                <c:if test="${plan.planType eq 'MANAGED_STOCKS'}">
+                <c:if test="${plan.planType eq 'MANAGED'}">
                     <c:set var="activeManaged" value="${plan}" />
                 </c:if>
             </c:forEach>

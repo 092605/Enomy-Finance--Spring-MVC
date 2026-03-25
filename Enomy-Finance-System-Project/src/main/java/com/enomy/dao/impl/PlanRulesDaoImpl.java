@@ -130,11 +130,11 @@ public class PlanRulesDaoImpl implements PlanRulesDao {
             WHERE pr.active = 1
             ORDER BY 
                 CASE pr.plan_type
-                    WHEN 'BASIC' THEN 1
-                    WHEN 'PLUS' THEN 2
-                    WHEN 'MANAGED' THEN 3
-                    ELSE 4
-                END
+				    WHEN 'BASIC_SAVINGS' THEN 1
+				    WHEN 'SAVINGS_PLUS' THEN 2
+				    WHEN 'MANAGED_STOCKS' THEN 3
+				    ELSE 4
+				END
         """;
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> mapPlanRules(rs));
@@ -171,11 +171,11 @@ public class PlanRulesDaoImpl implements PlanRulesDao {
             JOIN tax_settings ts ON pr.tax_settings_id = ts.id
             ORDER BY pr.plan_set_id DESC,
                 CASE pr.plan_type
-                    WHEN 'BASIC' THEN 1
-                    WHEN 'PLUS' THEN 2
-                    WHEN 'MANAGED' THEN 3
-                    ELSE 4
-                END
+				    WHEN 'BASIC_SAVINGS' THEN 1
+				    WHEN 'SAVINGS_PLUS' THEN 2
+				    WHEN 'MANAGED_STOCKS' THEN 3
+				    ELSE 4
+				END
         """;
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> mapPlanRules(rs));
@@ -298,11 +298,11 @@ public class PlanRulesDaoImpl implements PlanRulesDao {
             WHERE pr.plan_set_id = ?
             ORDER BY 
                 CASE pr.plan_type
-                    WHEN 'BASIC' THEN 1
-                    WHEN 'PLUS' THEN 2
-                    WHEN 'MANAGED' THEN 3
-                    ELSE 4
-                END
+				    WHEN 'BASIC_SAVINGS' THEN 1
+				    WHEN 'SAVINGS_PLUS' THEN 2
+				    WHEN 'MANAGED_STOCKS' THEN 3
+				    ELSE 4
+				END
         """;
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> mapPlanRules(rs), planSetId);
