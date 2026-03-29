@@ -1,5 +1,7 @@
 package com.enomy.dao.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -60,5 +62,63 @@ public class ConversionRuleSetDaoImpl implements ConversionRuleSetDao {
     public void deactivateAllRuleSets() {
         String sql = "UPDATE conversion_rule_set SET active = 0";
         jdbcTemplate.update(sql);
+    }
+
+    @Override
+    public Long findMaxRuleSetId() {
+        String sql = "SELECT MAX(id) FROM conversion_rule_set";
+        Long maxId = jdbcTemplate.queryForObject(sql, Long.class);
+        return maxId;
+    }
+
+    @Override
+    public ConversionRuleSet findById(Long id) {
+        String sql = """
+            SELECT id, rule_name, description, active, created_at, updated_at
+            FROM conversion_rule_set
+            WHERE id = ?
+            LIMIT 1
+        """;
+
+        try {
+            return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
+                ConversionRuleSet ruleSet = new ConversionRuleSet();
+                ruleSet.setId(rs.getLong("id"));
+                ruleSet.setRuleName(rs.getString("rule_name"));
+                ruleSet.setDescription(rs.getString("description"));
+                ruleSet.setActive(rs.getBoolean("active"));
+                ruleSet.setCreatedAt(rs.getTimestamp("created_at"));
+                ruleSet.setUpdatedAt(rs.getTimestamp("updated_at"));
+                return ruleSet;
+            }, id);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Override
+    public void activateRuleSet(Long id) {
+        String sql = "UPDATE conversion_rule_set SET active = 1 WHERE id = ?";
+        jdbcTemplate.update(sql, id);
+    }
+
+    @Override
+    public List<ConversionRuleSet> findAllOrderByCreatedAtDesc() {
+        String sql = """
+            SELECT id, rule_name, description, active, created_at, updated_at
+            FROM conversion_rule_set
+            ORDER BY created_at DESC, id DESC
+        """;
+
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            ConversionRuleSet ruleSet = new ConversionRuleSet();
+            ruleSet.setId(rs.getLong("id"));
+            ruleSet.setRuleName(rs.getString("rule_name"));
+            ruleSet.setDescription(rs.getString("description"));
+            ruleSet.setActive(rs.getBoolean("active"));
+            ruleSet.setCreatedAt(rs.getTimestamp("created_at"));
+            ruleSet.setUpdatedAt(rs.getTimestamp("updated_at"));
+            return ruleSet;
+        });
     }
 }

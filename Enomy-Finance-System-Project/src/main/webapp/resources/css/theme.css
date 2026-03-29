@@ -172,8 +172,13 @@ transparent 45%
                 0 0 40px rgba(124,58,237,0.25);
 }
 
-.btn-glow-outline{
-    background: rgba(255,255,255,0.04);
+.btn-glow-outline {
+    background: linear-gradient(
+        135deg,
+        rgba(255,255,255,0.25),
+        rgba(17,24,39,0.35)
+    );
+
     color: var(--text-main);
     border: 1px solid rgba(255,255,255,0.12);
     border-radius: 14px;
@@ -183,10 +188,25 @@ transparent 45%
     backdrop-filter: blur(10px);
 }
 
-.btn-glow-outline:hover{
+.btn-glow-outline:hover {
     color: #ffffff;
-    border-color: rgba(255,45,170,0.45);
-    box-shadow: 0 0 18px rgba(255,45,170,0.18);
+
+    /* slightly brighter glass effect */
+    background: linear-gradient(
+        135deg,
+        rgba(255,255,255,0.35),
+        rgba(17,24,39,0.45)
+    );
+
+    /* subtle white border emphasis */
+    border-color: rgba(255,255,255,0.25);
+
+    /* soft neutral glow instead of pink */
+    box-shadow:
+        0 0 12px rgba(255,255,255,0.10),
+        0 8px 22px rgba(0,0,0,0.35);
+        
+    transform: translateY(-2px);
 }
 
 
@@ -332,6 +352,8 @@ transparent 45%
 .custom-dropdown-menu::-webkit-scrollbar-thumb:hover {
     background: rgba(255,255,255,0.35);
 }
+
+
 
 /* ================================================= */
 /* GLOBAL BODY STYLE                                 */

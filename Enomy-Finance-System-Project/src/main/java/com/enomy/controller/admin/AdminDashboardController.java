@@ -23,17 +23,19 @@ public class AdminDashboardController {
 	}
 	
 	
-	@GetMapping("/admin/currency")
-	public String adminCurrency(Authentication authentication, Model model) {
-
-		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-
-        model.addAttribute("fullName", userDetails.getFullName());
-        model.addAttribute("loggedInEmail", userDetails.getUsername());
-        model.addAttribute("activePage", "dashboard");
-
-	    return "admin/currency-converter";
-	}
+	/*
+	 * @GetMapping("/admin/currency") public String adminCurrency(Authentication
+	 * authentication, Model model) {
+	 * 
+	 * CustomUserDetails userDetails = (CustomUserDetails)
+	 * authentication.getPrincipal();
+	 * 
+	 * model.addAttribute("fullName", userDetails.getFullName());
+	 * model.addAttribute("loggedInEmail", userDetails.getUsername());
+	 * model.addAttribute("activePage", "dashboard");
+	 * 
+	 * return "admin/currency-converter"; }
+	 */
 	
 	@GetMapping("/admin/history")
 	public String adminHistory(Authentication authentication, Model model) {

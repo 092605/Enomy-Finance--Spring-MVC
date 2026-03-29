@@ -111,7 +111,6 @@ public class CurrencyConverterServiceImpl implements CurrencyConverterService {
         response.setTargetCurrency(request.getTargetCurrency());
         response.setInputAmount(request.getAmount());
 
-        // 1. Basic validation
         if (request.getTransactionType() == null || request.getTransactionType().isBlank()) {
             return invalidResponse(response, "Transaction type is required.");
         }
@@ -140,13 +139,11 @@ public class CurrencyConverterServiceImpl implements CurrencyConverterService {
             return invalidResponse(response, "Amount must be greater than zero.");
         }
 
-        // 2. Get active rule set
         ConversionRuleSet activeRuleSet = conversionRuleSetDao.findActiveRuleSet();
         if (activeRuleSet == null) {
             return invalidResponse(response, "No active conversion rule set found.");
         }
 
-        // 3. Find matching fee bracket
         ConversionFeeRule matchingFeeRule =
                 conversionFeeRuleDao.findMatchingFeeRule(activeRuleSet.getId(), request.getAmount());
 
@@ -154,7 +151,6 @@ public class CurrencyConverterServiceImpl implements CurrencyConverterService {
             return invalidResponse(response, "Amount is outside the allowed conversion range.");
         }
 
-        // 4. Get live exchange rate from API
         Double rate = currencyApiService.getExchangeRate(
                 request.getBaseCurrency(),
                 request.getTargetCurrency()
@@ -164,25 +160,32 @@ public class CurrencyConverterServiceImpl implements CurrencyConverterService {
             return invalidResponse(response, "Unable to fetch exchange rate at the moment.");
         }
 
-        // 5. Perform calculation
-        Double convertedAmount = request.getAmount() * rate;
-        Double feeValue = convertedAmount * (matchingFeeRule.getFeeRate() / 100.0);
-        Double finalAmount = convertedAmount - feeValue;
-
-        // 6. Fill response
-        response.setExchangeRateUsed(rate);
-        response.setConvertedAmount(convertedAmount);
-        response.setFeeRateApplied(matchingFeeRule.getFeeRate());
-        response.setFeeValue(feeValue);
-        response.setFinalAmount(finalAmount);
-        response.setRetrievedAt(new Date());
+        Double inputAmount = request.getAmount();
+        Double convertedAmount = inputAmount * rate;
+        Double feeRate = matchingFeeRule.getFeeRate();
+        Double feeValue;
+        Double finalAmount;
+        String finalLabel;
 
         if ("BUY".equalsIgnoreCase(request.getTransactionType())) {
-            response.setFinalLabel("Final Payable");
+            feeValue = inputAmount * (feeRate / 100.0);
+            finalAmount = inputAmount + feeValue;
+            finalLabel = "Total Payable";
+        } else if ("SELL".equalsIgnoreCase(request.getTransactionType())) {
+            feeValue = convertedAmount * (feeRate / 100.0);
+            finalAmount = convertedAmount - feeValue;
+            finalLabel = "Total Received";
         } else {
-            response.setFinalLabel("Final Received");
+            return invalidResponse(response, "Invalid transaction type.");
         }
 
+        response.setExchangeRateUsed(rate);
+        response.setConvertedAmount(convertedAmount);
+        response.setFeeRateApplied(feeRate);
+        response.setFeeValue(feeValue);
+        response.setFinalAmount(finalAmount);
+        response.setFinalLabel(finalLabel);
+        response.setRetrievedAt(new Date());
         response.setValid(true);
         response.setMessage("Calculation successful.");
 
@@ -199,7 +202,7 @@ public class CurrencyConverterServiceImpl implements CurrencyConverterService {
 
         ConversionRuleSet activeRuleSet = conversionRuleSetDao.findActiveRuleSet();
         if (activeRuleSet == null) {
-            return null;
+            return null;	
         }
 
         CurrencyTransaction transaction = new CurrencyTransaction();

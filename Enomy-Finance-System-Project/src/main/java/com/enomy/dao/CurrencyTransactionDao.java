@@ -13,4 +13,10 @@ public interface CurrencyTransactionDao {
     CurrencyTransaction findByTransactionNumberAndUserId(String transactionNumber, Long userId);
 
     int countByUserId(Long userId);
+
+    List<CurrencyTransaction> findFilteredTransactions(String baseCurrency,
+                                                      String targetCurrency,
+                                                      String dateFrom,
+                                                      String dateTo,
+                                                      String search);
 }

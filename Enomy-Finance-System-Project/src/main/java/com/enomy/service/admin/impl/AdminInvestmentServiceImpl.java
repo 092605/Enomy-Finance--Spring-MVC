@@ -12,6 +12,9 @@ import com.enomy.model.PlanRules;
 import com.enomy.model.TaxSettings;
 import com.enomy.service.admin.AdminInvestmentService;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+
 @Service
 public class AdminInvestmentServiceImpl implements AdminInvestmentService {
 
@@ -53,10 +56,17 @@ public class AdminInvestmentServiceImpl implements AdminInvestmentService {
         return planRulesDao.findAllPlanRulesOrdered();
     }
 
-    // This gets all tax rows for history.
+ // This gets all tax rows for history.
     @Override
     public List<TaxSettings> getAllTaxSettingsHistory() {
-        return taxSettingsDao.findAllTaxSettingsOrdered();
+        List<TaxSettings> history = new ArrayList<>(taxSettingsDao.findAllTaxSettingsOrdered());
+
+        history.sort(
+            Comparator.comparing(TaxSettings::isActive).reversed()
+                      .thenComparing(TaxSettings::getCreatedAt, Comparator.reverseOrder())
+        );
+
+        return history;
     }
 
     // This gets all rows under one plan set version.

@@ -2,6 +2,8 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -334,10 +336,8 @@
                                     </div>
                                 </div>
 
-                               
 <!-- RESULT / RECEIPT -->
-
-  <div class="col-lg-7">
+<div class="col-lg-7">
     <div id="resultReceiptArea">
         <div class="currency-panel-card currency-result-card cc-narrow">
             <div class="currency-card-inner">
@@ -448,6 +448,15 @@
                         <div class="cc-amount-bar">
                             <span class="cc-bar-label">Amount to Convert</span>
                             <strong class="cc-bar-value">
+                                <c:choose>
+                                    <c:when test="${conversionResult.baseCurrency eq 'USD'}">$</c:when>
+                                    <c:when test="${conversionResult.baseCurrency eq 'GBP'}">£</c:when>
+                                    <c:when test="${conversionResult.baseCurrency eq 'EUR'}">€</c:when>
+                                    <c:when test="${conversionResult.baseCurrency eq 'JPY'}">¥</c:when>
+                                    <c:when test="${conversionResult.baseCurrency eq 'BRL'}">R$</c:when>
+                                    <c:when test="${conversionResult.baseCurrency eq 'TRY'}">₺</c:when>
+                                    <c:otherwise>${conversionResult.baseCurrency} </c:otherwise>
+                                </c:choose>
                                 <fmt:formatNumber value="${conversionResult.inputAmount}" minFractionDigits="2" maxFractionDigits="2"/>
                             </strong>
                         </div>
@@ -464,17 +473,17 @@
                                     <div>Time Retrieved:</div>
                                 </div>
 
-                               <div class="cc-detail-values">
-								    <div>
-								        <fmt:formatNumber value="${conversionResult.exchangeRateUsed}" minFractionDigits="2" maxFractionDigits="6"/>
-								    </div>
-								    <div>
-								        <fmt:formatDate value="${conversionResult.retrievedAt}" pattern="MMM dd, yyyy"/>
-								    </div>
-								    <div>
-								        <fmt:formatDate value="${conversionResult.retrievedAt}" pattern="hh:mm a"/>
-								    </div>
-								</div>
+                                <div class="cc-detail-values">
+                                    <div>
+                                        <fmt:formatNumber value="${conversionResult.exchangeRateUsed}" minFractionDigits="2" maxFractionDigits="6"/>
+                                    </div>
+                                    <div>
+                                        <fmt:formatDate value="${conversionResult.retrievedAt}" pattern="MMM dd, yyyy"/>
+                                    </div>
+                                    <div>
+                                        <fmt:formatDate value="${conversionResult.retrievedAt}" pattern="hh:mm a"/>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -492,12 +501,45 @@
 
                                 <div class="cc-detail-values">
                                     <div>
+                                        <c:choose>
+                                            <c:when test="${conversionResult.targetCurrency eq 'USD'}">$</c:when>
+                                            <c:when test="${conversionResult.targetCurrency eq 'GBP'}">£</c:when>
+                                            <c:when test="${conversionResult.targetCurrency eq 'EUR'}">€</c:when>
+                                            <c:when test="${conversionResult.targetCurrency eq 'JPY'}">¥</c:when>
+                                            <c:when test="${conversionResult.targetCurrency eq 'BRL'}">R$</c:when>
+                                            <c:when test="${conversionResult.targetCurrency eq 'TRY'}">₺</c:when>
+                                            <c:otherwise>${conversionResult.targetCurrency} </c:otherwise>
+                                        </c:choose>
                                         <fmt:formatNumber value="${conversionResult.convertedAmount}" minFractionDigits="2" maxFractionDigits="2"/>
                                     </div>
                                     <div>
                                         <fmt:formatNumber value="${conversionResult.feeRateApplied}" minFractionDigits="1" maxFractionDigits="2"/>%
                                     </div>
                                     <div>
+                                        <c:choose>
+                                            <c:when test="${conversionResult.transactionType eq 'BUY'}">
+                                                <c:choose>
+                                                    <c:when test="${conversionResult.baseCurrency eq 'USD'}">$</c:when>
+                                                    <c:when test="${conversionResult.baseCurrency eq 'GBP'}">£</c:when>
+                                                    <c:when test="${conversionResult.baseCurrency eq 'EUR'}">€</c:when>
+                                                    <c:when test="${conversionResult.baseCurrency eq 'JPY'}">¥</c:when>
+                                                    <c:when test="${conversionResult.baseCurrency eq 'BRL'}">R$</c:when>
+                                                    <c:when test="${conversionResult.baseCurrency eq 'TRY'}">₺</c:when>
+                                                    <c:otherwise>${conversionResult.baseCurrency} </c:otherwise>
+                                                </c:choose>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <c:choose>
+                                                    <c:when test="${conversionResult.targetCurrency eq 'USD'}">$</c:when>
+                                                    <c:when test="${conversionResult.targetCurrency eq 'GBP'}">£</c:when>
+                                                    <c:when test="${conversionResult.targetCurrency eq 'EUR'}">€</c:when>
+                                                    <c:when test="${conversionResult.targetCurrency eq 'JPY'}">¥</c:when>
+                                                    <c:when test="${conversionResult.targetCurrency eq 'BRL'}">R$</c:when>
+                                                    <c:when test="${conversionResult.targetCurrency eq 'TRY'}">₺</c:when>
+                                                    <c:otherwise>${conversionResult.targetCurrency} </c:otherwise>
+                                                </c:choose>
+                                            </c:otherwise>
+                                        </c:choose>
                                         <fmt:formatNumber value="${conversionResult.feeValue}" minFractionDigits="2" maxFractionDigits="2"/>
                                     </div>
                                 </div>
@@ -509,6 +551,30 @@
                                 <c:out value="${conversionResult.finalLabel}" default="Final Payable"/>
                             </span>
                             <strong class="cc-bar-value">
+                                <c:choose>
+                                    <c:when test="${conversionResult.transactionType eq 'BUY'}">
+                                        <c:choose>
+                                            <c:when test="${conversionResult.baseCurrency eq 'USD'}">$</c:when>
+                                            <c:when test="${conversionResult.baseCurrency eq 'GBP'}">£</c:when>
+                                            <c:when test="${conversionResult.baseCurrency eq 'EUR'}">€</c:when>
+                                            <c:when test="${conversionResult.baseCurrency eq 'JPY'}">¥</c:when>
+                                            <c:when test="${conversionResult.baseCurrency eq 'BRL'}">R$</c:when>
+                                            <c:when test="${conversionResult.baseCurrency eq 'TRY'}">₺</c:when>
+                                            <c:otherwise>${conversionResult.baseCurrency} </c:otherwise>
+                                        </c:choose>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:choose>
+                                            <c:when test="${conversionResult.targetCurrency eq 'USD'}">$</c:when>
+                                            <c:when test="${conversionResult.targetCurrency eq 'GBP'}">£</c:when>
+                                            <c:when test="${conversionResult.targetCurrency eq 'EUR'}">€</c:when>
+                                            <c:when test="${conversionResult.targetCurrency eq 'JPY'}">¥</c:when>
+                                            <c:when test="${conversionResult.targetCurrency eq 'BRL'}">R$</c:when>
+                                            <c:when test="${conversionResult.targetCurrency eq 'TRY'}">₺</c:when>
+                                            <c:otherwise>${conversionResult.targetCurrency} </c:otherwise>
+                                        </c:choose>
+                                    </c:otherwise>
+                                </c:choose>
                                 <fmt:formatNumber value="${conversionResult.finalAmount}" minFractionDigits="2" maxFractionDigits="2"/>
                             </strong>
                         </div>
@@ -582,6 +648,15 @@
                         <div class="cc-amount-bar">
                             <span class="cc-bar-label">Amount to Convert</span>
                             <strong class="cc-bar-value">
+                                <c:choose>
+                                    <c:when test="${receipt.baseCurrency eq 'USD'}">$</c:when>
+                                    <c:when test="${receipt.baseCurrency eq 'GBP'}">£</c:when>
+                                    <c:when test="${receipt.baseCurrency eq 'EUR'}">€</c:when>
+                                    <c:when test="${receipt.baseCurrency eq 'JPY'}">¥</c:when>
+                                    <c:when test="${receipt.baseCurrency eq 'BRL'}">R$</c:when>
+                                    <c:when test="${receipt.baseCurrency eq 'TRY'}">₺</c:when>
+                                    <c:otherwise>${receipt.baseCurrency} </c:otherwise>
+                                </c:choose>
                                 <fmt:formatNumber value="${receipt.inputAmount}" minFractionDigits="2" maxFractionDigits="2"/>
                             </strong>
                         </div>
@@ -626,12 +701,45 @@
 
                                 <div class="cc-detail-values">
                                     <div>
+                                        <c:choose>
+                                            <c:when test="${receipt.targetCurrency eq 'USD'}">$</c:when>
+                                            <c:when test="${receipt.targetCurrency eq 'GBP'}">£</c:when>
+                                            <c:when test="${receipt.targetCurrency eq 'EUR'}">€</c:when>
+                                            <c:when test="${receipt.targetCurrency eq 'JPY'}">¥</c:when>
+                                            <c:when test="${receipt.targetCurrency eq 'BRL'}">R$</c:when>
+                                            <c:when test="${receipt.targetCurrency eq 'TRY'}">₺</c:when>
+                                            <c:otherwise>${receipt.targetCurrency} </c:otherwise>
+                                        </c:choose>
                                         <fmt:formatNumber value="${receipt.convertedAmount}" minFractionDigits="2" maxFractionDigits="2"/>
                                     </div>
                                     <div>
                                         <fmt:formatNumber value="${receipt.feeRateApplied}" minFractionDigits="1" maxFractionDigits="2"/>%
                                     </div>
                                     <div>
+                                        <c:choose>
+                                            <c:when test="${receipt.transactionType eq 'BUY'}">
+                                                <c:choose>
+                                                    <c:when test="${receipt.baseCurrency eq 'USD'}">$</c:when>
+                                                    <c:when test="${receipt.baseCurrency eq 'GBP'}">£</c:when>
+                                                    <c:when test="${receipt.baseCurrency eq 'EUR'}">€</c:when>
+                                                    <c:when test="${receipt.baseCurrency eq 'JPY'}">¥</c:when>
+                                                    <c:when test="${receipt.baseCurrency eq 'BRL'}">R$</c:when>
+                                                    <c:when test="${receipt.baseCurrency eq 'TRY'}">₺</c:when>
+                                                    <c:otherwise>${receipt.baseCurrency} </c:otherwise>
+                                                </c:choose>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <c:choose>
+                                                    <c:when test="${receipt.targetCurrency eq 'USD'}">$</c:when>
+                                                    <c:when test="${receipt.targetCurrency eq 'GBP'}">£</c:when>
+                                                    <c:when test="${receipt.targetCurrency eq 'EUR'}">€</c:when>
+                                                    <c:when test="${receipt.targetCurrency eq 'JPY'}">¥</c:when>
+                                                    <c:when test="${receipt.targetCurrency eq 'BRL'}">R$</c:when>
+                                                    <c:when test="${receipt.targetCurrency eq 'TRY'}">₺</c:when>
+                                                    <c:otherwise>${receipt.targetCurrency} </c:otherwise>
+                                                </c:choose>
+                                            </c:otherwise>
+                                        </c:choose>
                                         <fmt:formatNumber value="${receipt.feeValue}" minFractionDigits="2" maxFractionDigits="2"/>
                                     </div>
                                 </div>
@@ -643,6 +751,30 @@
                                 <c:out value="${receipt.label}" default="Paid Amount"/>
                             </span>
                             <strong class="cc-bar-value">
+                                <c:choose>
+                                    <c:when test="${receipt.transactionType eq 'BUY'}">
+                                        <c:choose>
+                                            <c:when test="${receipt.baseCurrency eq 'USD'}">$</c:when>
+                                            <c:when test="${receipt.baseCurrency eq 'GBP'}">£</c:when>
+                                            <c:when test="${receipt.baseCurrency eq 'EUR'}">€</c:when>
+                                            <c:when test="${receipt.baseCurrency eq 'JPY'}">¥</c:when>
+                                            <c:when test="${receipt.baseCurrency eq 'BRL'}">R$</c:when>
+                                            <c:when test="${receipt.baseCurrency eq 'TRY'}">₺</c:when>
+                                            <c:otherwise>${receipt.baseCurrency} </c:otherwise>
+                                        </c:choose>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:choose>
+                                            <c:when test="${receipt.targetCurrency eq 'USD'}">$</c:when>
+                                            <c:when test="${receipt.targetCurrency eq 'GBP'}">£</c:when>
+                                            <c:when test="${receipt.targetCurrency eq 'EUR'}">€</c:when>
+                                            <c:when test="${receipt.targetCurrency eq 'JPY'}">¥</c:when>
+                                            <c:when test="${receipt.targetCurrency eq 'BRL'}">R$</c:when>
+                                            <c:when test="${receipt.targetCurrency eq 'TRY'}">₺</c:when>
+                                            <c:otherwise>${receipt.targetCurrency} </c:otherwise>
+                                        </c:choose>
+                                    </c:otherwise>
+                                </c:choose>
                                 <fmt:formatNumber value="${receipt.finalAmount}" minFractionDigits="2" maxFractionDigits="2"/>
                             </strong>
                         </div>
@@ -660,7 +792,7 @@
             </div>
         </div>
     </div>
-</div>                              
+</div>                            
                                 
                                 
                                 
@@ -668,59 +800,110 @@
                             </div>
                         </c:if>
 
-                        <!-- =========================
-                             HISTORY SECTION
-                        ========================= -->
-                        <c:if test="${activeSection eq 'history'}">
+<!-- =========================
+     HISTORY SECTION
+========================= -->
+<c:if test="${activeSection eq 'history'}">
 
-                            <div class="currency-title-card">
-                                <h3>Transaction History</h3>
-                                <p>Review your successful currency conversion transactions.</p>
-                            </div>
+    <div class="currency-title-card">
+        <h3>Transaction History</h3>
+        <p>Review your successful currency conversion transactions.</p>
+    </div>
 
-                            <div class="currency-panel-card">
-                                <div class="currency-card-inner">
-                                    <c:choose>
-                                        <c:when test="${not empty historyList}">
-                                            <div class="table-responsive">
-                                                <table class="table currency-history-table">
-                                                    <thead>
-                                                    <tr>
-                                                        <th>Transaction No.</th>
-                                                        <th>Type</th>
-                                                        <th>Date</th>
-                                                        <th>Base</th>
-                                                        <th>Target</th>
-                                                        <th>Amount</th>
-                                                        <th>Final</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <c:forEach var="item" items="${historyList}">
-                                                        <tr>
-                                                            <td>${item.transactionNumber}</td>
-                                                            <td>${item.transactionType}</td>
-                                                            <td><fmt:formatDate value="${item.date}" pattern="MMM dd, yyyy hh:mm a"/></td>
-                                                            <td>${item.baseCurrency}</td>
-                                                            <td>${item.targetCurrency}</td>
-                                                            <td><fmt:formatNumber value="${item.inputAmount}" minFractionDigits="2" maxFractionDigits="2"/></td>
-                                                            <td><fmt:formatNumber value="${item.finalAmount}" minFractionDigits="2" maxFractionDigits="2"/></td>
-                                                        </tr>
-                                                    </c:forEach>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <div class="currency-empty-state">
-                                                <h4>No transaction history yet</h4>
-                                                <p>Your completed currency transactions will appear here.</p>
-                                            </div>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </div>
-                            </div>
-                        </c:if>
+    <div class="currency-panel-card">
+        <div class="currency-card-inner">
+            <c:choose>
+                <c:when test="${not empty historyList}">
+                    <div class="table-responsive">
+                        <table class="table currency-history-table">
+                            <thead>
+                            <tr>
+                                <th>Transaction No.</th>
+                                <th>Type</th>
+                                <th>Date</th>
+                                <th>Base</th>
+                                <th>Target</th>
+                                <th>Amount</th>
+                                <th>Final</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <c:forEach var="item" items="${historyList}">
+                                <tr>
+                                    <td>${item.transactionNumber}</td>
+                                    <td>${item.transactionType}</td>
+                                    <td>
+                                        <fmt:formatDate value="${item.date}" pattern="MMM dd, yyyy hh:mm a"/>
+                                    </td>
+                                    <td>${item.baseCurrency}</td>
+                                    <td>${item.targetCurrency}</td>
+
+                                    <!-- AMOUNT (BASE CURRENCY) -->
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${item.baseCurrency eq 'USD'}">$</c:when>
+                                            <c:when test="${item.baseCurrency eq 'GBP'}">£</c:when>
+                                            <c:when test="${item.baseCurrency eq 'EUR'}">€</c:when>
+                                            <c:when test="${item.baseCurrency eq 'JPY'}">¥</c:when>
+                                            <c:when test="${item.baseCurrency eq 'BRL'}">R$</c:when>
+                                            <c:when test="${item.baseCurrency eq 'TRY'}">₺</c:when>
+                                            <c:otherwise>${item.baseCurrency} </c:otherwise>
+                                        </c:choose>
+                                        <fmt:formatNumber value="${item.inputAmount}" minFractionDigits="2" maxFractionDigits="2"/>
+                                    </td>
+
+                                    <!-- FINAL (BUY = BASE, SELL = TARGET) -->
+                                    <td>
+                                        <c:choose>
+
+                                            <c:when test="${item.transactionType eq 'BUY'}">
+                                                <c:choose>
+                                                    <c:when test="${item.baseCurrency eq 'USD'}">$</c:when>
+                                                    <c:when test="${item.baseCurrency eq 'GBP'}">£</c:when>
+                                                    <c:when test="${item.baseCurrency eq 'EUR'}">€</c:when>
+                                                    <c:when test="${item.baseCurrency eq 'JPY'}">¥</c:when>
+                                                    <c:when test="${item.baseCurrency eq 'BRL'}">R$</c:when>
+                                                    <c:when test="${item.baseCurrency eq 'TRY'}">₺</c:when>
+                                                    <c:otherwise>${item.baseCurrency} </c:otherwise>
+                                                </c:choose>
+                                            </c:when>
+
+                                            <c:otherwise>
+                                                <c:choose>
+                                                    <c:when test="${item.targetCurrency eq 'USD'}">$</c:when>
+                                                    <c:when test="${item.targetCurrency eq 'GBP'}">£</c:when>
+                                                    <c:when test="${item.targetCurrency eq 'EUR'}">€</c:when>
+                                                    <c:when test="${item.targetCurrency eq 'JPY'}">¥</c:when>
+                                                    <c:when test="${item.targetCurrency eq 'BRL'}">R$</c:when>
+                                                    <c:when test="${item.targetCurrency eq 'TRY'}">₺</c:when>
+                                                    <c:otherwise>${item.targetCurrency} </c:otherwise>
+                                                </c:choose>
+                                            </c:otherwise>
+
+                                        </c:choose>
+
+                                        <fmt:formatNumber value="${item.finalAmount}" minFractionDigits="2" maxFractionDigits="2"/>
+                                    </td>
+
+                                </tr>
+                            </c:forEach>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </c:when>
+
+                <c:otherwise>
+                    <div class="currency-empty-state">
+                        <h4>No transaction history yet</h4>
+                        <p>Your completed currency transactions will appear here.</p>
+                    </div>
+                </c:otherwise>
+            </c:choose>
+        </div>
+    </div>
+</c:if>
 
                     </div>
 

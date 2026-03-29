@@ -11,4 +11,6 @@ public interface ConversionFeeRuleDao {
     List<ConversionFeeRule> findByRuleSetId(Long ruleSetId);
 
     ConversionFeeRule findMatchingFeeRule(Long ruleSetId, Double amount);
+
+    List<ConversionFeeRule> findAllOrderByRuleSetIdAscMinAmountAsc();
 }

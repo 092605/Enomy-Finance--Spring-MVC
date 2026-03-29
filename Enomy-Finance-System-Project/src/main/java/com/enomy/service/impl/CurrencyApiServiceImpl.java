@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDate;
 
 import org.springframework.stereotype.Service;
 
@@ -23,12 +24,38 @@ public class CurrencyApiServiceImpl implements CurrencyApiService {
 
     @Override
     public CurrencyRateApiDTO getExchangeRateWithDate(String baseCurrency, String targetCurrency) {
-        try {
-            String urlString = "https://api.frankfurter.dev/v1/latest?base="
-                    + baseCurrency
-                    + "&symbols="
-                    + targetCurrency;
+        String urlString = "https://api.frankfurter.dev/v1/latest?base="
+                + baseCurrency
+                + "&symbols="
+                + targetCurrency;
 
+        return fetchRateFromApi(urlString, targetCurrency);
+    }
+
+    @Override
+    public Double getHistoricalExchangeRate(String baseCurrency, String targetCurrency, LocalDate date) {
+        CurrencyRateApiDTO result = getHistoricalExchangeRateWithDate(baseCurrency, targetCurrency, date);
+        return result != null ? result.getRate() : null;
+    }
+
+    @Override
+    public CurrencyRateApiDTO getHistoricalExchangeRateWithDate(String baseCurrency, String targetCurrency, LocalDate date) {
+        if (date == null) {
+            return getExchangeRateWithDate(baseCurrency, targetCurrency);
+        }
+
+        String urlString = "https://api.frankfurter.dev/v1/"
+                + date
+                + "?base="
+                + baseCurrency
+                + "&symbols="
+                + targetCurrency;
+
+        return fetchRateFromApi(urlString, targetCurrency);
+    }
+
+    private CurrencyRateApiDTO fetchRateFromApi(String urlString, String targetCurrency) {
+        try {
             URL url = new URL(urlString);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
