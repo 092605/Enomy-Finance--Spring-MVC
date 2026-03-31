@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.enomy.dao.CurrencyTransactionDao;
+import com.enomy.dto.AdminCurrencyTransactionHistoryRowDTO;
 import com.enomy.model.CurrencyTransaction;
 
 @Repository
@@ -140,6 +141,102 @@ public class CurrencyTransactionDaoImpl implements CurrencyTransactionDao {
         sql.append(" ORDER BY created_at DESC");
 
         return jdbcTemplate.query(sql.toString(), (rs, rowNum) -> mapTransaction(rs), params.toArray());
+    }
+
+    // =========================
+    // ADMIN TRANSACTION HISTORY
+    // SAFE NEW METHOD
+    // =========================
+    @Override
+    public List<AdminCurrencyTransactionHistoryRowDTO> findAdminTransactionHistory(String baseCurrency,
+                                                                                   String targetCurrency,
+                                                                                   String transactionType,
+                                                                                   String dateFrom,
+                                                                                   String dateTo,
+                                                                                   String search) {
+
+        StringBuilder sql = new StringBuilder("""
+            SELECT
+                ct.transaction_number,
+                ct.user_id,
+                u.full_name,
+                ct.transaction_type,
+                ct.base_currency,
+                ct.target_currency,
+                ct.input_amount,
+                ct.final_amount,
+                ct.status,
+                ct.created_at
+            FROM currency_transaction ct
+            INNER JOIN users u ON ct.user_id = u.id
+            WHERE 1 = 1
+        """);
+
+        List<Object> params = new ArrayList<>();
+
+        if (baseCurrency != null && !baseCurrency.isBlank()) {
+            sql.append(" AND ct.base_currency = ?");
+            params.add(baseCurrency.trim());
+        }
+
+        if (targetCurrency != null && !targetCurrency.isBlank()) {
+            sql.append(" AND ct.target_currency = ?");
+            params.add(targetCurrency.trim());
+        }
+
+        if (transactionType != null && !transactionType.isBlank()) {
+            sql.append(" AND ct.transaction_type = ?");
+            params.add(transactionType.trim());
+        }
+
+        if (dateFrom != null && !dateFrom.isBlank()) {
+            sql.append(" AND DATE(ct.created_at) >= ?");
+            params.add(dateFrom.trim());
+        }
+
+        if (dateTo != null && !dateTo.isBlank()) {
+            sql.append(" AND DATE(ct.created_at) <= ?");
+            params.add(dateTo.trim());
+        }
+
+        if (search != null && !search.isBlank()) {
+            String keyword = search.trim();
+
+            // ✅ CASE 1: Only digits → USER ID EXACT MATCH
+            if (keyword.matches("\\d+")) {
+                sql.append(" AND ct.user_id = ?");
+                params.add(Long.valueOf(keyword));
+
+            // ✅ CASE 2: Starts with CC- → TRANSACTION NUMBER
+            } else if (keyword.toLowerCase().startsWith("cc-")) {
+                sql.append(" AND LOWER(ct.transaction_number) LIKE ?");
+                params.add("%" + keyword.toLowerCase() + "%");
+
+            // ✅ CASE 3: Otherwise → USER NAME
+            } else {
+                sql.append(" AND LOWER(u.full_name) LIKE ?");
+                params.add("%" + keyword.toLowerCase() + "%");
+            }
+        }
+
+        sql.append(" ORDER BY ct.created_at DESC");
+
+        return jdbcTemplate.query(sql.toString(), (rs, rowNum) -> {
+            AdminCurrencyTransactionHistoryRowDTO row = new AdminCurrencyTransactionHistoryRowDTO();
+
+            row.setTransactionNumber(rs.getString("transaction_number"));
+            row.setUserId(rs.getLong("user_id"));
+            row.setUserName(rs.getString("full_name"));
+            row.setTransactionType(rs.getString("transaction_type"));
+            row.setBaseCurrency(rs.getString("base_currency"));
+            row.setTargetCurrency(rs.getString("target_currency"));
+            row.setInputAmount(rs.getDouble("input_amount"));
+            row.setFinalAmount(rs.getDouble("final_amount"));
+            row.setStatus(rs.getString("status"));
+            row.setCreatedAt(rs.getTimestamp("created_at"));
+
+            return row;
+        }, params.toArray());
     }
 
     private CurrencyTransaction mapTransaction(java.sql.ResultSet rs) throws java.sql.SQLException {

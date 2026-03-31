@@ -37,7 +37,6 @@ document.addEventListener("DOMContentLoaded", function () {
 /* ================================================= */
 
 document.addEventListener("DOMContentLoaded", function () {
-
     const dropdowns = document.querySelectorAll(".custom-dropdown");
 
     dropdowns.forEach(dropdown => {
@@ -46,10 +45,11 @@ document.addEventListener("DOMContentLoaded", function () {
         const items = dropdown.querySelectorAll(".custom-dropdown-item");
         const hiddenInput = dropdown.querySelector("input[type='hidden']");
 
+        if (!toggle) return;
+
         toggle.addEventListener("click", function (e) {
             e.stopPropagation();
 
-            // close others
             dropdowns.forEach(d => {
                 if (d !== dropdown) {
                     d.classList.remove("active");
@@ -60,14 +60,25 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         items.forEach(item => {
-            item.addEventListener("click", function () {
+            item.addEventListener("click", function (e) {
+                e.stopPropagation();
+
                 items.forEach(i => i.classList.remove("active"));
                 this.classList.add("active");
 
-                selectedValue.textContent = this.textContent;
+                const itemText = this.textContent.trim();
+                const rawValue = this.getAttribute("data-value");
+
+                selectedValue.textContent = itemText;
 
                 if (hiddenInput) {
-                    hiddenInput.value = this.getAttribute("data-value") || this.textContent.trim();
+                    // If data-value exists, use it exactly.
+                    // For "All", data-value should be empty string.
+                    if (rawValue !== null) {
+                        hiddenInput.value = rawValue;
+                    } else {
+                        hiddenInput.value = itemText.toLowerCase() === "all" ? "" : itemText;
+                    }
                 }
 
                 dropdown.classList.remove("active");
@@ -76,11 +87,11 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     document.addEventListener("click", function () {
-        dropdowns.forEach(d => d.classList.remove("active"));
+        document.querySelectorAll(".custom-dropdown").forEach(d => {
+            d.classList.remove("active");
+        });
     });
-
 });
-
 
 
 

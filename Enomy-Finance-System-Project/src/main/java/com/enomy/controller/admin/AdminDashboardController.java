@@ -37,14 +37,14 @@ public class AdminDashboardController {
 	 * return "admin/currency-converter"; }
 	 */
 	
-	@GetMapping("/admin/history")
+	@GetMapping("/admin/transaction-history")
 	public String adminHistory(Authentication authentication, Model model) {
 
-		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+	    CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
-        model.addAttribute("fullName", userDetails.getFullName());
-        model.addAttribute("loggedInEmail", userDetails.getUsername());
-        model.addAttribute("activePage", "dashboard");
+	    model.addAttribute("fullName", userDetails.getFullName());
+	    model.addAttribute("loggedInEmail", userDetails.getUsername());
+	    model.addAttribute("activePage", "transaction-history");
 
 	    return "admin/transaction-history";
 	}
