@@ -633,3 +633,51 @@ function initActivateConfirmFlow() {
         });
     }
 }
+
+
+
+
+/* =========================
+   Dropdown showing quick rate
+========================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+    const activeTaxDropdown = document.getElementById("activeTaxTypeDropdown");
+    const activeTaxPanels = document.querySelectorAll(".investment-tax-view-panel");
+    const quickRate = document.getElementById("activeTaxQuickRate");
+
+    if (!activeTaxDropdown) return;
+
+    const items = activeTaxDropdown.querySelectorAll(".custom-dropdown-item");
+    const hiddenInput = activeTaxDropdown.querySelector("input[type='hidden']");
+
+    function applyActiveTaxPanel(panelId, rateText) {
+        activeTaxPanels.forEach(panel => {
+            panel.classList.toggle("active", panel.id === panelId);
+        });
+
+        if (quickRate) {
+            quickRate.textContent = rateText || "0%";
+        }
+
+        if (hiddenInput) {
+            hiddenInput.value = panelId;
+        }
+    }
+
+    items.forEach(item => {
+        item.addEventListener("click", function () {
+            const panelId = this.getAttribute("data-value");
+            const rateText = this.getAttribute("data-rate");
+            applyActiveTaxPanel(panelId, rateText);
+        });
+    });
+
+    const activeItem = activeTaxDropdown.querySelector(".custom-dropdown-item.active");
+    if (activeItem) {
+        applyActiveTaxPanel(
+            activeItem.getAttribute("data-value"),
+            activeItem.getAttribute("data-rate")
+        );
+    }
+});

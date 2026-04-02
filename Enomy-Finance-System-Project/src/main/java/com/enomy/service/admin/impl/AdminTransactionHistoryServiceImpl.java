@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.enomy.dao.CurrencyTransactionDao;
-import com.enomy.dao.InvestmentQuoteDao;
-import com.enomy.dto.AdminCurrencyTransactionHistoryRowDTO;
-import com.enomy.dto.AdminInvestmentQuoteHistoryRowDTO;
+import com.enomy.dao.conversion.CurrencyTransactionDao;
+import com.enomy.dao.investment.InvestmentQuoteDao;
+import com.enomy.dto.conversion.AdminCurrencyTransactionHistoryRowDTO;
+import com.enomy.dto.investment.AdminInvestmentQuoteHistoryRowDTO;
 import com.enomy.service.admin.AdminTransactionHistoryService;
 
 @Service

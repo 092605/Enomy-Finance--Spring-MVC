@@ -160,6 +160,7 @@
                                         </div>
 
                                      <!-- Plan Details -->
+                                     
 										<div class="col-12">
 										    <div class="investment-middle-panel">
 										        <div class="investment-card-inner plan-details-box" id="planDetailsBox">
@@ -191,12 +192,16 @@
 										                        <span class="plan-highlight" id="planReturns">${planDetails.predictedReturnsPerYear}</span>
 										                    </span>
 										                </li>
+										                
 										                <li>
-										                    <span class="plan-bullet"></span>
-										                    <span>Estimated tax:
-										                        <span class="plan-strong" id="planTax">${planDetails.estimatedTax}</span>
-										                    </span>
-										                </li>
+														    <span class="plan-bullet"></span>
+														    <span>Estimated tax:
+														        <span class="plan-strong" id="planTax">
+														            <c:out value="${planDetails.estimatedTax}" escapeXml="false" />
+														        </span>
+														    </span>
+														</li>
+														
 										                <li>
 										                    <span class="plan-bullet"></span>
 										                    <span>RBSX group fees per month:

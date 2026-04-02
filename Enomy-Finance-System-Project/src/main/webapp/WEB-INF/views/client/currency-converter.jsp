@@ -12,20 +12,20 @@
     <title>Currency Converter | Enomy Finance</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/theme.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/dashboard.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/currency-converter.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/public/theme.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/client/client-dashboard.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/client/client-currency.css">
 </head>
 
 <body class="dashboard-page">
 
 <div class="dashboard-layout">
 
-    <jsp:include page="/WEB-INF/components/Authenticated/sidebar.jsp" />
+    <jsp:include page="/WEB-INF/components/Authenticated//client/sidebar.jsp" />
 
     <div class="dashboard-main" id="dashboardMain">
 
-        <jsp:include page="/WEB-INF/components/Authenticated/topbar.jsp" />
+        <jsp:include page="/WEB-INF/components/Authenticated/client/topbar.jsp" />
 
         <main class="dashboard-content currency-page">
 
@@ -947,7 +947,7 @@
 
         </main>
 
-        <jsp:include page="/WEB-INF/components/Authenticated/footer.jsp" />
+        <jsp:include page="/WEB-INF/components/Authenticated//client/footer.jsp" />
 
     </div>
 </div>
@@ -958,8 +958,8 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/dashboard.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/currency-converter.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/client/client-dashboard.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/client/client-currency.js"></script>
 
 
 

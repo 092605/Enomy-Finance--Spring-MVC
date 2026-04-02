@@ -13,15 +13,15 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.enomy.dao.ConversionFeeRuleDao;
-import com.enomy.dao.ConversionRuleSetDao;
-import com.enomy.dao.CurrencyTransactionDao;
-import com.enomy.model.ConversionFeeRule;
-import com.enomy.model.ConversionRuleSet;
-import com.enomy.model.CurrencyTransaction;
-import com.enomy.service.CurrencyApiService;
 import com.enomy.service.admin.AdminCurrencyService;
-import com.enomy.dto.AdminCurrencyRateRowDTO;
+import com.enomy.service.client.CurrencyApiService;
+import com.enomy.dao.conversion.ConversionFeeRuleDao;
+import com.enomy.dao.conversion.ConversionRuleSetDao;
+import com.enomy.dao.conversion.CurrencyTransactionDao;
+import com.enomy.dto.conversion.AdminCurrencyRateRowDTO;
+import com.enomy.model.conversion.ConversionFeeRule;
+import com.enomy.model.conversion.ConversionRuleSet;
+import com.enomy.model.conversion.CurrencyTransaction;
 
 @Service
 @Transactional

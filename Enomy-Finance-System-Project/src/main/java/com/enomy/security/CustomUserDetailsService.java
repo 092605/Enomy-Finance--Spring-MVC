@@ -7,8 +7,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
 
-import com.enomy.dao.UserDao;
-import com.enomy.model.User;
+import com.enomy.dao.EFuser.UserDao;
+import com.enomy.model.EFuser.User;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {

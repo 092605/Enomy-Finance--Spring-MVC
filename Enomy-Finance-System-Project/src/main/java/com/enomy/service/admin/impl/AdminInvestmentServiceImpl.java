@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.enomy.dao.PlanRulesDao;
-import com.enomy.dao.TaxSettingsDao;
-import com.enomy.model.PlanRules;
-import com.enomy.model.TaxSettings;
+import com.enomy.dao.investment.PlanRulesDao;
+import com.enomy.dao.investment.TaxSettingsDao;
+import com.enomy.model.investment.PlanRules;
+import com.enomy.model.investment.TaxSettings;
 import com.enomy.service.admin.AdminInvestmentService;
 
 import java.util.ArrayList;

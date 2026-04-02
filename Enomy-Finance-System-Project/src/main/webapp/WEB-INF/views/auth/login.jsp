@@ -12,14 +12,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/theme.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/authentication.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/navbar.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/public/theme.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/public/authentication.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/public/navbar.css">
 </head>
 
 <body class="auth-page">
 
-    <jsp:include page="/WEB-INF/components/navbar.jsp"/>
+    <jsp:include page="/WEB-INF/components/Public/navbar.jsp"/>
 
     <main class="auth-wrapper">
         <div class="container">

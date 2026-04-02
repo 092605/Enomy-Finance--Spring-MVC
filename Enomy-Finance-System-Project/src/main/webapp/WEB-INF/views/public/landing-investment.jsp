@@ -9,15 +9,15 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/theme.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/about.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/navbar.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/footer.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/public/theme.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/public/about.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/public/navbar.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/public/footer.css">
 </head>
 <body>
 
     <!-- NAVBAR -->
-    <jsp:include page="/WEB-INF/components/navbar.jsp"/>
+    <jsp:include page="/WEB-INF/components/Public/navbar.jsp"/>
 
     <!-- ABOUT HERO -->
     <section class="about-page-hero section">
@@ -55,9 +55,9 @@
 
    
     <!-- FOOTER -->
-    <jsp:include page="/WEB-INF/components/footer.jsp"/>
+    <jsp:include page="/WEB-INF/components/Public/footer.jsp"/>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/navbar-behaviour.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/public/navbar-behaviour.js"></script>
 </body>
 </html>

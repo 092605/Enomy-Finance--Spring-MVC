@@ -11,19 +11,19 @@
     <title>Client Dashboard | Enomy Finance</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/theme.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/dashboard.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/public/theme.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/client/client-dashboard.css">
 </head>
 
 <body class="dashboard-page">
 
     <div class="dashboard-layout">
 
-        <jsp:include page="/WEB-INF/components/Authenticated/sidebar.jsp" />
+        <jsp:include page="/WEB-INF/components/Authenticated//client/sidebar.jsp" />
 
         <div class="dashboard-main" id="dashboardMain">
 
-            <jsp:include page="/WEB-INF/components/Authenticated/topbar.jsp" />
+            <jsp:include page="/WEB-INF/components/Authenticated/client/topbar.jsp" />
 
             <main class="dashboard-content">
 
@@ -403,12 +403,12 @@
 				</section>
             </main>
 
-            <jsp:include page="/WEB-INF/components/Authenticated/footer.jsp" />
+            <jsp:include page="/WEB-INF/components/Authenticated//client/footer.jsp" />
 
         </div>
     </div>
 
-    <script src="${pageContext.request.contextPath}/resources/js/dashboard.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/client/client-dashboard.js"></script>
 </body>
 </html>
 
@@ -417,58 +417,4 @@
 
 
 
-
-
-
-<%-- <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Client Dashboard | Enomy Finance</title>
-
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/theme.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/navbar.css">
-
-</head>
-
-<body>
-
-<!-- NAVBAR -->
-<jsp:include page="/WEB-INF/components/navbar.jsp"/>
-
-<div class="container py-5">
-
-    <div class="card shadow p-4">
-
-        <h2 class="mb-3">Client Dashboard</h2>
-
-        <p class="text-muted">
-            Welcome,
-            <strong>${loggedInEmail}</strong>
-        </p>
-
-        <hr>
-
-        <p>
-            This is the client dashboard.
-            Your financial tools will appear here.
-        </p>
-
-        <form method="post" action="${pageContext.request.contextPath}/logout">
-            <button class="btn btn-danger mt-3">Logout</button>
-        </form>
-
-    </div>
-
-</div>
-
-</body>
-</html> --%>
 

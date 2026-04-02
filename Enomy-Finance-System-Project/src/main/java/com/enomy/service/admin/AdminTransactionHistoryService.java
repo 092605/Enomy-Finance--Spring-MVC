@@ -2,8 +2,8 @@ package com.enomy.service.admin;
 
 import java.util.List;
 
-import com.enomy.dto.AdminCurrencyTransactionHistoryRowDTO;
-import com.enomy.dto.AdminInvestmentQuoteHistoryRowDTO;
+import com.enomy.dto.conversion.AdminCurrencyTransactionHistoryRowDTO;
+import com.enomy.dto.investment.AdminInvestmentQuoteHistoryRowDTO;
 
 public interface AdminTransactionHistoryService {
 

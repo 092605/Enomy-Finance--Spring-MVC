@@ -2,8 +2,8 @@ package com.enomy.service.admin;
 
 import java.util.List;
 
-import com.enomy.model.PlanRules;
-import com.enomy.model.TaxSettings;
+import com.enomy.model.investment.PlanRules;
+import com.enomy.model.investment.TaxSettings;
 
 public interface AdminInvestmentService {
 

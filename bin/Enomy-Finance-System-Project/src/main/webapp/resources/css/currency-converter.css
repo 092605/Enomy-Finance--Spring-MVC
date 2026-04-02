@@ -1,3 +1,6 @@
+/* =========================
+   PAGE LAYOUT
+========================= */
 .currency-page {
     padding: 24px;
      min-height: calc(100vh - 220px);
@@ -10,12 +13,18 @@
 }
 
 
+/* =========================
+   RESULT CARD SPACING
+========================= */
 .currency-result-card 
 .currency-card-inner {
     padding: 42px 46px;  /* top/bottom | left/right */
 }
 
 
+/* =========================
+   PAGE HEADER
+========================= */
 .currency-page-header {
     margin-bottom: 24px;
 }
@@ -34,6 +43,11 @@
     margin: 0;
 }
 
+
+
+/* =========================
+   TITLE CARD
+========================= */
 .currency-title-card {
     background: rgba(18, 16, 40, 0.78);
     border: 1px solid rgba(255,255,255,0.08);
@@ -55,6 +69,10 @@
     margin: 0;
 }
 
+
+/* =========================
+   PANEL CARD
+========================= */
 .currency-panel-card {
     background: rgba(15, 12, 36, 0.88);
     border: 1px solid rgba(255,255,255,0.08);
@@ -74,6 +92,10 @@
     margin-bottom: 20px;
 }
 
+
+/* =========================
+   SHARED TEXT STYLES
+========================= */
 .currency-card-text,
 .currency-rule-meta p,
 .currency-empty-text,
@@ -83,6 +105,10 @@
     color: rgba(255,255,255,0.74);
 }
 
+
+/* =========================
+   CARD HEADER / BADGES
+========================= */
 .currency-card-header-row {
     display: flex;
     align-items: center;
@@ -115,6 +141,10 @@
     margin-bottom: 18px;
 }
 
+
+/* =========================
+   HERO ACTIONS
+========================= */
 .currency-hero-actions {
     display: flex;
     flex-wrap: wrap;
@@ -122,6 +152,10 @@
     margin-top: 22px;
 }
 
+
+/* =========================
+   FORM ELEMENTS
+========================= */
 .currency-label {
     display: block;
     font-size: 14px;
@@ -144,6 +178,10 @@
     color: #111;
 }
 
+
+/* =========================
+   CHECK RATE RESULT
+========================= */
 .currency-checkrate-result {
     margin-top: 18px;
     border: 1px solid rgba(255,255,255,0.08);
@@ -167,6 +205,10 @@
     font-weight: 500;
 }
 
+
+/* =========================
+   RULE META
+========================= */
 .currency-rule-meta {
     margin-bottom: 14px;
 }
@@ -177,6 +219,10 @@
     margin-bottom: 6px;
 }
 
+
+/* =========================
+   TABLES
+========================= */
 .currency-rules-table,
 .currency-history-table {
     margin-bottom: 0;
@@ -200,6 +246,10 @@
     vertical-align: middle;
 }
 
+
+/* =========================
+   SUMMARY GRID
+========================= */
 .currency-summary-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -231,6 +281,10 @@
     background: linear-gradient(135deg, rgba(255, 80, 200, 0.14), rgba(121, 86, 255, 0.14));
 }
 
+
+/* =========================
+   RESULT ACTIONS
+========================= */
 .currency-result-actions {
     display: flex;
     flex-wrap: wrap;
@@ -238,6 +292,10 @@
     margin-top: 22px;
 }
 
+
+/* =========================
+   EMPTY STATE
+========================= */
 .currency-empty-state {
     text-align: center;
     padding: 32px 12px;
@@ -248,6 +306,10 @@
     margin-bottom: 8px;
 }
 
+
+/* =========================
+   MODULE SIDEBAR
+========================= */
 .currency-module-sidebar-wrap {
     position: sticky;
     top: 20px;
@@ -321,19 +383,18 @@
     box-shadow: 0 8px 18px rgba(125, 89, 255, 0.22);
 }
 
+
+/* =========================
+   INLINE MESSAGES
+========================= */
 .inline-error-message {
     margin-top: 16px;
 }
 
 
-
-
-
-
 /* =========================
    RESULT CARD / RECEIPT REDESIGN
 ========================= */
-
 .cc-card-shell {
     display: flex;
     flex-direction: column;
@@ -362,8 +423,6 @@
     flex-wrap: wrap;
 }
 
-
-
 .cc-meta-label,
 .cc-meta-value {
     color: #fff;
@@ -372,10 +431,9 @@
 }
 
 
-
-
-
-/* amount bars */
+/* =========================
+   AMOUNT BARS
+========================= */
 .cc-amount-bar,
 .cc-total-bar {
     display: flex;
@@ -387,7 +445,6 @@
     color: #fff;
     border: 1px solid rgba(255,255,255,0.08);
 }
-
 
 .cc-amount-bar {
     display: flex;
@@ -430,6 +487,10 @@
     color: #fff;
 }
 
+
+/* =========================
+   SECTION DIVIDER / BLOCKS
+========================= */
 /* dashed divider like investment card */
 .cc-section-divider {
     border-top: 3px dashed rgba(255,255,255,0.26);
@@ -452,6 +513,10 @@
     color: #fff;
 }
 
+
+/* =========================
+   DETAIL GRID
+========================= */
 .cc-detail-grid {
     display: flex;
     justify-content: space-between;
@@ -486,6 +551,10 @@
     background-clip: text;
 }
 
+
+/* =========================
+   ACTION ROWS
+========================= */
 .cc-action-row {
     display: flex;
     align-items: center;
@@ -508,14 +577,10 @@
     display: none !important;
 }
 
-/* =========================
-   TOP STRIP ONLY
-========================= */
 
 /* =========================
    TOP STRIP (TABLE STYLE)
 ========================= */
-
 .cc-top-strip--grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -570,6 +635,164 @@
     background: rgba(255, 255, 255, 0.18);
 }
 
+/* =========================
+   WELCOME SECTION
+========================= */
+
+.currency-panel-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.currency-card-inner {
+    padding:40px;
+}
+
+.currency-hero-actions {
+    margin-top: auto;
+}
+
+.currency-card-title h3{
+	margin-top:40px;
+	
+}
+
+
+/* ===================================== */
+/* WELCOME HERO SPACING + TYPOGRAPHY */
+/* ===================================== */
+
+.currency-welcome-card .currency-card-inner {
+    padding: 2.5rem 2.5rem; /* increase inner spacing */
+}
+
+/* Badge spacing */
+.currency-welcome-card .currency-badge {
+    margin-bottom: 3rem;
+    font-size: 0.9rem;
+}
+
+/* Title bigger */
+.currency-welcome-card .currency-card-title {
+    font-size: 2rem;         /* bigger */
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+}
+
+/* Description more readable */
+.currency-welcome-card .currency-card-text {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    max-width: 480px; /* keeps it clean */
+}
+
+/* Buttons spacing */
+.currency-welcome-card .currency-hero-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+/* Make buttons slightly larger */
+.currency-welcome-card .btn-glow,
+.currency-welcome-card .btn-glow-outline {
+    padding: 0.75rem 1.4rem;
+    font-size: 0.95rem;
+    margin-top:50px;
+}
+
+
+/* =========================
+   CHECK RATE CALCULATOR CARD
+   (WELCOME SECTION)
+========================= */
+
+/* Container behavior inside card */
+.currency-checkrate-card .currency-card-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    
+}
+
+.currency-checkrate-card {
+    width: 100% !important;
+    margin-left: 10%;
+}
+
+/* Result preview box */
+.currency-checkrate-preview-box {
+    margin-top: 6px;
+    min-height: 92px;
+
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.04);
+    border-radius: 18px;
+
+    padding: 16px 18px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Placeholder */
+.currency-checkrate-placeholder {
+    color: rgba(255,255,255,0.55);
+    font-size: 15px;
+    font-weight: 500;
+    height:15px !important;
+}
+
+/* Result text */
+.currency-checkrate-preview-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 6px;
+}
+
+.currency-checkrate-preview-value {
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+/* Button + sync layout */
+.currency-checkrate-actions {
+    margin-top: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    flex-wrap: wrap;
+}
+
+/* Sync text */
+.currency-checkrate-sync {
+    font-size: 12px;
+    line-height: 1.4;
+    color: rgba(255,255,255,0.68);
+}
+
+.currency-checkrate-sync strong {
+    color: #fff;
+    font-weight: 700;
+}
+
+.currency-card-header-row .currency-mini-badge{
+	width:150px;
+	height:50px;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
 @media (max-width: 991.98px) {
     .cc-top-strip--grid {
         grid-template-columns: 1fr;
@@ -591,9 +814,6 @@
         font-size: 1.8rem;
     }
 
- 
-
-
     .cc-detail-grid {
         flex-direction: column;
         gap: 1rem;
@@ -614,6 +834,7 @@
         min-width: auto;
     }
 }
+
 @media (max-width: 991px) {
     .currency-summary-grid {
         grid-template-columns: 1fr;

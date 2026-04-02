@@ -36,42 +36,63 @@ document.addEventListener("DOMContentLoaded", function () {
 /* Dropdown Behaviour                                */
 /* ================================================= */
 
-
-
 document.addEventListener("DOMContentLoaded", function () {
-
     const dropdowns = document.querySelectorAll(".custom-dropdown");
 
     dropdowns.forEach(dropdown => {
         const toggle = dropdown.querySelector(".custom-dropdown-toggle");
         const selectedValue = dropdown.querySelector(".selected-value");
         const items = dropdown.querySelectorAll(".custom-dropdown-item");
+        const hiddenInput = dropdown.querySelector("input[type='hidden']");
+
+        if (!toggle) return;
 
         toggle.addEventListener("click", function (e) {
             e.stopPropagation();
 
-            // close others
-            dropdowns.forEach(d => d.classList.remove("active"));
+            dropdowns.forEach(d => {
+                if (d !== dropdown) {
+                    d.classList.remove("active");
+                }
+            });
 
             dropdown.classList.toggle("active");
         });
 
         items.forEach(item => {
-            item.addEventListener("click", function () {
+            item.addEventListener("click", function (e) {
+                e.stopPropagation();
+
                 items.forEach(i => i.classList.remove("active"));
                 this.classList.add("active");
 
-                selectedValue.textContent = this.textContent;
+                const itemText = this.textContent.trim();
+                const rawValue = this.getAttribute("data-value");
+
+                selectedValue.textContent = itemText;
+
+                if (hiddenInput) {
+                    // If data-value exists, use it exactly.
+                    // For "All", data-value should be empty string.
+                    if (rawValue !== null) {
+                        hiddenInput.value = rawValue;
+                    } else {
+                        hiddenInput.value = itemText.toLowerCase() === "all" ? "" : itemText;
+                    }
+                }
+
                 dropdown.classList.remove("active");
             });
         });
     });
 
     document.addEventListener("click", function () {
-        dropdowns.forEach(d => d.classList.remove("active"));
+        document.querySelectorAll(".custom-dropdown").forEach(d => {
+            d.classList.remove("active");
+        });
     });
-
 });
+
 
 
 

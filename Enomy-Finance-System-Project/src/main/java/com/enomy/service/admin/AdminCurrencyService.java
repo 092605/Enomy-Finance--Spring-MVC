@@ -2,10 +2,10 @@ package com.enomy.service.admin;
 
 import java.util.List;
 
-import com.enomy.model.ConversionFeeRule;
-import com.enomy.model.ConversionRuleSet;
-import com.enomy.model.CurrencyTransaction;
-import com.enomy.dto.AdminCurrencyRateRowDTO;
+import com.enomy.dto.conversion.AdminCurrencyRateRowDTO;
+import com.enomy.model.conversion.ConversionFeeRule;
+import com.enomy.model.conversion.ConversionRuleSet;
+import com.enomy.model.conversion.CurrencyTransaction;
 
 public interface AdminCurrencyService {
 

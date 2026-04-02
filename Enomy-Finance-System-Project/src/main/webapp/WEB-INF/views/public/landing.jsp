@@ -12,16 +12,16 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="${contextPath}/resources/css/theme.css">
-    <link rel="stylesheet" href="${contextPath}/resources/css/landing.css">
-    <link rel="stylesheet" href="${contextPath}/resources/css/navbar.css">
-    <link rel="stylesheet" href="${contextPath}/resources/css/footer.css">
+    <link rel="stylesheet" href="${contextPath}/resources/css/public/theme.css">
+    <link rel="stylesheet" href="${contextPath}/resources/css/public/landing.css">
+    <link rel="stylesheet" href="${contextPath}/resources/css/public/navbar.css">
+    <link rel="stylesheet" href="${contextPath}/resources/css/public/footer.css">
 </head>
 
 <body>
 
     <!-- NAVBAR -->
-    <jsp:include page="/WEB-INF/components/navbar.jsp" />
+    <jsp:include page="/WEB-INF/components/Public/navbar.jsp"/>
 
     <!-- Wrapper Hero + About -->
     <div class="landing-flow-wrapper">
@@ -97,7 +97,7 @@
                 <!-- Left Side -->
                 <div class="col-lg-6">
                     <div class="about-image-card">
-                        <img src="${contextPath}/resources/images/enomy-finance-main.png"
+                        <img src="${contextPath}/resources/images/AboutLanding.png"
                              alt="Enomy Finance Illustration"
                              class="about-image">
                     </div>
@@ -271,7 +271,7 @@
                 <div class="col-lg-6 why-lottie">
                     <div class="why-lottie-gif">
                         <lottie-player
-                            src="${contextPath}/resources/animations/check list.json"
+                            src="${contextPath}/resources/animations/Time to make business.json"
                             background="transparent"
                             speed="0.7"
                             loop
@@ -388,10 +388,10 @@
     </section>
 
     <!-- FOOTER -->
-    <jsp:include page="/WEB-INF/components/footer.jsp" />
+    <jsp:include page="/WEB-INF/components/Public/footer.jsp"/>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/navbar-behaviour.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/public/navbar-behaviour.js"></script>
 </body>
 </html>

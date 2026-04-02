@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.enomy.dao.UserDao;
-import com.enomy.model.User;
+import com.enomy.dao.EFuser.UserDao;
+import com.enomy.model.EFuser.User;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 

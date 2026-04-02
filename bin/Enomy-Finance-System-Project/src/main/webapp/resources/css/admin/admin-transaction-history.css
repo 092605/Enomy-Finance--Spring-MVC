@@ -1,0 +1,497 @@
+/* =========================================================
+   1. PAGE WRAPPER / PAGE HEADER
+   What this block is for:
+   - overall page spacing
+   - page title and subtitle
+   ========================================================= */
+.transaction-admin-page {
+    padding-bottom: 2rem;
+    color: var(--text-main);
+}
+
+.transaction-admin-page-header {
+    margin-bottom: 1.5rem;
+}
+
+.transaction-admin-page-title {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.transaction-admin-page-subtitle {
+    margin: 0.35rem 0 0;
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--text-main);
+}
+
+.transaction-admin-page-layout {
+    width: 100%;
+}
+
+
+/* =========================================================
+   2. MAIN GLASS CARDS
+   What this block is for:
+   - section title cards
+   - filter/result cards
+   - right module sidebar
+   ========================================================= */
+.transaction-admin-title-card,
+.transaction-admin-panel-card,
+.transaction-admin-module-sidebar {
+    background: rgba(17, 24, 39, 0.72);
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: var(--shadow-soft);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.transaction-admin-title-card {
+    border-radius: 24px;
+    padding: 1.35rem 1.45rem;
+    margin-bottom: 1.25rem;
+}
+
+.transaction-admin-title-card h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+.transaction-admin-title-card p {
+    margin: 0.45rem 0 0;
+    font-size: 0.94rem;
+    color: var(--text-muted);
+}
+
+.transaction-admin-panel-card {
+    border-radius: 24px;
+    overflow: hidden;
+}
+
+.transaction-admin-card-inner {
+    padding: 1.35rem 1.3rem;
+}
+
+
+/* =========================================================
+   3. SECTION VISIBILITY
+   What this block is for:
+   - shows only one section at a time
+   - works with right sidebar navigation + JS
+   ========================================================= */
+.transaction-admin-section {
+    display: none;
+}
+
+.transaction-admin-section.active {
+    display: block;
+}
+
+
+/* =========================================================
+   4. FILTER FORM CONTAINER
+   What this block is for:
+   - filter wrapper styling
+   - keeps form grouped inside the card
+   ========================================================= */
+.transaction-admin-filter-form {
+    border-radius: 20px;
+    padding: 1rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+
+/* =========================================================
+   5. LABELS / TEXT INPUTS / DATE INPUTS
+   What this block is for:
+   - shared labels
+   - text inputs
+   - date inputs
+   - search input styling
+   ========================================================= */
+.transaction-admin-label {
+    display: block;
+    margin-bottom: 0.42rem;
+    font-size: 0.83rem;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+.transaction-admin-input {
+    width: 100%;
+    min-height: 3rem;
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(11, 15, 26, 0.85);
+    color: var(--text-main);
+    padding: 0.78rem 0.95rem;
+    font-size: 0.94rem;
+    outline: none;
+    transition: all 0.18s ease;
+}
+
+.transaction-admin-input::placeholder {
+    color: var(--text-muted);
+}
+
+.transaction-admin-input:focus {
+    border-color: rgba(255,77,166,0.35);
+    box-shadow: 0 0 0 3px rgba(255,45,170,0.10);
+}
+
+
+/* =========================================================
+   6. CUSTOM DROPDOWN INTEGRATION
+   What this block is for:
+   - makes the page use your reusable custom dropdown
+   - relies on theme.css dropdown base styles
+   - only adds page-specific sizing and stacking fixes
+   ========================================================= */
+.transaction-admin-page .custom-dropdown {
+    width: 100%;
+}
+
+.transaction-admin-page .custom-dropdown-toggle {
+    min-height: 3rem;
+    border-radius: 16px;
+    width: 100%;
+}
+
+.transaction-admin-page .custom-dropdown-menu {
+    z-index: 1200;
+}
+
+.transaction-admin-page .selected-value {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* =========================================================
+   7. ACTION ROW
+   What this block is for:
+   - reset and submit button alignment
+   - spacing below filters
+   ========================================================= */
+.transaction-admin-action-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    justify-content: flex-end;
+    margin-top: 1.2rem;
+}
+
+
+/* =========================================================
+   8. RESULTS HEAD / RESULT BADGE
+   What this block is for:
+   - results section title row
+   - count badge at the right
+   ========================================================= */
+.transaction-admin-results-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-top: 1.4rem;
+    margin-bottom: 1rem;
+}
+
+.transaction-admin-results-title {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+.transaction-admin-results-text {
+    margin: 0.35rem 0 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.transaction-admin-meta-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2rem;
+    padding: 0.42rem 0.8rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #fff;
+    background: var(--gradient-primary);
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   9. EMPTY STATE
+   What this block is for:
+   - placeholder box before backend results are connected
+   ========================================================= */
+.transaction-admin-empty-state {
+    text-align: center;
+    padding: 2rem 1rem;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.03);
+    border: 1px dashed rgba(255,255,255,0.1);
+}
+
+.transaction-admin-empty-state h4 {
+    margin: 0;
+    font-size: 1.02rem;
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+.transaction-admin-empty-state p {
+    margin: 0.55rem 0 0;
+    color: var(--text-muted);
+}
+
+
+/* =========================================================
+   10. TABLES - BASE LOOK
+   What this block is for:
+   - keeps history table dark themed
+   - removes default white bootstrap table look
+   - improves readability
+   ========================================================= */
+.transaction-admin-history-table {
+    width: 100%;
+    margin: 0;
+    color: var(--text-main);
+    vertical-align: middle;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: transparent !important;
+}
+
+.transaction-admin-history-table thead,
+.transaction-admin-history-table tbody,
+.transaction-admin-history-table tr,
+.transaction-admin-history-table th,
+.transaction-admin-history-table td {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.transaction-admin-history-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-size: 0.79rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    background: rgba(20, 27, 45, 0.96) !important;
+    padding: 0.9rem 0.95rem;
+    white-space: nowrap;
+}
+
+.transaction-admin-history-table tbody td {
+    padding: 0.95rem;
+    border-color: rgba(255,255,255,0.06);
+    font-size: 0.91rem;
+    color: var(--text-main) !important;
+    background: rgba(255,255,255,0.025) !important;
+    white-space: nowrap;
+}
+
+.transaction-admin-history-table tbody tr:nth-child(even) td {
+    background: rgba(255,255,255,0.045) !important;
+}
+
+.transaction-admin-history-table tbody tr:hover td {
+    background: rgba(255,77,166,0.08) !important;
+    color: #fff !important;
+}
+
+
+/* =========================================================
+   11. SCROLLABLE TABLE WRAPS
+   What this block is for:
+   - fixed-height result area
+   - smooth scroll for tables
+   - prevents page from becoming too tall
+   ========================================================= */
+#currencyTransactionsTableWrap,
+#investmentQuotesTableWrap {
+    max-height: 360px;
+    overflow-y: auto;
+    overflow-x: auto;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.03);
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,77,166,0.55) rgba(255,255,255,0.06);
+}
+
+#currencyTransactionsTableWrap::-webkit-scrollbar,
+#investmentQuotesTableWrap::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+#currencyTransactionsTableWrap::-webkit-scrollbar-track,
+#investmentQuotesTableWrap::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.06);
+    border-radius: 999px;
+}
+
+#currencyTransactionsTableWrap::-webkit-scrollbar-thumb,
+#investmentQuotesTableWrap::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(255,77,166,0.9), rgba(168,85,247,0.9));
+    border-radius: 999px;
+    border: 2px solid rgba(255,255,255,0.06);
+}
+
+
+/* =========================================================
+   12. RIGHT MODULE SIDEBAR
+   What this block is for:
+   - sticky right sidebar card
+   - transaction history header block
+   - right-side section navigation
+   ========================================================= */
+.transaction-admin-module-sidebar-wrap {
+    position: sticky;
+    top: 1.25rem;
+}
+
+.transaction-admin-module-sidebar {
+    border-radius: 24px;
+    padding: 1rem;
+}
+
+.transaction-admin-module-logo-link {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    text-decoration: none;
+    color: var(--text-main);
+    border-radius: 18px;
+    padding: 0.9rem;
+    background: linear-gradient(90deg, rgba(255, 77, 166, 0.14), rgba(139, 92, 246, 0.14));
+    border: 1px solid rgba(255, 77, 166, 0.2);
+    transition: all 0.18s ease;
+    margin-bottom: 1rem;
+}
+
+.transaction-admin-module-logo-link:hover {
+    color: var(--text-main);
+    transform: translateY(-1px);
+}
+
+.module-logo-icon {
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: #fff;
+    background: var(--gradient-primary);
+    box-shadow: 0 12px 24px rgba(255, 77, 166, 0.24);
+}
+
+.transaction-admin-module-logo-link strong {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+.transaction-admin-module-logo-link small {
+    display: block;
+    margin-top: 0.14rem;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+}
+
+.transaction-admin-module-nav {
+    display: grid;
+    gap: 0.7rem;
+}
+
+.transaction-admin-module-nav-link {
+    display: block;
+    text-decoration: none;
+    color: var(--text-muted);
+    border-radius: 16px;
+    padding: 0.82rem 0.95rem;
+    font-size: 0.91rem;
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.18s ease;
+}
+
+.transaction-admin-module-nav-link:hover {
+    color: var(--text-main);
+    transform: translateY(-1px);
+}
+
+.transaction-admin-module-nav-link.active {
+    background: var(--gradient-primary);
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 12px 24px rgba(255, 77, 166, 0.22);
+}
+
+
+/* =========================================================
+   13. RESPONSIVE
+   What this block is for:
+   - tablet and mobile adjustments
+   - keeps filters and table areas usable on smaller screens
+   ========================================================= */
+@media (max-width: 991.98px) {
+    .transaction-admin-module-sidebar-wrap {
+        position: static;
+    }
+
+    .transaction-admin-results-head {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #currencyTransactionsTableWrap,
+    #investmentQuotesTableWrap {
+        max-height: 300px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .transaction-admin-card-inner {
+        padding: 1rem;
+    }
+
+    .transaction-admin-title-card {
+        padding: 1.05rem 1rem;
+    }
+
+    .transaction-admin-action-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #currencyTransactionsTableWrap,
+    #investmentQuotesTableWrap {
+        max-height: 260px;
+    }
+}

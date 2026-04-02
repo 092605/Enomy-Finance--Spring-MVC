@@ -71,6 +71,9 @@
 
 .investment-card-inner {
     padding: 1.35rem 1.3rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .sticky-investment-card {
@@ -114,16 +117,54 @@
     box-shadow: 0 10px 22px rgba(255, 77, 166, 0.22);
 }
 
+/* =========================================================
+   ACTIVE PLAN RULE CARD EMPHASIS
+   What this block is for:
+   - highlights the active plan rule card
+   - adds glow, stronger border, and visual priority
+   - does NOT affect other cards
+   ========================================================= */
+
+.investment-active-rule-card {
+    border: 1px solid rgba(255, 77, 166, 0.22);
+    box-shadow:
+        0 18px 40px rgba(0, 0, 0, 0.28),
+        0 0 0 1px rgba(255, 77, 166, 0.08),
+        0 0 30px rgba(255, 77, 166, 0.10),
+        0 0 60px rgba(168, 85, 247, 0.08);
+    position: relative;
+}
+
+/* soft gradient glow overlay */
+.investment-active-rule-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 24px;
+    pointer-events: none;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 77, 166, 0.06),
+        rgba(168, 85, 247, 0.03) 40%,
+        rgba(255, 255, 255, 0.01) 100%
+    );
+}
+
+/* ensure content stays above glow */
+.investment-active-rule-card .investment-card-inner {
+    position: relative;
+    z-index: 1;
+}
+
 
 /* =========================
    3. SHARED ACTIONS, EMPTY STATES, BUTTON HELPERS
 ========================= */
 .investment-action-row {
+    margin-top: auto;          /* PUSH TO BOTTOM */
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.85rem;
-    align-items: center;
-    margin-top: 1.2rem;
+    justify-content: flex-end; /* PUSH TO RIGHT */
+    padding-top: 4rem;
 }
 
 .investment-action-stack {
@@ -415,6 +456,19 @@
     font-weight: 700;
 }
 
+.investment-tax-custom-dropdown {
+    max-width: 170px;
+    min-width: 140px;
+    width: 100%;
+}
+
+.investment-tax-custom-dropdown .custom-dropdown-toggle {
+    min-height: 2.9rem;
+    border-radius: 999px;
+    font-weight: 700;
+    padding-right: 0.95rem;
+}
+
 
 /* =========================
    8. TAX SETTINGS SECTION - ACTIVE TAX CARD
@@ -670,6 +724,56 @@
     border-radius: 12px;
     font-weight: 700;
     padding: 0.45rem 0.75rem;
+}
+
+/* =========================================================
+   10.1 HISTORY SCROLLABLE CONTAINER
+   What this block is for:
+   - makes the history table scrollable inside the card
+   - prevents the history section from becoming too tall
+   - keeps header visible while scrolling
+   - matches the custom scrollbar style used in admin currency
+   ========================================================= */
+
+.investment-history-scroll {
+    max-height: 370px;
+    overflow-y: auto;
+    overflow-x: auto;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.03);
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,77,166,0.55) rgba(255,255,255,0.06);
+}
+
+/* Chrome, Edge, Safari scrollbar styling */
+.investment-history-scroll::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.investment-history-scroll::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.06);
+    border-radius: 999px;
+}
+
+.investment-history-scroll::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(255,77,166,0.9), rgba(168,85,247,0.9));
+    border-radius: 999px;
+    border: 2px solid rgba(255,255,255,0.06);
+}
+
+/* Keep table header visible when scrolling */
+.investment-history-scroll thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: rgba(17, 24, 39, 0.95);
+}
+
+/* Keeps table layout clean inside scroll area */
+.investment-history-scroll .investment-history-table {
+    margin-bottom: 0;
 }
 
 

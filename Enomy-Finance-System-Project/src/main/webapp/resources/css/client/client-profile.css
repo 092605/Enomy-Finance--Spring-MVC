@@ -1,0 +1,778 @@
+/* =========================================================
+   CLIENT PROFILE PAGE
+   ========================================================= */
+
+.profile-page-header {
+    margin-bottom: 1.5rem;
+}
+
+.profile-page-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    background: linear-gradient(135deg, rgba(255, 72, 179, 0.2), rgba(150, 85, 255, 0.2));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #f5d8ff;
+    font-size: 0.82rem;
+    font-weight: 700;
+    margin-bottom: 0.9rem;
+}
+
+.profile-page-title {
+    margin: 0;
+    font-size: clamp(2rem, 2.8vw, 2.5rem);
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.profile-page-subtitle {
+    margin: 0.5rem 0 0;
+    color: rgba(230, 232, 255, 0.74);
+    font-size: 1rem;
+}
+
+/* =====================================
+   DELETE MODAL
+===================================== */
+.profile-delete-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 4000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(5, 8, 20, 0.75);
+    backdrop-filter: blur(6px);
+}
+
+.profile-delete-modal-card {
+    width: 100%;
+    max-width: 500px;
+    border-radius: 24px;
+    background: rgba(10, 14, 40, 0.98);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 1.5rem;
+}
+
+.profile-delete-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.profile-delete-modal-body {
+    margin-top: 1rem;
+    color: rgba(230,230,255,0.85);
+}
+
+.profile-delete-warning {
+    margin-top: 0.8rem;
+    color: #ff7b7b;
+    font-weight: 600;
+}
+
+.profile-delete-modal-footer {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.8rem;
+}
+
+.profile-btn-danger {
+    background: linear-gradient(135deg, #ff4b4b, #ff1f6b);
+    color: white;
+}
+
+/* =====================================
+   ACCOUNT STATUS TILE FIX
+===================================== */
+.profile-info-tile {
+    position: relative;
+}
+
+/* DELETE LINK POSITION */
+.profile-delete-link {
+    position: absolute;
+    bottom: 0.8rem;
+    right: 1rem;
+
+    background: transparent;
+    border: 0;
+    padding: 0;
+
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #ff7b7b;
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.profile-delete-link:hover {
+    color: #ff4b4b;
+    text-decoration: underline;
+}
+
+/* =====================================
+   SECTION SPACING (VERY IMPORTANT)
+===================================== */
+.dashboard-content > .container-fluid > section {
+    margin-bottom: 2rem; /* space between rows */
+}
+
+/* =====================================
+   PAGE CONTENT SPACING
+===================================== */
+.dashboard-content {
+    padding: 1.5rem 1.5rem 2rem;
+}
+
+/* =====================================
+   SUCCESS LOGIN (TEAL GRADIENT STYLE)
+===================================== */
+
+.profile-success-label {
+    font-weight: 600;
+
+    /* gradient text */
+    background: linear-gradient(90deg, #22d3ee, #4ade80);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    /* soft glow */
+    text-shadow: 0 0 10px rgba(34, 211, 238, 0.25);
+}
+
+
+
+/* =====================================
+   CARD SEPARATION BOOST
+===================================== */
+.profile-card {
+    margin-bottom: 0.5rem;
+}
+
+.row.g-4 {
+    --bs-gutter-x: 1.75rem;
+    --bs-gutter-y: 1.75rem;
+}
+
+/* =========================================================
+   GLOBAL ALERTS
+   ========================================================= */
+
+.profile-alert-stack .alert {
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 1rem;
+}
+
+/* =========================================================
+   CARD BASE
+   ========================================================= */
+
+.profile-card {
+    border-radius: 28px;
+    background:
+        linear-gradient(180deg, rgba(9, 15, 42, 0.96), rgba(7, 11, 31, 0.96));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 20px 55px rgba(0, 0, 0, 0.35);
+    overflow: hidden;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.profile-card-inner {
+    padding: 1.75rem;
+}
+
+.profile-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.profile-card-title {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.profile-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    min-height: 46px;
+    padding: 0.75rem 1.15rem;
+    border-radius: 16px;
+    border: 1px solid transparent;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: all 0.22s ease;
+    cursor: pointer;
+}
+
+.profile-btn-primary {
+    color: #ffffff;
+    background: linear-gradient(135deg, #ff4db8, #9f63ff);
+    box-shadow: 0 10px 24px rgba(211, 82, 255, 0.28);
+}
+
+.profile-btn-primary:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.05);
+}
+
+.profile-btn-secondary {
+    color: #eef0ff;
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.profile-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* =========================================================
+   PROFILE OVERVIEW
+   ========================================================= */
+
+.profile-overview-wrap {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.profile-avatar-area {
+    width: 220px;
+    max-width: 100%;
+}
+
+.profile-avatar-frame {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 26px;
+    overflow: hidden;
+    background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+    border: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.profile-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.profile-avatar-actions {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-overview-details {
+    flex: 1 1 360px;
+}
+
+.profile-identity-block {
+    margin-bottom: 1.15rem;
+}
+
+.profile-user-name {
+    margin: 0 0 0.3rem;
+    color: #ffffff;
+    font-size: clamp(1.7rem, 2.3vw, 2.1rem);
+    font-weight: 800;
+}
+
+.profile-user-email {
+    margin: 0;
+    color: rgba(232, 235, 255, 0.74);
+    font-size: 1rem;
+}
+
+/* =========================================================
+   TILES / INFO BLOCKS
+   ========================================================= */
+
+.profile-info-tile,
+.profile-stat-tile {
+    height: 100%;
+    border-radius: 20px;
+    padding: 1rem 1.05rem;
+    background: rgba(255, 255, 255, 0.045);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.profile-info-label,
+.profile-stat-label {
+    display: block;
+    color: rgba(229, 232, 255, 0.68);
+    font-size: 0.86rem;
+    margin-bottom: 0.45rem;
+}
+
+.profile-info-value {
+    display: block;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 700;
+    word-break: break-word;
+}
+
+.profile-stat-value {
+    margin: 0;
+    color: #ffffff;
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+/* =========================================================
+   SECURITY SUMMARY
+   ========================================================= */
+
+.profile-status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.86rem;
+    border: 1px solid transparent;
+}
+
+.profile-status-good {
+    color: #f6fff8;
+    background: rgba(50, 205, 126, 0.14);
+    border-color: rgba(50, 205, 126, 0.28);
+}
+
+.profile-status-warning {
+    color: #fff8e6;
+    background: rgba(255, 184, 77, 0.14);
+    border-color: rgba(255, 184, 77, 0.28);
+}
+
+.profile-status-danger {
+    color: #fff1f1;
+    background: rgba(255, 98, 98, 0.14);
+    border-color: rgba(255, 98, 98, 0.3);
+}
+
+.profile-security-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    margin-top: 0.5rem;
+}
+
+.profile-security-meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 0.7rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    color: rgba(229, 232, 255, 0.8);
+    font-size: 0.95rem;
+}
+
+.profile-security-meta-row:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
+.profile-security-meta-row strong {
+    color: #ffffff;
+    text-align: right;
+}
+
+.profile-security-note {
+    margin-top: 1.2rem;
+    padding: 0.95rem 1rem;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.045);
+    color: rgba(233, 236, 255, 0.74);
+    font-size: 0.93rem;
+    line-height: 1.55;
+}
+
+/* =========================================================
+   FORMS
+   ========================================================= */
+
+.profile-form-label {
+    display: inline-block;
+    margin-bottom: 0.55rem;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.profile-form-control {
+    width: 100%;
+    min-height: 50px;
+    border-radius: 16px;
+    padding: 0.8rem 1rem;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.045);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.profile-form-control:focus {
+    border-color: rgba(255, 90, 200, 0.65);
+    box-shadow: 0 0 0 0.18rem rgba(204, 94, 255, 0.14);
+    background: rgba(255, 255, 255, 0.065);
+}
+
+.profile-form-control::placeholder {
+    color: rgba(230, 232, 255, 0.44);
+}
+
+.profile-readonly-input {
+    opacity: 0.84;
+    cursor: not-allowed;
+}
+
+.profile-field-hint {
+    margin-top: 0.45rem;
+    color: rgba(229, 232, 255, 0.6);
+    font-size: 0.86rem;
+}
+
+.profile-form-actions {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+}
+
+.profile-password-wrap {
+    position: relative;
+}
+
+.profile-password-wrap .profile-form-control {
+    padding-right: 5.4rem;
+}
+
+.profile-password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 0.75rem;
+    transform: translateY(-50%);
+    border: 0;
+    background: transparent;
+    color: #e6d7ff;
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: pointer;
+}
+
+.profile-password-strength {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 0.1rem;
+    margin-bottom: 0.65rem;
+}
+
+.profile-password-strength-label {
+    color: rgba(229, 232, 255, 0.72);
+    font-size: 0.9rem;
+}
+
+.profile-password-strength-value {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.profile-password-rules {
+    margin: 0;
+    padding-left: 1.2rem;
+    color: rgba(229, 232, 255, 0.7);
+    font-size: 0.9rem;
+    line-height: 1.7;
+}
+
+.profile-password-rules li.rule-valid {
+    color: #7ef0a5;
+}
+
+.profile-password-rules li.rule-invalid {
+    color: #ff9ca8;
+}
+
+/* =========================================================
+   FILTERS / SUMMARY
+   ========================================================= */
+
+.profile-filter-actions {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+}
+
+.profile-range-summary {
+    color: rgba(232, 235, 255, 0.78);
+    font-size: 0.95rem;
+}
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
+.profile-table-wrap {
+    border-radius: 22px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+.profile-activity-table {
+    margin: 0;
+    color: #ffffff;
+}
+
+.profile-activity-table thead th {
+    background: rgba(255,255,255,0.05);
+    color: rgba(240, 242, 255, 0.82);
+    font-size: 0.88rem;
+    font-weight: 700;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding: 1rem;
+    white-space: nowrap;
+}
+
+.profile-activity-table tbody td {
+    background: transparent;
+    color: rgba(244, 245, 255, 0.92);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding: 1rem;
+    font-size: 0.94rem;
+    vertical-align: middle;
+}
+
+.profile-activity-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.profile-table-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 88px;
+    padding: 0.42rem 0.85rem;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    border: 1px solid transparent;
+}
+
+.profile-table-badge-success {
+    color: #f5fff8;
+    background: rgba(50, 205, 126, 0.14);
+    border-color: rgba(50, 205, 126, 0.28);
+}
+
+.profile-table-badge-danger {
+    color: #fff2f2;
+    background: rgba(255, 98, 98, 0.14);
+    border-color: rgba(255, 98, 98, 0.3);
+}
+
+.profile-empty-state {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.045);
+    color: rgba(229, 232, 255, 0.68);
+    text-align: center;
+}
+
+/* =========================================================
+   PHOTO CHOICE MODAL
+   ========================================================= */
+
+.profile-photo-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 3000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem;
+    background: rgba(5, 8, 20, 0.74);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.profile-photo-modal-card {
+    width: 100%;
+    max-width: 760px;
+    border-radius: 28px;
+    background: linear-gradient(180deg, rgba(12, 18, 45, 0.98), rgba(7, 11, 31, 0.98));
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
+    overflow: hidden;
+}
+
+.profile-photo-modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.35rem 1.4rem 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.profile-photo-modal-title {
+    margin: 0 0 0.35rem;
+    color: #ffffff;
+    font-size: 1.3rem;
+    font-weight: 800;
+}
+
+.profile-photo-modal-subtitle {
+    margin: 0;
+    color: rgba(229, 232, 255, 0.72);
+    font-size: 0.95rem;
+    line-height: 1.55;
+}
+
+.profile-photo-modal-close {
+    width: 42px;
+    height: 42px;
+    border: 0;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.06);
+    color: #ffffff;
+    font-size: 1.6rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.profile-photo-modal-close:hover {
+    background: rgba(255,255,255,0.12);
+}
+
+.profile-photo-modal-section {
+    padding: 1.25rem 1.4rem 0;
+}
+
+.profile-photo-section-title {
+    margin: 0 0 0.9rem;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.profile-avatar-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.profile-avatar-option {
+    padding: 0.4rem;
+    border-radius: 22px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.04);
+    cursor: pointer;
+    transition: all 0.22s ease;
+}
+
+.profile-avatar-option:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 90, 200, 0.5);
+    box-shadow: 0 12px 28px rgba(196, 77, 255, 0.18);
+}
+
+.profile-avatar-option img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+    border-radius: 18px;
+}
+
+.profile-photo-modal-footer {
+    padding: 1.25rem 1.4rem 1.4rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 991.98px) {
+    .profile-card-inner {
+        padding: 1.2rem;
+    }
+
+    .profile-security-meta-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .profile-security-meta-row strong {
+        text-align: left;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .profile-overview-wrap {
+        flex-direction: column;
+    }
+
+    .profile-avatar-area {
+        width: 100%;
+        max-width: 280px;
+    }
+
+    .profile-form-actions,
+    .profile-filter-actions {
+        flex-direction: column;
+    }
+
+    .profile-form-actions .profile-btn,
+    .profile-filter-actions .profile-btn {
+        width: 100%;
+    }
+
+    .profile-avatar-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .profile-photo-modal-header {
+        padding: 1.1rem 1.1rem 0.95rem;
+    }
+
+    .profile-photo-modal-section {
+        padding: 1rem 1.1rem 0;
+    }
+
+    .profile-photo-modal-footer {
+        padding: 1rem 1.1rem 1.1rem;
+    }
+}

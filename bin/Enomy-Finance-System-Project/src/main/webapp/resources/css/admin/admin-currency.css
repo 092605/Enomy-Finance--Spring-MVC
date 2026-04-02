@@ -1,0 +1,834 @@
+/* =========================================================
+   1. PAGE WRAPPER / PAGE HEADER
+   What this block is for:
+   - overall page spacing
+   - page title and subtitle
+   ========================================================= */
+.currency-admin-page {
+    padding-bottom: 2rem;
+    color: var(--text-main);
+}
+
+.currency-admin-page-header {
+    margin-bottom: 1.5rem;
+}
+
+.currency-admin-page-title {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.currency-admin-page-subtitle {
+    margin: 0.35rem 0 0;
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--text-main);
+}
+
+
+/* =========================================================
+   2. MAIN GLASS CARDS
+   What this block is for:
+   - title cards
+   - content cards
+   - right module sidebar
+   ========================================================= */
+.currency-admin-title-card,
+.currency-admin-panel-card,
+.currency-admin-module-sidebar {
+    background: rgba(17, 24, 39, 0.72);
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: var(--shadow-soft);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.currency-admin-title-card {
+    border-radius: 24px;
+    padding: 1.35rem 1.45rem;
+    margin-bottom: 1.25rem;
+}
+
+.currency-admin-title-card h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+
+.currency-admin-title-card p {
+    margin: 0.45rem 0 0;
+    font-size: 0.94rem;
+    color: var(--text-muted);
+}
+
+.currency-admin-panel-card {
+    border-radius: 24px;
+    overflow: hidden;
+}
+
+.currency-admin-card-inner {
+    padding: 1.35rem 1.3rem;
+}
+
+/* =========================================================
+   ACTIVE RULE CARD EMPHASIS
+   What this block is for:
+   - makes the active conversion rule card stand out more
+   - adds soft glow, stronger border, and subtle lift
+   - keeps the design consistent with the current theme
+   ========================================================= */
+
+.currency-admin-active-rule-card {
+    border: 1px solid rgba(255, 77, 166, 0.22);
+    box-shadow:
+        0 18px 40px rgba(0, 0, 0, 0.28),
+        0 0 0 1px rgba(255, 77, 166, 0.08),
+        0 0 30px rgba(255, 77, 166, 0.10),
+        0 0 60px rgba(168, 85, 247, 0.08);
+    position: relative;
+}
+
+.currency-admin-active-rule-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 24px;
+    pointer-events: none;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 77, 166, 0.06),
+        rgba(168, 85, 247, 0.03) 40%,
+        rgba(255, 255, 255, 0.01) 100%
+    );
+}
+
+.currency-admin-active-rule-card .currency-admin-card-inner {
+    position: relative;
+    z-index: 1;
+}
+
+
+/* =========================================================
+   3. CARD HEADERS / SECTION HEADS
+   What this block is for:
+   - top rows inside cards
+   - form section header rows
+   - modal header layout
+   ========================================================= */
+.currency-admin-card-head,
+.currency-admin-bracket-head,
+.currency-admin-modal-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.currency-admin-card-title {
+    margin: 0;
+    font-size: 1.08rem;
+    font-weight: 800;
+}
+
+.currency-admin-card-text {
+    margin: 0.35rem 0 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+
+/* =========================================================
+   4. BADGES
+   What this block is for:
+   - active version badge
+   - active/inactive status badges
+   ========================================================= */
+.currency-admin-version-badge,
+.currency-admin-status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.currency-admin-version-badge {
+    min-height: 2rem;
+    padding: 0.42rem 0.8rem;
+    color: #fff;
+    background: var(--gradient-primary);
+}
+
+.currency-admin-status-badge {
+    min-width: 88px;
+    padding: 0.4rem 0.7rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.currency-admin-status-badge.active {
+    background: rgba(34,197,94,0.12);
+    color: #86efac;
+    border: 1px solid rgba(34,197,94,0.18);
+}
+
+.currency-admin-status-badge.inactive {
+    background: rgba(148,163,184,0.12);
+    color: #cbd5e1;
+    border: 1px solid rgba(148,163,184,0.16);
+}
+
+
+/* =========================================================
+   5. INFO GRID / MINI BOXES / FORM PANELS
+   What this block is for:
+   - active rule info boxes
+   - preview boxes
+   - bracket builder containers
+   - filter form containers
+   ========================================================= */
+.currency-admin-info-grid,
+.currency-admin-form-top-grid {
+    display: grid;
+    gap: 0.9rem;
+}
+
+.currency-admin-info-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.currency-admin-info-grid.compact {
+    grid-template-columns: 1fr;
+}
+
+.currency-admin-form-top-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-bottom: 1rem;
+}
+
+.currency-admin-info-grid > div,
+.currency-admin-mini-box,
+.currency-admin-bracket-card,
+.currency-admin-bracket-builder,
+.currency-admin-filter-form,
+.currency-admin-bracket-row {
+    border-radius: 18px;
+    padding: 1rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+.currency-admin-info-grid span,
+.currency-admin-mini-box span {
+    display: block;
+    margin-bottom: 0.34rem;
+    font-size: 0.76rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+}
+
+.currency-admin-info-grid strong,
+.currency-admin-mini-box strong {
+    display: block;
+    font-size: 0.98rem;
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+
+/* =========================================================
+   6. LABELS / INPUTS
+   What this block is for:
+   - all labels and text/date inputs
+   ========================================================= */
+.currency-admin-label {
+    display: block;
+    margin-bottom: 0.42rem;
+    font-size: 0.83rem;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+.currency-admin-input {
+    width: 100%;
+    min-height: 3rem;
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(11, 15, 26, 0.85);
+    color: var(--text-main);
+    padding: 0.78rem 0.95rem;
+    font-size: 0.94rem;
+    outline: none;
+}
+
+.currency-admin-input::placeholder {
+    color: var(--text-muted);
+}
+
+.currency-admin-input:focus {
+    border-color: rgba(255,77,166,0.35);
+    box-shadow: 0 0 0 3px rgba(255,45,170,0.10);
+}
+
+
+/* =========================================================
+   7. ACTION ROW / REMOVE BUTTON
+   What this block is for:
+   - button row spacing
+   - remove bracket row button
+   ========================================================= */
+.currency-admin-action-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    align-items: center;
+    margin-top: 1.2rem;
+}
+
+.currency-admin-row-remove-btn {
+    width: 2.6rem;
+    height: 2.9rem;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.04);
+    color: var(--text-main);
+    font-size: 1.1rem;
+    font-weight: 800;
+    transition: all 0.2s ease;
+}
+
+.currency-admin-row-remove-btn:hover {
+    color: #fff;
+    border-color: rgba(255,77,166,0.45);
+    box-shadow: 0 0 18px rgba(255,45,170,0.18);
+}
+
+
+/* =========================================================
+   8. EMPTY STATE / ALERTS
+   What this block is for:
+   - empty placeholders
+   - success / error alert message style
+   ========================================================= */
+.currency-admin-empty-state {
+    text-align: center;
+    padding: 2rem 1rem;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.03);
+    border: 1px dashed rgba(255,255,255,0.1);
+}
+
+.currency-admin-empty-state h4 {
+    margin: 0;
+    font-size: 1.02rem;
+    font-weight: 800;
+}
+
+.currency-admin-empty-state p {
+    margin: 0.55rem 0 0;
+    color: var(--text-muted);
+}
+
+.currency-admin-alert-success,
+.currency-admin-alert-error {
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: var(--shadow-soft);
+}
+
+.currency-admin-alert-success {
+    background: rgba(34,197,94,0.14);
+    color: #bbf7d0;
+}
+
+.currency-admin-alert-error {
+    background: rgba(239,68,68,0.14);
+    color: #fecaca;
+}
+
+
+/* =========================================================
+   9. TABLES - BASE LOOK
+   What this block is for:
+   - removes Bootstrap white table look
+   - makes table text readable immediately
+   - fixes row colors so they are not white/faded
+   ========================================================= */
+.currency-admin-bracket-table,
+.currency-admin-history-table {
+    width: 100%;
+    margin: 0;
+    color: var(--text-main);
+    vertical-align: middle;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: transparent !important;
+}
+
+.currency-admin-bracket-table thead,
+.currency-admin-history-table thead,
+.currency-admin-bracket-table tbody,
+.currency-admin-history-table tbody,
+.currency-admin-bracket-table tr,
+.currency-admin-history-table tr,
+.currency-admin-bracket-table th,
+.currency-admin-history-table th,
+.currency-admin-bracket-table td,
+.currency-admin-history-table td {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.currency-admin-bracket-table thead th,
+.currency-admin-history-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-size: 0.79rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    background: rgba(20, 27, 45, 0.96) !important;
+    padding: 0.9rem 0.95rem;
+}
+
+.currency-admin-bracket-table tbody td,
+.currency-admin-history-table tbody td {
+    padding: 0.95rem;
+    border-color: rgba(255,255,255,0.06);
+    font-size: 0.91rem;
+    color: var(--text-main) !important;
+    background: rgba(255,255,255,0.025) !important;
+}
+
+.currency-admin-history-table tbody tr:nth-child(even) td,
+.currency-admin-bracket-table tbody tr:nth-child(even) td {
+    background: rgba(255,255,255,0.045) !important;
+}
+
+.currency-admin-history-table tbody tr:nth-child(odd) td,
+.currency-admin-bracket-table tbody tr:nth-child(odd) td {
+    background: rgba(255,255,255,0.025) !important;
+}
+
+.currency-admin-history-table tbody tr:hover td,
+.currency-admin-bracket-table tbody tr:hover td {
+    background: rgba(255,77,166,0.08) !important;
+    color: #ffffff !important;
+}
+
+
+/* =========================================================
+   10. SCROLLABLE RESULTS CONTAINERS
+   What this block is for:
+   - fixed-height results area
+   - vertical scrolling
+   - keeps long result lists from stretching the page
+   ========================================================= */
+#ratesResultsWrap,
+#transactionsResultsWrap,
+#historyResultsWrap {
+    margin-top: 1rem;
+}
+
+#ratesResultsWrap .table-responsive,
+#transactionsResultsWrap .table-responsive,
+#historyResultsWrap .table-responsive {
+    max-height: 340px;
+    overflow-y: auto;
+    overflow-x: auto;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.03);
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,77,166,0.55) rgba(255,255,255,0.06);
+}
+
+#ratesResultsWrap .table-responsive::-webkit-scrollbar,
+#transactionsResultsWrap .table-responsive::-webkit-scrollbar,
+#historyResultsWrap .table-responsive::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+#ratesResultsWrap .table-responsive::-webkit-scrollbar-track,
+#transactionsResultsWrap .table-responsive::-webkit-scrollbar-track,
+#historyResultsWrap .table-responsive::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.06);
+    border-radius: 999px;
+}
+
+#ratesResultsWrap .table-responsive::-webkit-scrollbar-thumb,
+#transactionsResultsWrap .table-responsive::-webkit-scrollbar-thumb,
+#historyResultsWrap .table-responsive::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(255,77,166,0.9), rgba(168,85,247,0.9));
+    border-radius: 999px;
+    border: 2px solid rgba(255,255,255,0.06);
+}
+
+
+/* =========================
+   11. RIGHT MODULE SIDEBAR
+   Based on Investment sidebar style
+========================= */
+.currency-admin-module-sidebar-wrap,
+.sticky-currency-admin-card {
+    position: sticky;
+    top: 1.25rem;
+}
+
+.currency-admin-module-sidebar {
+    border-radius: 24px;
+    padding: 1rem;
+    background: rgba(17, 24, 39, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: var(--shadow-soft);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.currency-admin-module-logo-link {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    text-decoration: none;
+    color: var(--text-main);
+    border-radius: 18px;
+    padding: 0.9rem;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.18s ease;
+    margin-bottom: 1rem;
+}
+
+.currency-admin-module-logo-link:hover {
+    color: var(--text-main);
+    transform: translateY(-1px);
+}
+
+.currency-admin-module-logo-link.active {
+    background: linear-gradient(90deg, rgba(255, 77, 166, 0.14), rgba(139, 92, 246, 0.14));
+    border-color: rgba(255, 77, 166, 0.2);
+}
+
+.module-logo-icon {
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: #fff;
+    background: var(--gradient-primary);
+    box-shadow: 0 12px 24px rgba(255, 77, 166, 0.24);
+}
+
+.currency-admin-module-logo-link strong {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+.currency-admin-module-logo-link small {
+    display: block;
+    margin-top: 0.14rem;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+}
+
+.currency-admin-module-nav {
+    display: grid;
+    gap: 0.7rem;
+}
+
+.currency-admin-module-nav-link {
+    display: block;
+    text-decoration: none;
+    color: var(--text-muted);
+    border-radius: 16px;
+    padding: 0.82rem 0.95rem;
+    font-size: 0.91rem;
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.18s ease;
+}
+
+.currency-admin-module-nav-link:hover {
+    color: var(--text-main);
+    transform: translateY(-1px);
+}
+
+.currency-admin-module-nav-link.active {
+    background: var(--gradient-primary);
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 12px 24px rgba(255, 77, 166, 0.22);
+}
+
+/* =========================================================
+   12. SECTION VISIBILITY
+   What this block is for:
+   - shows only one module section at a time
+   ========================================================= */
+.currency-admin-section {
+    display: none;
+}
+
+.currency-admin-section.active {
+    display: block;
+}
+
+
+/* =========================================================
+   13. MODAL
+   What this block is for:
+   - history details modal styling
+   ========================================================= */
+.currency-admin-modal-card {
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 22px 60px rgba(0,0,0,0.45);
+    background: rgba(17,24,39,0.92);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.currency-admin-modal-card .modal-body {
+    padding: 1.35rem 1.3rem;
+}
+
+.currency-admin-modal-head h3 {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 800;
+}
+
+.currency-admin-modal-head .btn-close {
+    filter: invert(1) grayscale(100%);
+    opacity: 0.7;
+}
+
+/* =========================================================
+   HISTORY RULE DETAILS MODAL CARD
+   What this block is for:
+   - makes the admin history modal follow the same cleaner
+     card structure as the client-side rule details card
+   - shows set id, status, description, summary boxes,
+     and fee brackets in a simpler layout
+   ========================================================= */
+.currency-admin-history-rule-card {
+    border-radius: 24px;
+}
+
+.currency-admin-history-rule-inner {
+    padding: 0.25rem;
+}
+
+.currency-admin-history-rule-title {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+.currency-admin-history-rule-meta {
+    margin-bottom: 1.25rem;
+}
+
+.currency-admin-history-rule-topline {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.85rem;
+}
+
+.currency-admin-history-label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-size: 0.76rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+}
+
+.currency-admin-history-rule-id-wrap strong {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+.currency-admin-history-rule-name {
+    display: block;
+    margin-bottom: 0.45rem;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+.currency-admin-history-rule-description {
+    margin: 0;
+    font-size: 0.96rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+}
+
+.currency-admin-history-rule-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.9rem;
+    margin-bottom: 1.15rem;
+}
+
+.currency-admin-history-summary-box {
+    border-radius: 18px;
+    padding: 1rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+.currency-admin-history-summary-box span {
+    display: block;
+    margin-bottom: 0.34rem;
+    font-size: 0.76rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+}
+
+.currency-admin-history-summary-box strong {
+    display: block;
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+.currency-admin-history-rule-table-wrap {
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.03);
+}
+
+.currency-admin-history-rule-table {
+    width: 100%;
+    margin: 0;
+    color: var(--text-main);
+    vertical-align: middle;
+    background: transparent !important;
+}
+
+.currency-admin-history-rule-table thead,
+.currency-admin-history-rule-table tbody,
+.currency-admin-history-rule-table tr,
+.currency-admin-history-rule-table th,
+.currency-admin-history-rule-table td {
+    background: transparent !important;
+}
+
+.currency-admin-history-rule-table thead th {
+    border-bottom: none;
+    padding: 0.95rem 1rem;
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    background: rgba(255,255,255,0.035) !important;
+}
+
+.currency-admin-history-rule-table tbody td {
+    padding: 1rem;
+    font-size: 0.96rem;
+    font-weight: 600;
+    color: var(--text-main);
+    border-color: rgba(255,255,255,0.06);
+}
+
+.currency-admin-history-rule-table tbody tr:hover td {
+    background: rgba(255,255,255,0.025) !important;
+}
+
+@media (max-width: 767.98px) {
+    .currency-admin-history-rule-summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .currency-admin-history-rule-topline {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+
+/* =========================================================
+   14. RESPONSIVE
+   What this block is for:
+   - tablet and mobile layout adjustments
+   ========================================================= */
+@media (max-width: 991.98px) {
+    .currency-admin-module-sidebar-wrap,
+    .sticky-currency-admin-card {
+        position: static;
+    }
+
+    .currency-admin-info-grid,
+    .currency-admin-form-top-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .currency-admin-card-head,
+    .currency-admin-bracket-head,
+    .currency-admin-modal-head {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #ratesResultsWrap .table-responsive,
+    #transactionsResultsWrap .table-responsive,
+    #historyResultsWrap .table-responsive {
+        max-height: 300px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .currency-admin-card-inner {
+        padding: 1rem;
+    }
+
+    .currency-admin-title-card {
+        padding: 1.05rem 1rem;
+    }
+
+    .currency-admin-action-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #ratesResultsWrap .table-responsive,
+    #transactionsResultsWrap .table-responsive,
+    #historyResultsWrap .table-responsive {
+        max-height: 260px;
+    }
+}
