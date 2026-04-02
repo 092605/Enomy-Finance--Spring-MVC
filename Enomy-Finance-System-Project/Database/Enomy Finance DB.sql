@@ -21,7 +21,7 @@ SET @@SESSION.SQL_LOG_BIN= 0;
 -- GTID state at the beginning of the backup 
 --
 
-/*SET @@GLOBAL.GTID_PURGED=!80000 '+' 'ea55e609-f201-11f0-9233-58112294d6c7:1-4927';*/
+SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'ea55e609-f201-11f0-9233-58112294d6c7:1-4953';
 
 --
 -- Table structure for table `conversion_fee_rule`
@@ -172,7 +172,7 @@ CREATE TABLE `investment_quotes` (
   KEY `fk_investment_quotes_plan_rules` (`plan_rules_id`),
   CONSTRAINT `fk_investment_quotes_plan_rules` FOREIGN KEY (`plan_rules_id`) REFERENCES `plan_rules` (`id`),
   CONSTRAINT `fk_investment_quotes_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -181,7 +181,7 @@ CREATE TABLE `investment_quotes` (
 
 LOCK TABLES `investment_quotes` WRITE;
 /*!40000 ALTER TABLE `investment_quotes` DISABLE KEYS */;
-INSERT INTO `investment_quotes` VALUES (1,7,'SAVINGS_PLUS',300.00,50.00,2,'2026-03-18 20:25:41'),(2,7,'BASIC_SAVINGS',1000.00,100.00,97,'2026-03-25 07:54:10');
+INSERT INTO `investment_quotes` VALUES (1,7,'SAVINGS_PLUS',300.00,50.00,2,'2026-03-18 20:25:41'),(2,7,'BASIC_SAVINGS',1000.00,100.00,97,'2026-03-25 07:54:10'),(3,7,'BASIC_SAVINGS',400.00,50.00,106,'2026-04-01 11:21:27');
 /*!40000 ALTER TABLE `investment_quotes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -282,6 +282,37 @@ INSERT INTO `tax_settings` VALUES (1,'NONE',0.00,0.0000,NULL,0.0000,NULL,0,'2026
 UNLOCK TABLES;
 
 --
+-- Table structure for table `user_login_activity`
+--
+
+DROP TABLE IF EXISTS `user_login_activity`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user_login_activity` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `user_id` bigint NOT NULL,
+  `attempted_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` varchar(20) NOT NULL,
+  `reason` varchar(255) DEFAULT NULL,
+  `ip_address` varchar(100) DEFAULT NULL,
+  `device_browser` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_user_login_activity_user` (`user_id`),
+  CONSTRAINT `fk_user_login_activity_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_login_activity`
+--
+
+LOCK TABLES `user_login_activity` WRITE;
+/*!40000 ALTER TABLE `user_login_activity` DISABLE KEYS */;
+INSERT INTO `user_login_activity` VALUES (1,7,'2026-04-01 19:49:39','FAILED','Invalid email or password','0:0:0:0:0:0:0:1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36'),(2,7,'2026-04-01 19:49:42','FAILED','Invalid email or password','0:0:0:0:0:0:0:1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36'),(3,7,'2026-04-01 19:49:51','SUCCESS','Login successful','0:0:0:0:0:0:0:1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36'),(4,7,'2026-04-01 19:51:55','SUCCESS','Login successful','0:0:0:0:0:0:0:1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36'),(5,7,'2026-04-01 20:22:28','SUCCESS','Login successful','0:0:0:0:0:0:0:1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36'),(6,7,'2026-04-01 20:22:44','SUCCESS','Login successful','0:0:0:0:0:0:0:1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36');
+/*!40000 ALTER TABLE `user_login_activity` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `users`
 --
 
@@ -296,6 +327,10 @@ CREATE TABLE `users` (
   `role` varchar(20) NOT NULL,
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_login_at` timestamp NULL DEFAULT NULL,
+  `profile_image_path` varchar(255) DEFAULT NULL,
+  `password_updated_at` timestamp NULL DEFAULT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `full_name` (`full_name`),
   UNIQUE KEY `email` (`email`)
@@ -308,7 +343,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'nissa','nissa@eno.com','$2a$10$za5onlhDzUHS.Bzp6oRmN.1./MVj7J2r9IGOnMwJ/tIEuLjZabWmq','ADMIN',1,'2026-03-12 10:45:14'),(3,'hakdog','hakdog@enomy.com','$2a$10$q.9GyGai3aqtQS./epaV5Ol4EsathNK6xkThINxd.hUJeo/agLz52','CLIENT',1,'2026-03-12 12:44:17'),(4,'gwapako','gwapa@enomy.com','$2a$10$kqM7FJVjRh.hDqzNT5h7heWflHTQMtgrU2uWCjN8uPiGFr0grNDqa','CLIENT',1,'2026-03-12 12:51:39'),(5,'haha','haha@test.com','$2a$10$bd08vcmwfLkk.dfnELbiKuFxz/5wmwo5qxAsyW7eRFT1h2xBQwISO','CLIENT',1,'2026-03-12 13:38:45'),(7,'Nissa Pacs','nissa@enomy.com','$2a$10$/9CdKmLS4esAsZzk7bWrzexJrpdf.Py94VdUz6WERmaC0utH6ZQ1e','CLIENT',1,'2026-03-18 09:37:53');
+INSERT INTO `users` VALUES (1,'nissa','nissa@eno.com','$2a$10$za5onlhDzUHS.Bzp6oRmN.1./MVj7J2r9IGOnMwJ/tIEuLjZabWmq','ADMIN',1,'2026-03-12 10:45:14',NULL,NULL,'2026-03-12 10:45:14',0),(3,'hakdog','hakdog@enomy.com','$2a$10$q.9GyGai3aqtQS./epaV5Ol4EsathNK6xkThINxd.hUJeo/agLz52','CLIENT',1,'2026-03-12 12:44:17',NULL,NULL,'2026-03-12 12:44:17',0),(4,'gwapako','gwapa@enomy.com','$2a$10$kqM7FJVjRh.hDqzNT5h7heWflHTQMtgrU2uWCjN8uPiGFr0grNDqa','CLIENT',1,'2026-03-12 12:51:39',NULL,NULL,'2026-03-12 12:51:39',0),(5,'haha','haha@test.com','$2a$10$bd08vcmwfLkk.dfnELbiKuFxz/5wmwo5qxAsyW7eRFT1h2xBQwISO','CLIENT',1,'2026-03-12 13:38:45',NULL,NULL,'2026-03-12 13:38:45',0),(7,'Annissa Pacaldo','nissa@enomy.com','$2a$10$aEOExxmBquqKvCLafkxJ3u87nt7xLsVPpfMpPpbN7jCJgPBLOo2OS','CLIENT',1,'2026-03-18 09:37:53','2026-04-01 20:22:44','/Enomy-Finance-System-Project/resources/images/avatars/Avatar 1.png','2026-04-01 19:35:36',0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
@@ -322,4 +357,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-03-26  3:15:10
+-- Dump completed on 2026-04-02 12:30:35
