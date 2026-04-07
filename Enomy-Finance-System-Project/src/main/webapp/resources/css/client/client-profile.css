@@ -116,10 +116,10 @@
 }
 
 /* =====================================
-   SECTION SPACING (VERY IMPORTANT)
+   SECTION SPACING
 ===================================== */
 .dashboard-content > .container-fluid > section {
-    margin-bottom: 2rem; /* space between rows */
+    margin-bottom: 2rem;
 }
 
 /* =====================================
@@ -132,20 +132,13 @@
 /* =====================================
    SUCCESS LOGIN (TEAL GRADIENT STYLE)
 ===================================== */
-
 .profile-success-label {
     font-weight: 600;
-
-    /* gradient text */
     background: linear-gradient(90deg, #22d3ee, #4ade80);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-
-    /* soft glow */
     text-shadow: 0 0 10px rgba(34, 211, 238, 0.25);
 }
-
-
 
 /* =====================================
    CARD SEPARATION BOOST
@@ -160,13 +153,78 @@
 }
 
 /* =========================================================
-   GLOBAL ALERTS
+   INLINE CARD ALERTS
    ========================================================= */
 
-.profile-alert-stack .alert {
-    border-radius: 18px;
-    border: 1px solid rgba(255,255,255,0.08);
+.profile-inline-alert-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
     margin-bottom: 1rem;
+}
+
+.profile-inline-alert {
+    border-radius: 18px;
+    padding: 0.95rem 1rem;
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.profile-inline-alert-success {
+    background: linear-gradient(135deg, rgba(35, 196, 120, 0.18), rgba(34, 211, 238, 0.12));
+    border-color: rgba(88, 255, 181, 0.22);
+    color: #eafff4;
+}
+
+.profile-inline-alert-danger {
+    background: linear-gradient(135deg, rgba(255, 82, 120, 0.18), rgba(255, 120, 120, 0.12));
+    border-color: rgba(255, 120, 145, 0.22);
+    color: #fff1f4;
+}
+
+.profile-inline-alert-content {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.9rem;
+}
+
+.profile-inline-alert-text {
+    flex: 1 1 auto;
+    font-size: 0.93rem;
+    line-height: 1.55;
+    font-weight: 600;
+    word-break: break-word;
+}
+
+.profile-inline-alert-close {
+    flex: 0 0 auto;
+    width: 32px;
+    height: 32px;
+    border: 0;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    color: inherit;
+    font-size: 1.15rem;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: -0.1rem;
+}
+
+.profile-inline-alert-close:hover {
+    background: rgba(255, 255, 255, 0.16);
+    transform: scale(1.04);
+}
+
+.profile-inline-alert-close:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.18rem rgba(255,255,255,0.12);
 }
 
 /* =========================================================
@@ -633,6 +691,7 @@
     border: 1px solid rgba(255,255,255,0.08);
     box-shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
     overflow: hidden;
+    padding-bottom: 1.4rem;
 }
 
 .profile-photo-modal-header {
@@ -722,6 +781,227 @@
 }
 
 /* =========================================================
+   LOGIN MONITORING COMBINED SECTION
+   ========================================================= */
+
+.profile-login-section-card {
+    position: relative;
+}
+
+.profile-login-section-header {
+    margin-bottom: 1.2rem;
+}
+
+.profile-login-section-subtitle {
+    color: rgba(230, 232, 255, 0.68);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.profile-login-filter-box {
+    border-radius: 24px;
+    padding: 1.35rem;
+    background:
+        linear-gradient(
+            120deg,
+            rgba(255, 255, 255, 0.06),
+            rgba(255, 255, 255, 0.02)
+        ),
+        rgba(5, 8, 20, 0.96);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.45),
+        0 2px 8px rgba(255, 255, 255, 0.05) inset;
+}
+
+.profile-login-activity-box {
+    border-radius: 24px;
+    padding: 1.25rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.profile-login-filter-box .profile-range-summary {
+    color: rgba(245, 237, 255, 0.88);
+}
+
+.profile-login-filter-box .profile-range-summary strong {
+    color: #ffffff;
+}
+
+.profile-table-scroll-shell {
+    border-radius: 22px;
+    overflow: hidden;
+}
+
+.profile-table-wrap-scrollable {
+    max-height: 520px;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+.profile-table-wrap-scrollable thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: rgba(23, 28, 63, 0.98);
+    backdrop-filter: blur(8px);
+}
+
+.profile-table-wrap-scrollable::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.profile-table-wrap-scrollable::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 999px;
+}
+
+.profile-table-wrap-scrollable::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(255, 77, 184, 0.7), rgba(159, 99, 255, 0.7));
+    border-radius: 999px;
+}
+
+.profile-table-wrap-scrollable::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, rgba(255, 77, 184, 0.9), rgba(159, 99, 255, 0.9));
+}
+
+.profile-login-filter-box .profile-form-control {
+    background: rgba(5, 8, 20, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+}
+
+.profile-login-filter-box .profile-form-control::placeholder {
+    color: rgba(200, 205, 255, 0.45);
+}
+
+.profile-login-filter-box .profile-form-control:focus {
+    background: rgba(5, 8, 20, 0.95);
+    border-color: rgba(255, 90, 200, 0.7);
+    box-shadow: 0 0 0 0.18rem rgba(204, 94, 255, 0.18);
+}
+
+.profile-login-filter-box .profile-btn-secondary {
+    background: rgba(10, 14, 35, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #e6e9ff;
+}
+
+.profile-login-filter-box .profile-btn-secondary:hover {
+    background: rgba(18, 22, 48, 1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.profile-overview-card .profile-info-tile {
+    background: rgba(5, 8, 20, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.03),
+        0 8px 20px rgba(0,0,0,0.35);
+}
+
+.profile-overview-card .profile-info-label {
+    color: rgba(200, 205, 255, 0.65);
+}
+
+.profile-overview-card .profile-info-value {
+    color: #ffffff;
+}
+
+.profile-overview-card {
+    background: linear-gradient(
+        90deg,
+        rgba(255, 77, 184, 0.22),
+        rgba(159, 99, 255, 0.08)
+    );
+    border: 1px solid rgba(255, 77, 184, 0.28);
+}
+
+.profile-overview-card .profile-btn-secondary {
+    background: linear-gradient(
+        135deg,
+        rgba(255,255,255,0.08),
+        rgba(255,255,255,0.03)
+    );
+}
+
+.profile-overview-card .profile-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* =========================================================
+   ALERT ANIMATION
+   ========================================================= */
+
+.profile-inline-alert {
+    border-radius: 18px;
+    padding: 0.95rem 1rem;
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    opacity: 0;
+    transform: translateY(-12px);
+    max-height: 0;
+    overflow: hidden;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    transition:
+        opacity 0.28s ease,
+        transform 0.28s ease,
+        max-height 0.32s ease,
+        padding-top 0.28s ease,
+        padding-bottom 0.28s ease,
+        margin-bottom 0.28s ease,
+        border-color 0.28s ease;
+}
+
+.profile-inline-alert.profile-inline-alert-show {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 200px;
+    padding-top: 0.95rem;
+    padding-bottom: 0.95rem;
+    margin-bottom: 0;
+}
+
+.profile-inline-alert.profile-inline-alert-hide {
+    opacity: 0;
+    transform: translateY(-12px);
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    overflow: hidden;
+}
+
+/* Photo Modal Alert Spacing */
+#photoModalAlertStack {
+    padding: 1rem 1.4rem 0;
+    margin-bottom: 0.75rem; /* 🔥 THIS creates space below alert */
+}
+
+@media (max-width: 767.98px) {
+    .profile-login-filter-box,
+    .profile-login-activity-box {
+        padding: 1rem;
+    }
+
+    .profile-table-wrap-scrollable {
+        max-height: 420px;
+    }
+
+    .profile-inline-alert-content {
+        align-items: flex-start;
+    }
+}
+
+/* =========================================================
    RESPONSIVE
    ========================================================= */
 
@@ -762,7 +1042,11 @@
 
     .profile-avatar-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+        
+        
     }
+    
+    
 
     .profile-photo-modal-header {
         padding: 1.1rem 1.1rem 0.95rem;
@@ -771,8 +1055,21 @@
     .profile-photo-modal-section {
         padding: 1rem 1.1rem 0;
     }
+    
+    .profile-photo-modal-section:last-of-type {
+    padding-bottom: 1.8rem !important;
+}
 
     .profile-photo-modal-footer {
         padding: 1rem 1.1rem 1.1rem;
+    }
+
+    .profile-inline-alert {
+        padding: 0.9rem 0.9rem;
+    }
+
+    .profile-inline-alert-close {
+        width: 30px;
+        height: 30px;
     }
 }

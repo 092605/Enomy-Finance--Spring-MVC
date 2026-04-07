@@ -175,4 +175,21 @@ public class LoginActivityDaoImpl implements LoginActivityDao {
             return null;
         }
     }
+    
+    @Override
+    public LoginActivity findPreviousSuccessfulLogin(Long userId) {
+        String sql = """
+            SELECT * FROM user_login_activity
+            WHERE user_id = ?
+              AND status = 'SUCCESS'
+            ORDER BY attempted_at DESC
+            LIMIT 1 OFFSET 1
+        """;
+
+        try {
+            return jdbcTemplate.queryForObject(sql, rowMapper, userId);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

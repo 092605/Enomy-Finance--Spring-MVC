@@ -4,6 +4,10 @@
 
 <c:set var="topbarDisplayName" value="${not empty user.fullName ? user.fullName : fullName}" />
 <c:set var="topbarInitial" value="${not empty topbarDisplayName ? fn:substring(topbarDisplayName, 0, 1) : 'C'}" />
+<c:set var="topbarAvatarSrc"
+       value="${empty user.profileImagePath
+               ? pageContext.request.contextPath.concat('/resources/images/avatars/default-avatar.png')
+               : pageContext.request.contextPath.concat(user.profileImagePath)}" />
 
 <header class="app-topbar">
 
@@ -39,17 +43,17 @@
 
         <!-- User -->
         <div class="topbar-user card-glass">
-            <div class="user-avatar" id="topbarProfileAvatar">
-                <img
-                    id="topbarProfileImage"
-                    src="${empty user.profileImagePath ? '' : user.profileImagePath}"
-                    alt="Profile"
-                    class="${empty user.profileImagePath ? 'd-none' : ''}"
-                />
-                <span
-                    id="topbarProfileInitial"
-                    class="${empty user.profileImagePath ? '' : 'd-none'}">${topbarInitial}</span>
-            </div>
+			<div class="user-avatar" id="topbarProfileAvatar">
+			    <img
+			        id="topbarProfileImage"
+			        src="${topbarAvatarSrc}"
+			        alt="Profile"
+			        class="${empty user.profileImagePath ? 'd-none' : ''}"
+			    />
+			    <span
+			        id="topbarProfileInitial"
+			        class="${empty user.profileImagePath ? '' : 'd-none'}">${topbarInitial}</span>
+			</div>
 
             <div class="user-meta">
                 <span class="user-name" id="topbarUserName">${topbarDisplayName}</span>

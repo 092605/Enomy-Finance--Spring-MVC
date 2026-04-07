@@ -22,4 +22,6 @@ public interface LoginActivityDao {
     LoginActivity findLastFailedLogin(Long userId);
 
     LoginActivity findLastSuccessfulLogin(Long userId);
+    
+    LoginActivity findPreviousSuccessfulLogin(Long userId);
 }

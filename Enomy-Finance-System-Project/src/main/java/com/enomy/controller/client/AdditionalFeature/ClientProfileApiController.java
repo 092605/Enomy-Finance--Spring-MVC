@@ -192,8 +192,8 @@ public class ClientProfileApiController {
 
     @GetMapping("/login-activity")
     public Map<String, Object> getLoginActivity(
-            @RequestParam(required = false) String fromDate,
-            @RequestParam(required = false) String toDate,
+            @RequestParam(name = "fromDate", required = false) String fromDate,
+            @RequestParam(name = "toDate", required = false) String toDate,
             Principal principal) {
 
         Map<String, Object> response = new HashMap<>();
@@ -219,6 +219,7 @@ public class ClientProfileApiController {
 
         response.put("success", true);
         response.put("rows", rows);
+        response.put("failedRows", failedRows);
         response.put("failedCount", failedRows.size());
         return response;
     }

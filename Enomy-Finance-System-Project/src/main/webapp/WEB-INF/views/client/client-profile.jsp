@@ -3,7 +3,8 @@
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
 <c:set var="defaultAvatar" value="${pageContext.request.contextPath}/resources/images/avatars/default-avatar.png" />
-<c:set var="profileAvatarSrc" value="${empty user.profileImagePath ? defaultAvatar : user.profileImagePath}" />
+<c:set var="profileAvatarSrc"
+       value="${empty user.profileImagePath ? defaultAvatar : pageContext.request.contextPath.concat(user.profileImagePath)}" />
 
 <!DOCTYPE html>
 <html lang="en">
@@ -43,12 +44,6 @@
                     </div>
                 </section>
 
-                <!-- Global Alerts -->
-                <div class="profile-alert-stack" id="profileAlertStack">
-                    <div class="alert alert-success d-none" id="profileSuccessAlert" role="alert"></div>
-                    <div class="alert alert-danger d-none" id="profileErrorAlert" role="alert"></div>
-                </div>
-
                 <!-- Row 1 -->
                 <section class="row g-4 mb-4">
 
@@ -58,6 +53,11 @@
                             <div class="profile-card-inner">
                                 <div class="profile-card-header">
                                     <h3 class="profile-card-title">Profile Overview</h3>
+                                </div>
+
+                                <div class="profile-inline-alert-stack" id="profileOverviewAlertStack">
+                                    <div class="profile-inline-alert profile-inline-alert-success d-none" id="profileSuccessAlert"></div>
+                                    <div class="profile-inline-alert profile-inline-alert-danger d-none" id="profileErrorAlert"></div>
                                 </div>
 
                                 <div class="profile-overview-wrap">
@@ -123,8 +123,8 @@
                                                     <span class="profile-info-label">Last Login</span>
                                                     <span class="profile-info-value" id="profileLastLogin">
                                                         <c:choose>
-                                                            <c:when test="${not empty user.lastLoginAt}">
-                                                                <fmt:formatDate value="${user.lastLoginAt}" pattern="MMM dd, yyyy hh:mm a" />
+                                                            <c:when test="${not empty profileData.previousSuccessfulLogin and not empty profileData.previousSuccessfulLogin.attemptedAt}">
+                                                                <fmt:formatDate value="${profileData.previousSuccessfulLogin.attemptedAt}" pattern="MMM dd, yyyy hh:mm a" />
                                                             </c:when>
                                                             <c:otherwise>—</c:otherwise>
                                                         </c:choose>
@@ -177,17 +177,26 @@
                                                     </c:choose>
                                                 </strong>
                                             </div>
+
                                             <div class="profile-security-meta-row">
-											    <span class="profile-success-label">Last Successful Login</span>
-											    <strong id="lastSuccessfulLogin" class="profile-success-value">
+                                                <span class="profile-success-label">Current Login</span>
+                                                <strong class="profile-success-value">
+                                                    <fmt:formatDate value="${profileData.lastSuccessfulLogin.attemptedAt}" pattern="MMM dd, yyyy hh:mm a" />
+                                                </strong>
+                                            </div>
+
+                                            <div class="profile-security-meta-row">
+                                                <span>Previous Login</span>
+                                                <strong>
                                                     <c:choose>
-                                                        <c:when test="${not empty profileData.lastSuccessfulLogin and not empty profileData.lastSuccessfulLogin.attemptedAt}">
-                                                            <fmt:formatDate value="${profileData.lastSuccessfulLogin.attemptedAt}" pattern="MMM dd, yyyy hh:mm a" />
+                                                        <c:when test="${not empty profileData.previousSuccessfulLogin and not empty profileData.previousSuccessfulLogin.attemptedAt}">
+                                                            <fmt:formatDate value="${profileData.previousSuccessfulLogin.attemptedAt}" pattern="MMM dd, yyyy hh:mm a" />
                                                         </c:when>
                                                         <c:otherwise>—</c:otherwise>
                                                     </c:choose>
                                                 </strong>
                                             </div>
+
                                             <div class="profile-security-meta-row">
                                                 <span>Password Last Updated</span>
                                                 <strong id="passwordLastUpdated">
@@ -204,7 +213,7 @@
                                 </div>
 
                                 <div class="profile-security-note">
-                                    We recommend updating your password regularly and reviewing failed sign-in attempts.
+                                    Keep your account secure by monitoring recent login activity.
                                 </div>
                             </div>
                         </div>
@@ -220,6 +229,11 @@
                             <div class="profile-card-inner">
                                 <div class="profile-card-header">
                                     <h3 class="profile-card-title">Personal Information</h3>
+                                </div>
+
+                                <div class="profile-inline-alert-stack" id="profileInfoAlertStack">
+                                    <div class="profile-inline-alert profile-inline-alert-success d-none" id="profileInfoSuccessAlert"></div>
+                                    <div class="profile-inline-alert profile-inline-alert-danger d-none" id="profileInfoErrorAlert"></div>
                                 </div>
 
                                 <form id="profileInfoForm" novalidate>
@@ -280,6 +294,11 @@
                             <div class="profile-card-inner">
                                 <div class="profile-card-header">
                                     <h3 class="profile-card-title">Change Password</h3>
+                                </div>
+
+                                <div class="profile-inline-alert-stack" id="passwordAlertStack">
+                                    <div class="profile-inline-alert profile-inline-alert-success d-none" id="passwordSuccessAlert"></div>
+                                    <div class="profile-inline-alert profile-inline-alert-danger d-none" id="passwordErrorAlert"></div>
                                 </div>
 
                                 <form id="changePasswordForm" novalidate>
@@ -362,98 +381,113 @@
                     </div>
                 </section>
 
-                <!-- Row 3 -->
+                <!-- Row 3 + Row 4 Combined -->
                 <section class="row g-4 mb-4">
                     <div class="col-12">
-                        <div class="profile-card">
+                        <div class="profile-card profile-login-section-card">
                             <div class="profile-card-inner">
-                                <div class="profile-card-header">
-                                    <h3 class="profile-card-title">Failed Login Attempts</h3>
+
+                                <div class="profile-card-header profile-login-section-header">
+                                    <div>
+                                        <h3 class="profile-card-title mb-1">Login Monitoring</h3>
+                                        <p class="profile-login-section-subtitle mb-0">
+                                            Review failed attempts and recent login activity in one place.
+                                        </p>
+                                    </div>
                                 </div>
 
-                                <form class="row g-3 align-items-end" id="loginAttemptFilterForm">
-                                    <div class="col-12 col-md-4 col-lg-3">
-                                        <label class="profile-form-label" for="attemptFromDate">From</label>
-                                        <input type="date" class="profile-form-control" id="attemptFromDate" name="fromDate">
+                                <!-- Highlighted Filter Box -->
+                                <div class="profile-login-filter-box">
+                                    <div class="profile-card-header mb-3">
+                                        <h3 class="profile-card-title">Failed Login Attempts</h3>
                                     </div>
 
-                                    <div class="col-12 col-md-4 col-lg-3">
-                                        <label class="profile-form-label" for="attemptToDate">To</label>
-                                        <input type="date" class="profile-form-control" id="attemptToDate" name="toDate">
+                                    <div class="profile-inline-alert-stack" id="loginFilterAlertStack">
+                                        <div class="profile-inline-alert profile-inline-alert-success d-none" id="loginFilterSuccessAlert"></div>
+                                        <div class="profile-inline-alert profile-inline-alert-danger d-none" id="loginFilterErrorAlert"></div>
                                     </div>
 
-                                    <div class="col-12 col-md-4 col-lg-6">
-                                        <div class="profile-filter-actions">
-                                            <button type="submit" class="profile-btn profile-btn-primary" id="filterAttemptsBtn">
-                                                Apply Filter
-                                            </button>
-                                            <button type="button" class="profile-btn profile-btn-secondary" id="resetAttemptsBtn">
-                                                Reset
-                                            </button>
+                                    <form class="row g-3 align-items-end" id="loginAttemptFilterForm">
+                                        <div class="col-12 col-md-4 col-lg-3">
+                                            <label class="profile-form-label" for="attemptFromDate">From</label>
+                                            <input type="date" class="profile-form-control" id="attemptFromDate" name="fromDate">
+                                        </div>
+
+                                        <div class="col-12 col-md-4 col-lg-3">
+                                            <label class="profile-form-label" for="attemptToDate">To</label>
+                                            <input type="date" class="profile-form-control" id="attemptToDate" name="toDate">
+                                        </div>
+
+                                        <div class="col-12 col-md-4 col-lg-6">
+                                            <div class="profile-filter-actions">
+                                                <button type="submit" class="profile-btn profile-btn-primary" id="filterAttemptsBtn">
+                                                    Apply Filter
+                                                </button>
+                                                <button type="button" class="profile-btn profile-btn-secondary" id="resetAttemptsBtn">
+                                                    Reset
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                    <div class="profile-range-summary mt-3" id="profileRangeSummary">
+                                        Showing <strong id="rangeAttemptCount">${profileData.failedThisMonthCount}</strong> failed attempt(s) for the selected range.
+                                    </div>
+                                </div>
+
+                                <!-- Scrollable Login Activity Box -->
+                                <div class="profile-login-activity-box mt-4">
+                                    <div class="profile-card-header">
+                                        <h3 class="profile-card-title">Login Activity</h3>
+                                    </div>
+
+                                    <div class="profile-table-scroll-shell">
+                                        <div class="table-responsive profile-table-wrap profile-table-wrap-scrollable">
+                                            <table class="table profile-activity-table align-middle mb-0">
+                                                <thead>
+                                                <tr>
+                                                    <th>Date / Time</th>
+                                                    <th>Status</th>
+                                                    <th>Reason</th>
+                                                    <th>IP Address</th>
+                                                    <th>Device / Browser</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="loginActivityTableBody">
+                                                <c:choose>
+                                                    <c:when test="${not empty profileData.loginActivities}">
+                                                        <c:forEach var="row" items="${profileData.loginActivities}">
+                                                            <tr>
+                                                                <td>
+                                                                    <c:choose>
+                                                                        <c:when test="${not empty row.attemptedAt}">
+                                                                            <fmt:formatDate value="${row.attemptedAt}" pattern="MMM dd, yyyy hh:mm a" />
+                                                                        </c:when>
+                                                                        <c:otherwise>—</c:otherwise>
+                                                                    </c:choose>
+                                                                </td>
+                                                                <td>
+                                                                    <span class="profile-table-badge ${row.status eq 'SUCCESS' ? 'profile-table-badge-success' : 'profile-table-badge-danger'}">
+                                                                        ${row.status eq 'SUCCESS' ? 'Success' : 'Failed'}
+                                                                    </span>
+                                                                </td>
+                                                                <td>${empty row.reason ? '—' : row.reason}</td>
+                                                                <td>${empty row.ipAddress ? '—' : row.ipAddress}</td>
+                                                                <td>${empty row.deviceBrowser ? '—' : row.deviceBrowser}</td>
+                                                            </tr>
+                                                        </c:forEach>
+                                                    </c:when>
+                                                </c:choose>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
-                                </form>
 
-                                <div class="profile-range-summary mt-4" id="profileRangeSummary">
-                                    Showing <strong id="rangeAttemptCount">${profileData.failedThisMonthCount}</strong> failed attempt(s) for the selected range.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Row 4 -->
-                <section class="row g-4 mb-4">
-                    <div class="col-12">
-                        <div class="profile-card">
-                            <div class="profile-card-inner">
-                                <div class="profile-card-header">
-                                    <h3 class="profile-card-title">Login Activity</h3>
+                                    <div class="profile-empty-state ${not empty profileData.loginActivities ? 'd-none' : ''}" id="loginActivityEmptyState">
+                                        No login activity found for the selected range.
+                                    </div>
                                 </div>
 
-                                <div class="table-responsive profile-table-wrap">
-                                    <table class="table profile-activity-table align-middle mb-0">
-                                        <thead>
-                                        <tr>
-                                            <th>Date / Time</th>
-                                            <th>Status</th>
-                                            <th>Reason</th>
-                                            <th>IP Address</th>
-                                            <th>Device / Browser</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody id="loginActivityTableBody">
-                                        <c:choose>
-                                            <c:when test="${not empty profileData.loginActivities}">
-                                                <c:forEach var="row" items="${profileData.loginActivities}">
-                                                    <tr>
-                                                        <td>
-                                                            <c:choose>
-                                                                <c:when test="${not empty row.attemptedAt}">
-                                                                    <fmt:formatDate value="${row.attemptedAt}" pattern="MMM dd, yyyy hh:mm a" />
-                                                                </c:when>
-                                                                <c:otherwise>—</c:otherwise>
-                                                            </c:choose>
-                                                        </td>
-                                                        <td>
-                                                            <span class="profile-table-badge ${row.status eq 'SUCCESS' ? 'profile-table-badge-success' : 'profile-table-badge-danger'}">
-                                                                ${row.status eq 'SUCCESS' ? 'Success' : 'Failed'}
-                                                            </span>
-                                                        </td>
-                                                        <td>${empty row.reason ? '—' : row.reason}</td>
-                                                        <td>${empty row.ipAddress ? '—' : row.ipAddress}</td>
-                                                        <td>${empty row.deviceBrowser ? '—' : row.deviceBrowser}</td>
-                                                    </tr>
-                                                </c:forEach>
-                                            </c:when>
-                                        </c:choose>
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                <div class="profile-empty-state ${not empty profileData.loginActivities ? 'd-none' : ''}" id="loginActivityEmptyState">
-                                    No login activity found for the selected range.
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -468,11 +502,16 @@
                                     <h3 class="profile-card-title">Account Details</h3>
                                 </div>
 
+                                <div class="profile-inline-alert-stack" id="accountDetailsAlertStack">
+                                    <div class="profile-inline-alert profile-inline-alert-success d-none" id="accountSuccessAlert"></div>
+                                    <div class="profile-inline-alert profile-inline-alert-danger d-none" id="accountErrorAlert"></div>
+                                </div>
+
                                 <div class="row g-3">
                                     <div class="col-12 col-md-6 col-xl-3">
                                         <div class="profile-info-tile">
                                             <span class="profile-info-label">Username</span>
-                                            <span class="profile-info-value" id="accountUsername">${user.email}</span>
+                                            <span class="profile-info-value" id="accountUsername">${user.fullName}</span>
                                         </div>
                                     </div>
 
@@ -533,6 +572,11 @@
             <button type="button" class="profile-photo-modal-close" id="closePhotoChoiceModalBtn">&times;</button>
         </div>
 
+        <div class="profile-inline-alert-stack" id="photoModalAlertStack">
+            <div class="profile-inline-alert profile-inline-alert-success d-none" id="photoModalSuccessAlert"></div>
+            <div class="profile-inline-alert profile-inline-alert-danger d-none" id="photoModalErrorAlert"></div>
+        </div>
+
         <div class="profile-photo-modal-section">
             <h4 class="profile-photo-section-title">Upload from Device</h4>
             <button type="button" class="profile-btn profile-btn-primary" id="uploadFromDeviceBtn">
@@ -543,37 +587,32 @@
         <div class="profile-photo-modal-section">
             <h4 class="profile-photo-section-title">Choose an Avatar</h4>
             <div class="profile-avatar-grid">
-                <button type="button" class="profile-avatar-option" data-avatar="${pageContext.request.contextPath}/resources/images/avatars/Avatar 1.png">
+                <button type="button" class="profile-avatar-option" data-avatar="/resources/images/avatars/Avatar 1.png">
                     <img src="${pageContext.request.contextPath}/resources/images/avatars/Avatar 1.png" alt="Avatar 1">
                 </button>
 
-                <button type="button" class="profile-avatar-option" data-avatar="${pageContext.request.contextPath}/resources/images/avatars/Avatar 2.png">
+                <button type="button" class="profile-avatar-option" data-avatar="/resources/images/avatars/Avatar 2.png">
                     <img src="${pageContext.request.contextPath}/resources/images/avatars/Avatar 2.png" alt="Avatar 2">
                 </button>
 
-                <button type="button" class="profile-avatar-option" data-avatar="${pageContext.request.contextPath}/resources/images/avatars/Avatar 3.png">
+                <button type="button" class="profile-avatar-option" data-avatar="/resources/images/avatars/Avatar 3.png">
                     <img src="${pageContext.request.contextPath}/resources/images/avatars/Avatar 3.png" alt="Avatar 3">
                 </button>
 
-                <button type="button" class="profile-avatar-option" data-avatar="${pageContext.request.contextPath}/resources/images/avatars/Avatar 4.png">
+                <button type="button" class="profile-avatar-option" data-avatar="/resources/images/avatars/Avatar 4.png">
                     <img src="${pageContext.request.contextPath}/resources/images/avatars/Avatar 4.png" alt="Avatar 4">
                 </button>
 
-                <button type="button" class="profile-avatar-option" data-avatar="${pageContext.request.contextPath}/resources/images/avatars/Avatar 5.png">
+                <button type="button" class="profile-avatar-option" data-avatar="/resources/images/avatars/Avatar 5.png">
                     <img src="${pageContext.request.contextPath}/resources/images/avatars/Avatar 5.png" alt="Avatar 5">
                 </button>
 
-                <button type="button" class="profile-avatar-option" data-avatar="${pageContext.request.contextPath}/resources/images/avatars/Avatar 6.png">
+                <button type="button" class="profile-avatar-option" data-avatar="/resources/images/avatars/Avatar 6.png">
                     <img src="${pageContext.request.contextPath}/resources/images/avatars/Avatar 6.png" alt="Avatar 6">
                 </button>
             </div>
         </div>
 
-        <div class="profile-photo-modal-footer">
-            <button type="button" class="profile-btn profile-btn-secondary" id="cancelPhotoChoiceModalBtn">
-                Cancel
-            </button>
-        </div>
     </div>
 </div>
 

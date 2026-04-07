@@ -13,6 +13,15 @@ public class ClientProfilePageDTO {
     private LoginActivity lastFailedLogin;
     private LoginActivity lastSuccessfulLogin;
     private List<LoginActivity> loginActivities;
+    private LoginActivity previousSuccessfulLogin;
+
+    public LoginActivity getPreviousSuccessfulLogin() {
+        return previousSuccessfulLogin;
+    }
+
+    public void setPreviousSuccessfulLogin(LoginActivity previousSuccessfulLogin) {
+        this.previousSuccessfulLogin = previousSuccessfulLogin;
+    }
 
     public ClientProfilePageDTO() {
     }

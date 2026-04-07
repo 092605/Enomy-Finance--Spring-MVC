@@ -1,5 +1,8 @@
 package com.enomy.config;
 
+import jakarta.servlet.MultipartConfigElement;
+import jakarta.servlet.ServletRegistration;
+
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
@@ -20,5 +23,16 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
     @Override
     protected String[] getServletMappings() {
         return new String[] { "/" };
+    }
+
+    @Override
+    protected void customizeRegistration(ServletRegistration.Dynamic registration) {
+        MultipartConfigElement multipartConfig = new MultipartConfigElement(
+            null,
+            5 * 1024 * 1024,
+            10 * 1024 * 1024,
+            1024 * 1024
+        );
+        registration.setMultipartConfig(multipartConfig);
     }
 }

@@ -2,7 +2,8 @@
    CLIENT PROFILE PAGE JS
    What this file does:
    - Connects the profile page UI to backend API endpoints
-   - Handles alerts, profile update, password update
+   - Handles card-specific alerts with close button + auto-hide
+   - Handles profile update, password update
    - Handles avatar select/remove
    - Handles login activity filtering
    - Handles delete account modal and request
@@ -13,10 +14,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /* =========================================================
        1. CONFIG + COMMON PAGE ELEMENTS
-       What this block does:
-       - Reads values passed from JSP
-       - Stores commonly used DOM elements
-       - Prepares initial page state for reset actions
        ========================================================= */
     const config = window.profilePageConfig || {};
     const contextPath = config.contextPath || "";
@@ -25,14 +22,25 @@ document.addEventListener("DOMContentLoaded", function () {
     const csrfToken = config.csrfToken || "";
     const csrfHeader = config.csrfHeader || "";
 
+    /* Global alerts (fallback only) */
     const profileSuccessAlert = document.getElementById("profileSuccessAlert");
     const profileErrorAlert = document.getElementById("profileErrorAlert");
 
+    /* Personal info card */
     const profileInfoForm = document.getElementById("profileInfoForm");
     const fullNameInput = document.getElementById("fullNameInput");
     const resetProfileBtn = document.getElementById("resetProfileBtn");
     const profileDisplayName = document.getElementById("profileDisplayName");
+    const profileInfoSuccessAlert = document.getElementById("profileInfoSuccessAlert");
+    const profileInfoErrorAlert = document.getElementById("profileInfoErrorAlert");
+	
+	const photoModalSuccessAlert = document.getElementById("photoModalSuccessAlert");
+	const photoModalErrorAlert = document.getElementById("photoModalErrorAlert");
 
+	const accountSuccessAlert = document.getElementById("accountSuccessAlert");
+	const accountErrorAlert = document.getElementById("accountErrorAlert");
+
+    /* Photo / overview */
     const profileImageInput = document.getElementById("profileImageInput");
     const profileAvatarPreview = document.getElementById("profileAvatarPreview");
     const removePhotoBtn = document.getElementById("removePhotoBtn");
@@ -44,6 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const uploadFromDeviceBtn = document.getElementById("uploadFromDeviceBtn");
     const avatarOptionButtons = document.querySelectorAll(".profile-avatar-option");
 
+    /* Password card */
     const changePasswordForm = document.getElementById("changePasswordForm");
     const clearPasswordBtn = document.getElementById("clearPasswordBtn");
     const currentPassword = document.getElementById("currentPassword");
@@ -51,6 +60,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const confirmPassword = document.getElementById("confirmPassword");
     const passwordStrengthText = document.getElementById("passwordStrengthText");
     const passwordLastUpdated = document.getElementById("passwordLastUpdated");
+    const passwordSuccessAlert = document.getElementById("passwordSuccessAlert");
+    const passwordErrorAlert = document.getElementById("passwordErrorAlert");
 
     const ruleLength = document.getElementById("ruleLength");
     const ruleUpper = document.getElementById("ruleUpper");
@@ -58,6 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const ruleNumber = document.getElementById("ruleNumber");
     const ruleSymbol = document.getElementById("ruleSymbol");
 
+    /* Login filter card */
     const loginAttemptFilterForm = document.getElementById("loginAttemptFilterForm");
     const attemptFromDate = document.getElementById("attemptFromDate");
     const attemptToDate = document.getElementById("attemptToDate");
@@ -65,17 +77,22 @@ document.addEventListener("DOMContentLoaded", function () {
     const rangeAttemptCount = document.getElementById("rangeAttemptCount");
     const loginActivityTableBody = document.getElementById("loginActivityTableBody");
     const loginActivityEmptyState = document.getElementById("loginActivityEmptyState");
+    const loginFilterSuccessAlert = document.getElementById("loginFilterSuccessAlert");
+    const loginFilterErrorAlert = document.getElementById("loginFilterErrorAlert");
 
+    /* Security summary */
     const failedTodayCount = document.getElementById("failedTodayCount");
     const failedMonthCount = document.getElementById("failedMonthCount");
     const profileSecurityStatus = document.getElementById("profileSecurityStatus");
 
+    /* Delete modal */
     const openDeleteBtn = document.getElementById("openDeleteAccountModalBtn");
     const deleteModal = document.getElementById("profileDeleteModalOverlay");
     const closeDeleteBtn = document.getElementById("closeDeleteAccountModalBtn");
     const cancelDeleteBtn = document.getElementById("cancelDeleteAccountBtn");
     const confirmDeleteBtn = document.getElementById("confirmDeleteAccountBtn");
 
+    /* Topbar */
     const topbarProfileImage = document.getElementById("topbarProfileImage");
     const topbarProfileInitial = document.getElementById("topbarProfileInitial");
     const topbarUserName = document.getElementById("topbarUserName");
@@ -87,10 +104,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /* =========================================================
        2. HTTP HELPERS
-       What this block does:
-       - Builds request headers
-       - Adds CSRF token when available
-       - Sends fetch requests and safely reads JSON responses
        ========================================================= */
     function getHeaders(isJson = true) {
         const headers = {};
@@ -129,42 +142,147 @@ document.addEventListener("DOMContentLoaded", function () {
     /* =========================================================
        3. ALERT HELPERS
        What this block does:
-       - Shows success or error alert at the top of the page
-       - Clears previous alerts before showing a new one
+       - Shows alerts inside the correct card
+       - Adds close button to every alert
+       - Auto-hides after 3 seconds
+       - Uses global alert only as fallback
        ========================================================= */
-    function showAlert(type, message) {
-        hideAlerts();
+    const alertTimerMap = new WeakMap();
 
-        const target = type === "success" ? profileSuccessAlert : profileErrorAlert;
-        if (!target) return;
+	const alertGroups = {
+	    global: {
+	        success: profileSuccessAlert,
+	        error: profileErrorAlert
+	    },
+	    profileInfo: {
+	        success: profileInfoSuccessAlert,
+	        error: profileInfoErrorAlert
+	    },
+	    password: {
+	        success: passwordSuccessAlert,
+	        error: passwordErrorAlert
+	    },
+	    loginFilter: {
+	        success: loginFilterSuccessAlert,
+	        error: loginFilterErrorAlert
+	    },
+	    profileOverview: {
+	        success: profileSuccessAlert,
+	        error: profileErrorAlert
+	    },
+	    photoModal: {
+	        success: photoModalSuccessAlert,
+	        error: photoModalErrorAlert
+	    },
+	    account: {
+	        success: accountSuccessAlert,
+	        error: accountErrorAlert
+	    }
+	};
 
-        target.textContent = message;
-        target.classList.remove("d-none");
+	function clearAlertTimer(element) {
+	    if (!element) return;
 
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
+	    const existingTimer = alertTimerMap.get(element);
+	    if (existingTimer) {
+	        clearTimeout(existingTimer);
+	        alertTimerMap.delete(element);
+	    }
+	}
+
+
+    function buildAlertMarkup(message) {
+        const safeMessage = message || "";
+        return `
+            <div class="profile-inline-alert-content">
+                <span class="profile-inline-alert-text">${safeMessage}</span>
+                <button type="button" class="profile-inline-alert-close" aria-label="Close alert">&times;</button>
+            </div>
+        `;
+    }
+
+	function attachCloseHandler(element) {
+	    if (!element) return;
+
+	    const closeBtn = element.querySelector(".profile-inline-alert-close");
+	    if (!closeBtn) return;
+
+	    closeBtn.addEventListener("click", function () {
+	        hideSingleAlert(element);
+	    });
+	}
+
+	function hideSingleAlert(element) {
+	    if (!element) return;
+
+	    clearAlertTimer(element);
+
+	    if (element.classList.contains("d-none")) {
+	        element.classList.remove("profile-inline-alert-show", "profile-inline-alert-hide");
+	        element.innerHTML = "";
+	        return;
+	    }
+
+	    element.classList.remove("profile-inline-alert-show");
+	    element.classList.add("profile-inline-alert-hide");
+
+	    setTimeout(function () {
+	        element.classList.add("d-none");
+	        element.classList.remove("profile-inline-alert-hide");
+	        element.innerHTML = "";
+	    }, 320);
+	}
+
+
+    function hideAlertGroup(sectionKey) {
+        const group = alertGroups[sectionKey];
+        if (!group) return;
+
+        hideSingleAlert(group.success);
+        hideSingleAlert(group.error);
+    }
+
+    function hideAllAlerts() {
+        Object.keys(alertGroups).forEach(function (key) {
+            hideAlertGroup(key);
         });
     }
 
-    function hideAlerts() {
-        if (profileSuccessAlert) {
-            profileSuccessAlert.classList.add("d-none");
-            profileSuccessAlert.textContent = "";
-        }
+	function showSectionAlert(sectionKey, type, message) {
+	    const group = alertGroups[sectionKey] || alertGroups.global;
+	    if (!group) return;
 
-        if (profileErrorAlert) {
-            profileErrorAlert.classList.add("d-none");
-            profileErrorAlert.textContent = "";
-        }
+	    const target = type === "success" ? group.success : group.error;
+	    const other = type === "success" ? group.error : group.success;
+
+	    if (!target) return;
+
+	    hideSingleAlert(other);
+	    clearAlertTimer(target);
+
+	    target.innerHTML = buildAlertMarkup(message);
+	    target.classList.remove("d-none", "profile-inline-alert-hide");
+	    target.classList.add(type === "success" ? "profile-inline-alert-success" : "profile-inline-alert-danger");
+
+	    requestAnimationFrame(function () {
+	        target.classList.add("profile-inline-alert-show");
+	    });
+
+	    attachCloseHandler(target);
+
+	    const timerId = setTimeout(function () {
+	        hideSingleAlert(target);
+	    }, 5000);
+
+	    alertTimerMap.set(target, timerId);
+	}
+
+    function showAlert(type, message) {
+        showSectionAlert("global", type, message);
     }
 
     /* =========================================================
        4. SMALL VALIDATION / FORMAT HELPERS
-       What this block does:
-       - Cleans text input
-       - Validates full name
-       - Formats date and datetime values for display
        ========================================================= */
     function sanitizeText(value) {
         return (value || "").trim().replace(/\s+/g, " ");
@@ -223,9 +341,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /* =========================================================
        5. TOPBAR SYNC HELPERS
-       What this block does:
-       - Keeps topbar name in sync with profile name
-       - Switches topbar avatar between image and initial fallback
        ========================================================= */
     function getInitialLetter(name) {
         const cleaned = (name || "").trim();
@@ -264,22 +379,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /* =========================================================
        6. MODAL HELPERS
-       What this block does:
-       - Opens and closes the profile photo modal
-       - Opens and closes the delete account modal
-       - Locks page scroll while modal is open
        ========================================================= */
-    function openPhotoModal() {
-        if (!profilePhotoModalOverlay) return;
-        profilePhotoModalOverlay.classList.remove("d-none");
-        document.body.style.overflow = "hidden";
-    }
+	   function openPhotoModal() {
+	       if (!profilePhotoModalOverlay) return;
+	       hideAlertGroup("photoModal");
+	       profilePhotoModalOverlay.classList.remove("d-none");
+	       document.body.style.overflow = "hidden";
+	   }
 
-    function closePhotoModal() {
-        if (!profilePhotoModalOverlay) return;
-        profilePhotoModalOverlay.classList.add("d-none");
-        document.body.style.overflow = "";
-    }
+	   function closePhotoModal() {
+	       if (!profilePhotoModalOverlay) return;
+	       hideAlertGroup("photoModal");
+	       profilePhotoModalOverlay.classList.add("d-none");
+	       document.body.style.overflow = "";
+	   }
 
     function openDeleteModal() {
         if (!deleteModal) return;
@@ -295,10 +408,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /* =========================================================
        7. PASSWORD STRENGTH HELPERS
-       What this block does:
-       - Evaluates new password strength
-       - Updates password rule colors
-       - Resets password form UI after clear/success
        ========================================================= */
     function setRuleState(element, isValid) {
         if (!element) return;
@@ -356,9 +465,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /* =========================================================
        8. SECURITY BADGE
-       What this block does:
-       - Updates the Security Summary badge based on failed attempts
-       - Shows Secure / Monitor / Risk Detected
        ========================================================= */
     function updateSecurityBadge() {
         if (!profileSecurityStatus || !failedTodayCount || !failedMonthCount) return;
@@ -390,9 +496,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /* =========================================================
        9. LOGIN ACTIVITY RENDERING
-       What this block does:
-       - Builds the Login Activity table rows from API data
-       - Shows empty state if no rows are returned
        ========================================================= */
     function renderLoginActivity(rows) {
         if (!loginActivityTableBody || !loginActivityEmptyState) return;
@@ -426,7 +529,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    async function loadLoginActivity(fromDate = "", toDate = "") {
+    async function loadLoginActivity(fromDate = "", toDate = "", failedOnly = false) {
         const params = new URLSearchParams();
 
         if (fromDate) params.append("fromDate", fromDate);
@@ -445,7 +548,8 @@ document.addEventListener("DOMContentLoaded", function () {
             throw new Error(data.message || "Unable to load login activity.");
         }
 
-        renderLoginActivity(data.rows || []);
+        const rowsToRender = failedOnly ? (data.failedRows || []) : (data.rows || []);
+        renderLoginActivity(rowsToRender);
 
         if (rangeAttemptCount) {
             rangeAttemptCount.textContent = String(data.failedCount || 0);
@@ -454,13 +558,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /* =========================================================
        10. PHOTO MODAL EVENTS
-       What this block does:
-       - Opens/closes photo modal
-       - Allows Escape key and overlay click close behavior
        ========================================================= */
     if (openPhotoChoiceModalBtn) {
         openPhotoChoiceModalBtn.addEventListener("click", function () {
-            hideAlerts();
+            hideAllAlerts();
             openPhotoModal();
         });
     }
@@ -487,9 +588,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /* =========================================================
        11. DELETE MODAL EVENTS
-       What this block does:
-       - Opens/closes delete account modal
-       - Allows overlay click close behavior
        ========================================================= */
     if (openDeleteBtn) {
         openDeleteBtn.addEventListener("click", openDeleteModal);
@@ -513,8 +611,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /* =========================================================
        12. ESC KEY HANDLER
-       What this block does:
-       - Closes any open modal when Escape is pressed
        ========================================================= */
     document.addEventListener("keydown", function (e) {
         if (e.key === "Escape") {
@@ -530,12 +626,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /* =========================================================
        13. PROFILE PHOTO ACTIONS
-       What this block does:
-       - Opens file picker for upload preview
-       - Saves preset avatar to backend
-       - Removes saved avatar from backend
-       - Keeps upload from device as preview-only for now
-       - Syncs profile image changes to topbar
+       Note:
+       - No dedicated inline alert box exists in the overview card yet,
+         so photo actions still use global fallback alert.
        ========================================================= */
     if (uploadFromDeviceBtn) {
         uploadFromDeviceBtn.addEventListener("click", function () {
@@ -545,129 +638,160 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    avatarOptionButtons.forEach(function (button) {
-        button.addEventListener("click", async function () {
-            hideAlerts();
+	avatarOptionButtons.forEach(function (button) {
+	    button.addEventListener("click", async function () {
+	        hideAlertGroup("photoModal");
 
-            const avatarSrc = button.getAttribute("data-avatar");
-            if (!avatarSrc || !profileAvatarPreview) return;
+	        const avatarSrc = button.getAttribute("data-avatar");
+	        if (!avatarSrc || !profileAvatarPreview) return;
 
-            try {
-                const data = await request(`${apiBase}/photo`, {
-                    method: "PUT",
-                    headers: getHeaders(true),
-                    body: JSON.stringify({
-                        profileImagePath: avatarSrc
-                    })
-                });
+	        try {
+	            const data = await request(`${apiBase}/photo`, {
+	                method: "PUT",
+	                headers: getHeaders(true),
+	                body: JSON.stringify({
+	                    profileImagePath: avatarSrc
+	                })
+	            });
 
-                if (!data.success) {
-                    throw new Error(data.message || "Unable to save avatar.");
-                }
+	            if (!data.success) {
+	                throw new Error(data.message || "Unable to save avatar.");
+	            }
 
-                profileAvatarPreview.src = data.profileImagePath || avatarSrc;
-                syncTopbarAvatar(data.profileImagePath || avatarSrc);
+	            const savedPath = data.profileImagePath || avatarSrc;
+	            const previewSrc = contextPath + savedPath;
 
-                if (profileImageInput) {
-                    profileImageInput.value = "";
-                }
+	            profileAvatarPreview.src = previewSrc;
+	            syncTopbarAvatar(previewSrc);
 
-                initialProfileState.avatarSrc = profileAvatarPreview.src;
-                closePhotoModal();
-                showAlert("success", data.message || "Profile photo updated successfully.");
-            } catch (error) {
-                showAlert("error", error.message || "Unable to save avatar.");
-            }
-        });
-    });
+	            if (profileImageInput) {
+	                profileImageInput.value = "";
+	            }
 
-    if (profileImageInput) {
-        profileImageInput.addEventListener("change", function (e) {
-            hideAlerts();
+	            initialProfileState.avatarSrc = previewSrc;
 
-            const file = e.target.files && e.target.files[0];
-            if (!file) return;
+	            showSectionAlert("photoModal", "success", data.message || "Profile photo updated successfully.");
+	        } catch (error) {
+	            showSectionAlert("photoModal", "error", error.message || "Unable to save avatar.");
+	        }
+	    });
+	});
+	if (profileImageInput) {
+	    profileImageInput.addEventListener("change", async function (e) {
+	        hideAlertGroup("photoModal");
 
-            const allowedTypes = ["image/png", "image/jpeg", "image/jpg", "image/webp"];
-            const maxSize = 2 * 1024 * 1024;
+	        const file = e.target.files && e.target.files[0];
+	        if (!file) return;
 
-            if (!allowedTypes.includes(file.type)) {
-                showAlert("error", "Only PNG, JPG, JPEG, and WEBP files are allowed.");
-                profileImageInput.value = "";
-                return;
-            }
+	        const allowedTypes = ["image/png", "image/jpeg", "image/jpg", "image/webp"];
+	        const maxSize = 2 * 1024 * 1024;
 
-            if (file.size > maxSize) {
-                showAlert("error", "Profile picture must be 2MB or less.");
-                profileImageInput.value = "";
-                return;
-            }
+	        if (!allowedTypes.includes(file.type)) {
+	            showSectionAlert("photoModal", "error", "Only PNG, JPG, JPEG, and WEBP files are allowed.");
+	            profileImageInput.value = "";
+	            return;
+	        }
 
-            const reader = new FileReader();
-            reader.onload = function (event) {
-                if (profileAvatarPreview) {
-                    profileAvatarPreview.src = event.target.result;
-                }
+	        if (file.size > maxSize) {
+	            showSectionAlert("photoModal", "error", "Profile picture must be 2MB or less.");
+	            profileImageInput.value = "";
+	            return;
+	        }
 
-                syncTopbarAvatar(event.target.result);
-                closePhotoModal();
-                showAlert("error", "Upload from device is preview-only for now. Preset avatars can already be saved to the backend.");
-            };
-            reader.readAsDataURL(file);
-        });
-    }
+	        const formData = new FormData();
+	        formData.append("profileImage", file);
 
-    if (removePhotoBtn) {
-        removePhotoBtn.addEventListener("click", async function () {
-            hideAlerts();
+	        try {
+	            const response = await fetch(contextPath + "/upload-photo", {
+	                method: "POST",
+	                credentials: "same-origin",
+	                headers: csrfToken && csrfHeader ? { [csrfHeader]: csrfToken } : {},
+	                body: formData
+	            });
 
-            try {
-                const data = await request(`${apiBase}/photo`, {
-                    method: "DELETE",
-                    headers: getHeaders(false)
-                });
+	            let data = {};
+	            try {
+	                data = await response.json();
+	            } catch (error) {
+	                data = {};
+	            }
 
-                if (!data.success) {
-                    throw new Error(data.message || "Unable to remove profile photo.");
-                }
+	            if (!response.ok || !data.success) {
+	                throw new Error(data.message || "Unable to upload profile photo.");
+	            }
 
-                if (profileAvatarPreview) {
-                    profileAvatarPreview.src = defaultAvatar;
-                }
+	            const uploadedPath = data.profileImagePath || "";
+	            const uploadedSrc = contextPath + uploadedPath;
+	            const cacheBustedSrc = uploadedSrc + "?t=" + Date.now();
 
-                syncTopbarAvatar(defaultAvatar);
+	            if (profileAvatarPreview) {
+	                profileAvatarPreview.src = cacheBustedSrc;
+	            }
 
-                if (profileImageInput) {
-                    profileImageInput.value = "";
-                }
+	            syncTopbarAvatar(cacheBustedSrc);
 
-                initialProfileState.avatarSrc = defaultAvatar;
-                showAlert("success", data.message || "Profile photo removed successfully.");
-            } catch (error) {
-                showAlert("error", error.message || "Unable to remove profile photo.");
-            }
-        });
-    }
+	            if (profileImageInput) {
+	                profileImageInput.value = "";
+	            }
+
+	            initialProfileState.avatarSrc = uploadedSrc;
+
+	            showSectionAlert("photoModal", "success", data.message || "Profile photo uploaded successfully.");
+
+	          
+
+	        } catch (error) {
+	            profileImageInput.value = "";
+	            showSectionAlert("photoModal", "error", error.message || "Unable to upload profile photo.");
+	        }
+	    });
+	}
+
+	if (removePhotoBtn) {
+	    removePhotoBtn.addEventListener("click", async function () {
+	        hideAlertGroup("profileOverview");
+
+	        try {
+	            const data = await request(`${apiBase}/photo`, {
+	                method: "DELETE",
+	                headers: getHeaders(false)
+	            });
+
+	            if (!data.success) {
+	                throw new Error(data.message || "Unable to remove profile photo.");
+	            }
+
+	            if (profileAvatarPreview) {
+	                profileAvatarPreview.src = defaultAvatar;
+	            }
+
+	            syncTopbarAvatar(defaultAvatar);
+
+	            if (profileImageInput) {
+	                profileImageInput.value = "";
+	            }
+
+	            initialProfileState.avatarSrc = defaultAvatar;
+	            showSectionAlert("profileOverview", "success", data.message || "Profile photo removed successfully.");
+	        } catch (error) {
+	            showSectionAlert("profileOverview", "error", error.message || "Unable to remove profile photo.");
+	        }
+	    });
+	}
 
     /* =========================================================
        14. PERSONAL INFORMATION FORM
-       What this block does:
-       - Validates full name
-       - Sends update request to backend
-       - Updates display name on success
-       - Resets to original value when Reset is clicked
-       - Syncs topbar name and initial
        ========================================================= */
     if (profileInfoForm) {
         profileInfoForm.addEventListener("submit", async function (e) {
             e.preventDefault();
-            hideAlerts();
+            hideAlertGroup("profileInfo");
 
             const fullName = sanitizeText(fullNameInput.value);
             const validationMessage = validateFullName(fullName);
 
             if (validationMessage) {
-                showAlert("error", validationMessage);
+                showSectionAlert("profileInfo", "error", validationMessage);
                 return;
             }
 
@@ -691,16 +815,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 syncTopbarName(data.fullName || fullName);
 
                 initialProfileState.fullName = data.fullName || fullName;
-                showAlert("success", data.message || "Profile information updated successfully.");
+                showSectionAlert("profileInfo", "success", data.message || "Profile information updated successfully.");
             } catch (error) {
-                showAlert("error", error.message || "Unable to update profile information.");
+                showSectionAlert("profileInfo", "error", error.message || "Unable to update profile information.");
             }
         });
     }
 
     if (resetProfileBtn) {
         resetProfileBtn.addEventListener("click", function () {
-            hideAlerts();
+            hideAlertGroup("profileInfo");
 
             if (fullNameInput) {
                 fullNameInput.value = initialProfileState.fullName;
@@ -716,11 +840,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /* =========================================================
        15. PASSWORD FORM
-       What this block does:
-       - Shows live password strength
-       - Toggles Show/Hide for password inputs
-       - Sends password update request to backend
-       - Resets password UI after success or clear
        ========================================================= */
     if (newPassword && passwordStrengthText) {
         newPassword.addEventListener("input", function () {
@@ -743,30 +862,30 @@ document.addEventListener("DOMContentLoaded", function () {
     if (changePasswordForm) {
         changePasswordForm.addEventListener("submit", async function (e) {
             e.preventDefault();
-            hideAlerts();
+            hideAlertGroup("password");
 
             const currentVal = currentPassword.value || "";
             const newVal = newPassword.value || "";
             const confirmVal = confirmPassword.value || "";
 
             if (!currentVal || !newVal || !confirmVal) {
-                showAlert("error", "Please complete all password fields.");
+                showSectionAlert("password", "error", "Please complete all password fields.");
                 return;
             }
 
             if (newVal !== confirmVal) {
-                showAlert("error", "New password and confirm password do not match.");
+                showSectionAlert("password", "error", "New password and confirm password do not match.");
                 return;
             }
 
             if (newVal === currentVal) {
-                showAlert("error", "New password must be different from the current password.");
+                showSectionAlert("password", "error", "New password must be different from the current password.");
                 return;
             }
 
             const strength = evaluatePasswordStrength(newVal);
             if (strength === "Weak" || strength === "Not entered") {
-                showAlert("error", "Please enter a stronger password that satisfies all required rules.");
+                showSectionAlert("password", "error", "Please enter a stronger password that satisfies all required rules.");
                 return;
             }
 
@@ -788,78 +907,73 @@ document.addEventListener("DOMContentLoaded", function () {
                 resetPasswordUI();
 
                 if (passwordLastUpdated) {
-                    passwordLastUpdated.textContent = formatDateOnly(new Date());
+                    passwordLastUpdated.textContent = formatDateTime(new Date());
                 }
 
-                showAlert("success", data.message || "Password updated successfully.");
+                showSectionAlert("password", "success", data.message || "Password updated successfully.");
             } catch (error) {
-                showAlert("error", error.message || "Unable to update password.");
+                showSectionAlert("password", "error", error.message || "Unable to update password.");
             }
         });
     }
 
     if (clearPasswordBtn) {
         clearPasswordBtn.addEventListener("click", function () {
-            hideAlerts();
+            hideAlertGroup("password");
             resetPasswordUI();
         });
     }
 
     /* =========================================================
        16. LOGIN ACTIVITY FILTER
-       What this block does:
-       - Validates From/To dates
-       - Calls backend to filter login activity
-       - Resets filters and reloads all rows
        ========================================================= */
     if (loginAttemptFilterForm) {
         loginAttemptFilterForm.addEventListener("submit", async function (e) {
             e.preventDefault();
-            hideAlerts();
+            hideAlertGroup("loginFilter");
 
             const fromVal = attemptFromDate.value;
             const toVal = attemptToDate.value;
 
             if (fromVal && toVal && fromVal > toVal) {
-                showAlert("error", "The 'From' date must not be later than the 'To' date.");
+                showSectionAlert("loginFilter", "error", "The 'From' date must not be later than the 'To' date.");
                 return;
             }
 
             try {
-                await loadLoginActivity(fromVal, toVal);
-                showAlert("success", "Login activity filter applied successfully.");
+                await loadLoginActivity(fromVal, toVal, true);
+                showSectionAlert("loginFilter", "success", "Failed login attempts filter applied successfully.");
             } catch (error) {
-                showAlert("error", error.message || "Unable to filter login activity.");
+                showSectionAlert("loginFilter", "error", error.message || "Unable to filter failed login attempts.");
             }
         });
     }
 
     if (resetAttemptsBtn) {
         resetAttemptsBtn.addEventListener("click", async function () {
-            hideAlerts();
+            hideAlertGroup("loginFilter");
 
             if (attemptFromDate) attemptFromDate.value = "";
             if (attemptToDate) attemptToDate.value = "";
 
             try {
-                await loadLoginActivity();
+                await loadLoginActivity("", "", false);
+                showSectionAlert("loginFilter", "success", "Login activity has been reset successfully.");
             } catch (error) {
-                showAlert("error", error.message || "Unable to reload login activity.");
+                showSectionAlert("loginFilter", "error", error.message || "Unable to reload login activity.");
             }
         });
     }
 
     /* =========================================================
        17. DELETE ACCOUNT ACTION
-       What this block does:
-       - Sends delete request to backend
-       - Closes modal
-       - Shows success message
-       - Redirects user to login page
+       Note:
+       - Still uses global fallback alert because account details card
+         does not yet have its own inline alert container.
        ========================================================= */
     if (confirmDeleteBtn) {
         confirmDeleteBtn.addEventListener("click", async function () {
-            hideAlerts();
+            hideAllAlerts();
 
             try {
                 const data = await request(apiBase, {
@@ -885,9 +999,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /* =========================================================
        18. INITIAL PAGE STATE
-       What this block does:
-       - Sets the correct security badge on first load
-       - Syncs topbar name and avatar on first load
        ========================================================= */
     updateSecurityBadge();
     syncTopbarName(fullNameInput ? fullNameInput.value : "");

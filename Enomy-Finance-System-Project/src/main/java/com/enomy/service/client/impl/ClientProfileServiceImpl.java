@@ -15,6 +15,15 @@ import com.enomy.model.EFuser.LoginActivity;
 import com.enomy.model.EFuser.User;
 import com.enomy.service.client.ClientProfileService;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.UUID;
+
+import org.springframework.web.multipart.MultipartFile;
+
 @Service
 public class ClientProfileServiceImpl implements ClientProfileService {
 
@@ -40,6 +49,7 @@ public class ClientProfileServiceImpl implements ClientProfileService {
         dto.setFailedThisMonthCount(loginActivityDao.countFailedThisMonth(user.getId()));
         dto.setLastFailedLogin(loginActivityDao.findLastFailedLogin(user.getId()));
         dto.setLastSuccessfulLogin(loginActivityDao.findLastSuccessfulLogin(user.getId()));
+        dto.setPreviousSuccessfulLogin(loginActivityDao.findPreviousSuccessfulLogin(user.getId()));
         dto.setLoginActivities(loginActivityDao.findAllByUserId(user.getId()));
 
         return dto;
@@ -95,5 +105,34 @@ public class ClientProfileServiceImpl implements ClientProfileService {
     @Override
     public void softDeleteUser(Long userId) {
         userDao.softDeleteUser(userId);
+    }
+    
+    @Override
+    public String saveProfileImage(Long userId, MultipartFile file) throws IOException {
+        User user = userDao.findById(userId);
+        if (user == null) {
+            throw new IllegalArgumentException("User not found.");
+        }
+
+        String originalFilename = file.getOriginalFilename();
+        String extension = "";
+
+        if (originalFilename != null && originalFilename.contains(".")) {
+            extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+        }
+
+        String fileName = "profile_" + userId + "_" + UUID.randomUUID() + extension;
+
+        Path uploadDir = Paths.get("uploads/profile");
+        Files.createDirectories(uploadDir);
+
+        Path filePath = uploadDir.resolve(fileName);
+        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+        String dbPath = "/uploads/profile/" + fileName;
+
+        userDao.updateProfileImagePath(userId, dbPath);
+
+        return dbPath;
     }
 }
