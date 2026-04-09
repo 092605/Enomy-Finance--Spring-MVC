@@ -789,6 +789,48 @@
 	height:50px;
 }
 
+/* =========================
+   AMOUNT INPUT FIELD
+========================= */
+.enomy-input-wrap {
+    width: 100%;
+}
+
+.enomy-input {
+    width: 100%;
+    height: 52px;
+    padding: 0 16px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 14px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    outline: none;
+    box-shadow: none;
+    transition: all 0.25s ease;
+}
+
+.enomy-input::placeholder {
+    color: rgba(255,255,255,0.48);
+}
+
+.enomy-input:focus {
+    border-color: rgba(214, 70, 239, 0.65);
+    box-shadow: 0 0 0 3px rgba(214, 70, 239, 0.12);
+    background: rgba(255,255,255,0.08);
+}
+
+.enomy-input::-webkit-outer-spin-button,
+.enomy-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.enomy-input[type="number"] {
+    -moz-appearance: textfield;
+}
+
 
 /* =========================
    RESPONSIVE

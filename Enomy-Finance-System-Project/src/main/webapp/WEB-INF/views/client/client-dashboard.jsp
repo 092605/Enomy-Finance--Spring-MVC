@@ -37,17 +37,30 @@
                 <section class="dashboard-section">
                     <div class="row g-5">
 
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card-glow dashboard-card h-100">
-                                <div class="dashboard-card-header">
-                                    <h5>Investment Quotes</h5>
-                                </div>
-                                <div class="dashboard-card-body Inv-Count">
-                                    <p class="dashboard-card-value SumCount">1</p>
-                                    <button class="btn-glow">View All</button>
-                                </div>
-                            </div>
-                        </div>
+						<div class="col-xl-3 col-md-6">
+						    <div class="card-glow dashboard-card saved-quotes-summary-card h-100">
+						
+						        <div class="dashboard-card-header">
+						            <h5>Saved Quotes</h5>
+						        </div>
+						
+						        <div class="dashboard-card-body saved-quotes-summary-body text-center">
+						
+						            <!-- Dynamic Count -->
+						            <p class="dashboard-card-value SumCount">
+						                ${savedQuoteCount}
+						            </p>
+						
+						            <!-- Updated Button -->
+						            <a href="${pageContext.request.contextPath}/client/investment"
+						               class="btn-glow text-decoration-none text-center border-0">
+						
+						                Go to Investment Page
+						            </a>
+						
+						        </div>
+						    </div>
+						</div>
 
                         <div class="col-xl-5 col-md-6">
                             <div class="card-glow dashboard-card h-100">
@@ -193,80 +206,108 @@
 								</div>
 				            </div>
 				        </div>
+				        
+				        
+				          <!-- Check Rate -->
 				
-				        <!-- Currency Rates -->
-				        <div class="col-lg-3">
-				            <div class="card-glow dashboard-card h-100 ">
-				                <div class="dashboard-card-header">
-				                    <h5>Currency Rates</h5>
-				                </div>
-				                
-				                <div class="header-divider"></div>
-				
-				              <div class="dashboard-card-body mt-5">
-								
-								    <!-- Row 1: Base + Target -->
-								    <div class="row g-3">
-								        <div class="col-6">
-								            <label class="form-label">Base</label>
-								
-								            <div class="custom-dropdown currency-dropdown">
-								                <button class="custom-dropdown-toggle" type="button">
-								                    <span class="selected-value">GBP</span>
-								                    <span class="dropdown-arrow">
-													    <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
-													        <path d="M6 8L10 12L14 8" stroke="white" stroke-width="2" stroke-linecap="round"/>
-													    </svg>
-													</span>
-								                </button>
-								
-								                <div class="custom-dropdown-menu">
-								                    <div class="custom-dropdown-item active" data-value="GBP">GBP</div>
-								                    <div class="custom-dropdown-item" data-value="USD">USD</div>
-								                    <div class="custom-dropdown-item" data-value="EUR">EUR</div>
-								                </div>
-								            </div>
-								        </div>
-								
-								        <div class="col-6">
-								            <label class="form-label">Target</label>
-								
-								            <div class="custom-dropdown currency-dropdown">
-								                <button class="custom-dropdown-toggle" type="button">
-								                    <span class="selected-value">USD</span>
-								                    <span class="dropdown-arrow">
-													    <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
-													        <path d="M6 8L10 12L14 8" stroke="white" stroke-width="2" stroke-linecap="round"/>
-													    </svg>
-													</span>
-								                </button>
-								
-								                <div class="custom-dropdown-menu">
-								                    <div class="custom-dropdown-item active" data-value="USD">USD</div>
-								                    <div class="custom-dropdown-item" data-value="GBP">GBP</div>
-								                    <div class="custom-dropdown-item" data-value="EUR">EUR</div>
-								                </div>
-								            </div>
-								        </div>
-								    </div>
-								
-								    <!-- Row 2: Rate Result -->
-								    <div class="dashboard-result-box mt-4 text-center">
-								        Rate Result...
-								    </div>
-								
-								    <!-- Row 3: Button -->
-								   <div class="rate-actions mt-5">
-									    <button class="btn-glow">Check Rate</button>
-									
-									    <span class="rate-updated">
-									        Rates last synced: <br><strong>Aug 20, 2026 • 10:00 AM</strong></br>
-									    </span>
-									</div>
-								
-								</div>
-				            </div>
-				        </div>
+						<div class="col-lg-3">
+						    <div class="card-glow dashboard-card currency-checkrate-card h-100">
+						        <div class="dashboard-card-header">
+						            <h5>Currency Rates</h5>
+						        </div>
+						
+						        <div class="header-divider"></div>
+						
+						        <div class="dashboard-card-body mt-4">
+						            <div class="currency-card-header-row mb-3">
+						                <span class="currency-mini-badge">Base Amount: 1</span>
+						            </div>
+						
+						            <div class="row g-3">
+						
+						                <div class="col-6">
+						                    <label class="form-label">Base</label>
+						
+						                    <div class="custom-dropdown currency-dropdown">
+						                        <input type="hidden" id="checkRateBaseCurrency" value="" />
+						
+						                        <button class="custom-dropdown-toggle" type="button">
+						                            <span class="selected-value">Select</span>
+						                            <span class="dropdown-arrow">
+						                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+						                                    <path d="M6 8L10 12L14 8" stroke="white" stroke-width="2" stroke-linecap="round"/>
+						                                </svg>
+						                            </span>
+						                        </button>
+						
+						                        <div class="custom-dropdown-menu">
+						                            <div class="custom-dropdown-item" data-value="GBP">GBP</div>
+						                            <div class="custom-dropdown-item" data-value="USD">USD</div>
+						                            <div class="custom-dropdown-item" data-value="EUR">EUR</div>
+						                            <div class="custom-dropdown-item" data-value="BRL">BRL</div>
+						                            <div class="custom-dropdown-item" data-value="JPY">JPY</div>
+						                            <div class="custom-dropdown-item" data-value="TRY">TRY</div>
+						                        </div>
+						                    </div>
+						                </div>
+						
+						                <div class="col-6">
+						                    <label class="form-label">Target</label>
+						
+						                    <div class="custom-dropdown currency-dropdown">
+						                        <input type="hidden" id="checkRateTargetCurrency" value="" />
+						
+						                        <button class="custom-dropdown-toggle" type="button">
+						                            <span class="selected-value">Select</span>
+						                            <span class="dropdown-arrow">
+						                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+						                                    <path d="M6 8L10 12L14 8" stroke="white" stroke-width="2" stroke-linecap="round"/>
+						                                </svg>
+						                            </span>
+						                        </button>
+						
+						                        <div class="custom-dropdown-menu">
+						                            <div class="custom-dropdown-item" data-value="GBP">GBP</div>
+						                            <div class="custom-dropdown-item" data-value="USD">USD</div>
+						                            <div class="custom-dropdown-item" data-value="EUR">EUR</div>
+						                            <div class="custom-dropdown-item" data-value="BRL">BRL</div>
+						                            <div class="custom-dropdown-item" data-value="JPY">JPY</div>
+						                            <div class="custom-dropdown-item" data-value="TRY">TRY</div>
+						                        </div>
+						                    </div>
+						                </div>
+						
+						                <div class="col-12">
+						                    <div class="currency-checkrate-preview-box">
+						                        <div class="currency-checkrate-preview-title">Rate Result</div>
+						                        <div class="currency-checkrate-preview-value" id="checkRateResultValue">
+						                            Rate Result...
+						                        </div>
+						                    </div>
+						                </div>
+						
+						                <div class="col-12">
+						                    <div class="currency-checkrate-actions">
+						                        <button type="button" class="btn-glow currency-checkrate-btn" id="checkRateBtn">
+						                            Check Rate
+						                        </button>
+						
+						                        <div class="currency-checkrate-sync">
+						                            Rate date:<br>
+						                            <strong id="checkRateRateDate">Not available</strong><br><br>
+						                            Fetched at:<br>
+						                            <strong id="checkRateFetchedAt">Not available</strong>
+						                        </div>
+						                    </div>
+						                </div>
+						
+						                <div class="col-12">
+						                    <div id="checkRateError" class="inline-error-message" style="display:none;"></div>
+						                </div>
+						            </div>
+						        </div>
+						    </div>
+						</div>
 				
 				        <!-- Investment Plans -->
 							<div class="col-lg-6 d-flex justify-content-center">
@@ -407,8 +448,13 @@
 
         </div>
     </div>
+    
+    
+<script>
+    window.CONTEXT_PATH = "${pageContext.request.contextPath}";
+</script>
+		<script src="${pageContext.request.contextPath}/resources/js/client/client-dashboard.js"></script>
 
-    <script src="${pageContext.request.contextPath}/resources/js/client/client-dashboard.js"></script>
 </body>
 </html>
 

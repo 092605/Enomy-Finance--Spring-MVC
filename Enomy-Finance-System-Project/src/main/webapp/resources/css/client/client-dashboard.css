@@ -40,6 +40,68 @@ html, body {
 }
 
 /* ================================================= */
+/* Quote COunt Card                                     */
+/* ================================================= */
+
+
+.saved-quotes-summary-body {
+    display: flex;
+    flex-direction: column;
+    
+    align-items: center;
+    height: 100%;
+   
+     padding-bottom: 20px;
+}
+
+.saved-quotes-summary-card {
+    position: relative;
+    border-radius: 24px;
+    overflow: hidden;
+    z-index: 0;
+}
+
+/* 🔥 glowing border layer */
+.saved-quotes-summary-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px; /* border thickness */
+
+    background: linear-gradient(135deg, #ff2daa, #a855f7);
+
+    -webkit-mask: 
+        linear-gradient(#000 0 0) content-box, 
+        linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+
+    z-index: 0;
+}
+
+/* 🌫 soft outer glow */
+.saved-quotes-summary-card::after {
+    content: "";
+    position: absolute;
+    inset: -6px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, #ff2daa, #a855f7);
+    opacity: 0.25;
+    filter: blur(20px);
+    z-index: 0;
+}
+
+/* keep content above */
+.saved-quotes-summary-card > * {
+    position: relative;
+    z-index: 1;
+}
+
+
+
+
+/* ================================================= */
 /* SIDEBAR                                           */
 /* ================================================= */
 
@@ -506,15 +568,15 @@ html, body {
 
 
 
-/* ================================================= */
-/* Investment Quotes Summary Count                   */
-/* ================================================= */
+/* /* ================================================= */
+Investment Quotes Summary Count                  
+=================================================
 
 .Inv-Count {
     display: flex ; 
     flex-direction: column;
-    justify-content: center;   /* vertical center */
-    align-items: center;       /* horizontal center */
+    justify-content: center;   vertical center
+    align-items: center;       horizontal center
     text-align: center;
 }
 
@@ -526,7 +588,7 @@ html, body {
 .text-muted{
 	color: var(--text-muted) !important;
 }
-
+ */
 
 /* ================================================= */
 /* Investment Projection Card                        */
@@ -1026,6 +1088,115 @@ html, body {
 .footer-right a:hover{
     color: var(--accent-primary);
 }
+
+
+
+/* ================================================= */
+/* DASHBOARD - CHECK RATE CARD (FROM CURRENCY PAGE)  */
+/* ================================================= */
+
+/* Container layout */
+.currency-checkrate-card .dashboard-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* FIX: remove currency page offset */
+.currency-checkrate-card {
+    width: 100%;
+    margin-left: 0; /* important fix */
+}
+
+/* Header row (badge area) */
+.currency-card-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+/* Badge */
+.currency-mini-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 700;
+
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.88);
+
+    width: 140px;
+    height: 40px;
+}
+
+/* Result preview box */
+.currency-checkrate-preview-box {
+    margin-top: 6px;
+    min-height: 92px;
+
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.04);
+    border-radius: 18px;
+
+    padding: 16px 18px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Result title */
+.currency-checkrate-preview-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 6px;
+}
+
+/* Result value */
+.currency-checkrate-preview-value {
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+/* Button + sync row */
+.currency-checkrate-actions {
+    margin-top: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    flex-wrap: wrap;
+}
+
+/* Sync info */
+.currency-checkrate-sync {
+    font-size: 12px;
+    line-height: 1.4;
+    color: rgba(255,255,255,0.68);
+}
+
+.currency-checkrate-sync strong {
+    color: #fff;
+    font-weight: 700;
+}
+
+/* Optional: tighten dropdown spacing inside dashboard */
+.currency-checkrate-card .form-label {
+    font-size: 12px;
+    margin-bottom: 4px;
+    color: rgba(255,255,255,0.75);
+}
+
 
 /* ================================================= */
 /* RESPONSIVE                                        */
