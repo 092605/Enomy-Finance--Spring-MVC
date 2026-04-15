@@ -28,6 +28,9 @@
     box-shadow:
         0 20px 50px rgba(0,0,0,0.30),
         inset 0 1px 0 rgba(255,255,255,0.04);
+        
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
 .auth-card-top-glow{
@@ -172,6 +175,128 @@
 .toggle-password:hover {
     color: var(--text-main);
 } 
+
+
+/* =========================================
+   SIGNUP PASSWORD VALIDATION
+========================================= */
+
+.auth-divider {
+    height: 1px;
+    margin: 1.6rem 0 2rem 0;
+
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,45,170,0.4),
+        rgba(124,58,237,0.4),
+        transparent
+    );
+}
+.auth-signup-layout {
+    --bs-gutter-x: 5rem;
+    align-items: stretch;
+}
+
+.auth-signup-side-panel {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.auth-password-strength-box {
+    margin-bottom: 0.7rem;
+}
+
+.auth-password-rules {
+    margin: 0;
+    padding-left: 1.2rem;
+    color: rgba(229, 232, 255, 0.7);
+    font-size: 0.9rem;
+    line-height: 1.7;
+}
+
+.auth-confirm-password-message {
+    min-height: 24px;
+    margin-top: 0.55rem;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.auth-footer-signup-panel {
+    margin-top: 1.1rem;
+}
+
+@media (max-width: 991.98px) {
+    .auth-signup-side-panel {
+        margin-top: 0.25rem;
+    }
+}
+
+.auth-password-strength {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 0.15rem;
+    margin-bottom: 0.65rem;
+}
+
+.auth-password-strength-label {
+    color: rgba(229, 232, 255, 0.72);
+    font-size: 0.9rem;
+}
+
+.auth-password-strength-value {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.auth-password-strength-weak {
+    color: #ff9ca8;
+}
+
+.auth-password-strength-medium {
+    color: #ffd36e;
+}
+
+.auth-password-strength-strong {
+    color: #7ef0a5;
+}
+
+.auth-password-rules {
+    margin: 0;
+    padding-left: 1.2rem;
+    color: rgba(229, 232, 255, 0.7);
+    font-size: 0.9rem;
+    line-height: 1.7;
+}
+
+.auth-password-rules li.rule-valid {
+    color: #7ef0a5;
+}
+
+.auth-password-rules li.rule-invalid {
+    color: #ff9ca8;
+}
+
+.auth-confirm-password-message {
+    min-height: 22px;
+    margin-top: 0.55rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.auth-password-match-success {
+    color: #7ef0a5;
+}
+
+.auth-password-match-error {
+    color: #ff9ca8;
+}
 
 @media (max-width: 767.98px){
     .auth-wrapper{

@@ -1,23 +1,22 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-
 <aside class="app-sidebar" id="appSidebar">
 
    <div class="sidebar-header">
 
-	    <a href="#" class="sidebar-brand">
-		    <img src="${pageContext.request.contextPath}/resources/images/Enomy Finance Logo.png"
-		         class="brand-logo"
-		         alt="Enomy Finance Logo">
-		
-		    <span class="brand-text">Enomy Finance</span>
-		</a>
-	
-	</div>
+        <a href="${pageContext.request.contextPath}/" class="sidebar-brand">
+            <img src="${pageContext.request.contextPath}/resources/images/Enomy Finance Logo.png"
+                 class="brand-logo"
+                 alt="Enomy Finance Logo">
 
-	<button class="sidebar-edge-toggle" id="sidebarToggle">
-	    <span id="sidebarArrow">></span>
-	</button>
+            <span class="brand-text">Enomy Finance</span>
+        </a>
+
+    </div>
+
+    <button class="sidebar-edge-toggle" id="sidebarToggle">
+        <span id="sidebarArrow">></span>
+    </button>
 
     <nav class="sidebar-nav">
         <ul class="sidebar-menu">
@@ -30,18 +29,18 @@
             </li>
 
             <li class="sidebar-item ${activePage == 'currency-converter' ? 'active' : ''}">
-				    <a href="${pageContext.request.contextPath}/client/currency-converter/home" class="sidebar-link">
-				        <span class="sidebar-icon">⇄</span>
-				        <span class="sidebar-label">Currency Converter</span>
-				    </a>
-				</li>
+                <a href="${pageContext.request.contextPath}/client/currency-converter/home" class="sidebar-link">
+                    <span class="sidebar-icon">⇄</span>
+                    <span class="sidebar-label">Currency Converter</span>
+                </a>
+            </li>
 
             <li class="sidebar-item ${activePage == 'investment' ? 'active' : ''}">
-			    <a href="${pageContext.request.contextPath}/client/investment" class="sidebar-link">
-			        <span class="sidebar-icon">↗</span>
-			        <span class="sidebar-label">Savings &amp; Investment</span>
-			    </a>
-			</li>
+                <a href="${pageContext.request.contextPath}/client/investment" class="sidebar-link">
+                    <span class="sidebar-icon">↗</span>
+                    <span class="sidebar-label">Savings &amp; Investment</span>
+                </a>
+            </li>
 
             <li class="sidebar-item ${activePage == 'profile' ? 'active' : ''}">
                 <a href="${pageContext.request.contextPath}/client/profile" class="sidebar-link">

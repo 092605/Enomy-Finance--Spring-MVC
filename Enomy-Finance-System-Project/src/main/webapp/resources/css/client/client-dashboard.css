@@ -569,16 +569,9 @@ html, body {
 
 
 /* /* ================================================= */
-Investment Quotes Summary Count                  
-=================================================
+/*Investment Quotes Summary Count        */           
+/*================================================= */
 
-.Inv-Count {
-    display: flex ; 
-    flex-direction: column;
-    justify-content: center;   vertical center
-    align-items: center;       horizontal center
-    text-align: center;
-}
 
 .SumCount {
 	font-size: 85px !important;
@@ -1039,6 +1032,126 @@ Investment Quotes Summary Count
     text-align: center;
     padding: 1rem;
 }
+
+/* =========================================================
+   INLINE SUCCESS MESSAGE
+   ========================================================= */
+
+.inline-success-message {
+    margin-top: 0.6rem;
+    padding: 0.72rem 0.9rem;
+
+    display: none;
+    align-items: center;
+    gap: 0.65rem;
+
+    font-size: 0.8rem;
+    font-weight: 500;
+
+    color: #6effb0;
+
+    background: rgba(0, 255, 170, 0.08);
+    border: 1px solid rgba(0, 255, 170, 0.25);
+
+    border-radius: 12px;
+
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+
+    box-shadow: 0 6px 18px rgba(0, 255, 170, 0.15);
+
+    animation: fadeSlideIn 0.25s ease;
+}
+
+.inline-success-message.show {
+    display: flex;
+}
+
+/* Green accent bar */
+.inline-success-message::before {
+    content: "";
+    width: 4px;
+    align-self: stretch;
+    border-radius: 999px;
+    background: linear-gradient(180deg, #00ffaa, #6effb0);
+}
+
+/* Success icon */
+.inline-success-message::after {
+    content: "✔";
+    font-size: 0.95rem;
+    color: #6effb0;
+}
+
+
+
+/* =========================================================
+   INLINE ERROR MESSAGE (DASHBOARD CARDS)
+   ========================================================= */
+
+.inline-error-message {
+    margin-top: 0.6rem;
+    padding: 0.72rem 0.9rem;
+
+    display: none;
+    align-items: center;
+    gap: 0.65rem;
+
+    font-size: 0.8rem;
+    font-weight: 500;
+    line-height: 1.4;
+
+    color: #ff7aa2;
+    background: rgba(255, 77, 109, 0.08);
+    border: 1px solid rgba(255, 77, 109, 0.28);
+    border-radius: 12px;
+
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+
+    box-shadow: 0 6px 18px rgba(255, 77, 109, 0.15);
+
+    animation: fadeSlideIn 0.25s ease;
+}
+
+.inline-error-message.show {
+    display: flex;
+}
+
+/* Left accent bar */
+.inline-error-message::before {
+    content: "";
+    width: 4px;
+    align-self: stretch;
+    border-radius: 999px;
+    background: linear-gradient(180deg, #ff4d6d, #ff85a2);
+    flex-shrink: 0;
+}
+
+/* Error icon */
+.inline-error-message::after {
+    content: "⚠";
+    font-size: 0.95rem;
+    line-height: 1;
+    color: #ff8fab;
+    flex-shrink: 0;
+    margin-left: -0.1rem;
+}
+
+/* Animation */
+@keyframes fadeSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
 
 /* ================================================= */
 /* TABLE                                             */

@@ -25,4 +25,6 @@ public interface UserDao {
     void updateLastLoginAt(Long userId, LocalDateTime lastLoginAt);
 
     void softDeleteUser(Long userId);
+    
+    User findByFullName(String fullName);
 }

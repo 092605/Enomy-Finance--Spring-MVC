@@ -194,6 +194,7 @@ public class CurrencyConverterServiceImpl implements CurrencyConverterService {
 
     @Override
     public TransactionReceiptDTO confirmTransaction(CurrencyConversionRequestDTO request, Long userId) {
+
         CurrencyConversionResponseDTO calculation = calculateConversion(request);
 
         if (calculation == null || !calculation.isValid()) {
@@ -202,9 +203,15 @@ public class CurrencyConverterServiceImpl implements CurrencyConverterService {
 
         ConversionRuleSet activeRuleSet = conversionRuleSetDao.findActiveRuleSet();
         if (activeRuleSet == null) {
-            return null;	
+            return null;
         }
 
+        // 🔥 SINGLE SOURCE OF TIME (VERY IMPORTANT)
+        Date now = new Date();
+
+        // =========================
+        // SAVE TRANSACTION
+        // =========================
         CurrencyTransaction transaction = new CurrencyTransaction();
         transaction.setTransactionNumber(generateTransactionNumber(userId));
         transaction.setUserId(userId);
@@ -220,12 +227,21 @@ public class CurrencyConverterServiceImpl implements CurrencyConverterService {
         transaction.setRuleSetId(activeRuleSet.getId());
         transaction.setStatus("SUCCESS");
 
+        // 🔥 THIS FIXES YOUR DATE ISSUE
+        transaction.setCreatedAt(now);
+
         currencyTransactionDao.save(transaction);
 
+        // =========================
+        // BUILD RECEIPT (USE SAME TIME)
+        // =========================
         TransactionReceiptDTO receipt = new TransactionReceiptDTO();
         receipt.setTransactionNumber(transaction.getTransactionNumber());
         receipt.setTransactionType(transaction.getTransactionType());
-        receipt.setDate(new Date());
+
+        // 🔥 SAME TIMESTAMP AS DATABASE
+        receipt.setDate(now);
+
         receipt.setBaseCurrency(transaction.getBaseCurrency());
         receipt.setTargetCurrency(transaction.getTargetCurrency());
         receipt.setInputAmount(transaction.getInputAmount());
@@ -235,6 +251,9 @@ public class CurrencyConverterServiceImpl implements CurrencyConverterService {
         receipt.setFeeValue(transaction.getFeeValue());
         receipt.setFinalAmount(transaction.getFinalAmount());
 
+        // =========================
+        // LABEL LOGIC
+        // =========================
         if ("BUY".equalsIgnoreCase(transaction.getTransactionType())) {
             receipt.setLabel("Paid Amount");
         } else {
@@ -245,7 +264,6 @@ public class CurrencyConverterServiceImpl implements CurrencyConverterService {
 
         return receipt;
     }
-
     @Override
     public List<TransactionReceiptDTO> getTransactionHistory(Long userId) {
         List<CurrencyTransaction> transactions = currencyTransactionDao.findByUserId(userId);

@@ -37,6 +37,7 @@ public class ClientProfileController {
 
         model.addAttribute("profileData", profileData);
         model.addAttribute("user", profileData.getUser());
+        model.addAttribute("activePage", "profile");
 
         return "client/client-profile";
     }

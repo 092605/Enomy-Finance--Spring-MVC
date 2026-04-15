@@ -35,8 +35,8 @@ document.addEventListener("DOMContentLoaded", function () {
 /* Dropdown Behaviour                                */
 /* Related purpose:                                  */
 /* - Used by dashboard dropdowns                     */
-/* - Updated to work properly for Currency Rates     */
-/*   check card hidden inputs                        */
+/* - Updated to work properly for dashboard cards    */
+/*   with hidden inputs                              */
 /* ================================================= */
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -56,7 +56,6 @@ function setupCustomDropdowns() {
 
         if (!toggle || !selectedValue || !items.length) return;
 
-        // Open / close current dropdown
         toggle.addEventListener("click", function (e) {
             e.preventDefault();
             e.stopPropagation();
@@ -70,7 +69,6 @@ function setupCustomDropdowns() {
             dropdown.classList.toggle("active");
         });
 
-        // Select item
         items.forEach(item => {
             item.addEventListener("click", function (e) {
                 e.preventDefault();
@@ -91,8 +89,6 @@ function setupCustomDropdowns() {
                         hiddenInput.value = itemText.toLowerCase() === "all" ? "" : itemText;
                     }
 
-                    // Related purpose:
-                    // trigger change so dashboard currency-rate logic can react if needed later
                     hiddenInput.dispatchEvent(new Event("change", { bubbles: true }));
                 }
 
@@ -100,9 +96,6 @@ function setupCustomDropdowns() {
             });
         });
 
-        // Related purpose:
-        // if hidden input already has value from server/rendering,
-        // sync selected text on load
         if (hiddenInput && hiddenInput.value) {
             const matchedItem = Array.from(items).find(item => {
                 return item.getAttribute("data-value") === hiddenInput.value;
@@ -116,7 +109,6 @@ function setupCustomDropdowns() {
         }
     });
 
-    // Close all dropdowns when clicking outside
     document.addEventListener("click", function () {
         document.querySelectorAll(".custom-dropdown").forEach(dropdown => {
             dropdown.classList.remove("active");
@@ -143,7 +135,6 @@ document.addEventListener("DOMContentLoaded", function () {
         fees: document.querySelector('[data-field="fees"]')
     };
 
-    // Exit safely if investment widget is not present
     if (!planTabs.length || !planTitle || !usePlanBtn ||
         !detailFields.maxInvestment || !detailFields.minMonthly ||
         !detailFields.minLumpSum || !detailFields.returns ||
@@ -151,35 +142,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
 
-    const plans = {
-        1: {
-            title: "Option 1 – Basic Savings Plan",
-            maxInvestment: "£20 000",
-            minMonthly: "£50",
-            minLumpSum: "N/A",
-            returns: "1.2% to 2.4%",
-            tax: "0%",
-            fees: "0.25%"
-        },
-        2: {
-            title: "Option 2 – Savings Plan Plus",
-            maxInvestment: "£30 000",
-            minMonthly: "£50",
-            minLumpSum: "£300",
-            returns: "3% to 5.5%",
-            tax: "10% on profits above £12 000",
-            fees: "0.3%"
-        },
-        3: {
-            title: "Option 3 – Managed Stock Investments",
-            maxInvestment: "Unlimited",
-            minMonthly: "£150",
-            minLumpSum: "£1000",
-            returns: "4% to 23%",
-            tax: "10% on profits above £12 000; 20% on profits above £40 000",
-            fees: "1.3%"
-        }
-    };
+    const plans = window.dashboardPlanDetails || {};
 
     let selectedPlanId = "1";
 
@@ -194,7 +157,7 @@ document.addEventListener("DOMContentLoaded", function () {
         detailFields.minMonthly.textContent = selectedPlan.minMonthly;
         detailFields.minLumpSum.textContent = selectedPlan.minLumpSum;
         detailFields.returns.textContent = selectedPlan.returns;
-        detailFields.tax.textContent = selectedPlan.tax;
+        detailFields.tax.innerHTML = selectedPlan.tax;
         detailFields.fees.textContent = selectedPlan.fees;
 
         planTabs.forEach(tab => tab.classList.remove("active"));
@@ -213,9 +176,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     usePlanBtn.addEventListener("click", function () {
-        // temporary UI-only behavior
-        // later replace this with your real investment page route
-        window.location.href = "/Enomy-Finance-System-Project/client/investment?planId=" + selectedPlanId;
+        const selectedPlan = plans[selectedPlanId];
+        const planType = selectedPlan ? selectedPlan.planType : "BASIC_SAVINGS";
+        window.location.href = window.CONTEXT_PATH + "/client/investment?planType=" + encodeURIComponent(planType);
     });
 
     updatePlan("1");
@@ -223,16 +186,149 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 /* ================================================= */
+/* Dashboard Currency Converter - Calculate Logic    */
+/* ================================================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+    setupDashboardConverterCard();
+});
+
+let convertErrorTimer;
+let convertSuccessTimer;
+
+function setupDashboardConverterCard() {
+    const convertBtn = document.getElementById("convertBtn");
+    const baseCurrencyInput = document.getElementById("convertBaseCurrency");
+    const targetCurrencyInput = document.getElementById("convertTargetCurrency");
+    const amountInput = document.getElementById("convertAmountInput");
+    const resultBox = document.getElementById("convertResultBox");
+    const errorBox = document.getElementById("convertError");
+    const successBox = document.getElementById("convertSuccess");
+
+    if (!convertBtn || !baseCurrencyInput || !targetCurrencyInput || !amountInput || !resultBox) {
+        return;
+    }
+
+    convertBtn.addEventListener("click", function () {
+        const baseCurrency = (baseCurrencyInput.value || "").trim();
+        const targetCurrency = (targetCurrencyInput.value || "").trim();
+        const amountRaw = (amountInput.value || "").trim();
+        const amount = parseFloat(amountRaw);
+
+        clearDashboardConvertError(errorBox);
+        clearDashboardConvertSuccess(successBox);
+
+        if (!baseCurrency || !targetCurrency) {
+            resultBox.textContent = "Please select both currencies.";
+            showDashboardConvertError(errorBox, "Please select both base and target currencies.");
+            return;
+        }
+
+        if (!amountRaw || isNaN(amount) || amount <= 0) {
+            resultBox.textContent = "Please enter a valid amount.";
+            showDashboardConvertError(errorBox, "Please enter a valid amount.");
+            return;
+        }
+
+        if (baseCurrency === targetCurrency) {
+            resultBox.textContent = "Invalid currency selection.";
+            showDashboardConvertError(errorBox, "Base and target currency must not be the same.");
+            return;
+        }
+
+        resultBox.textContent = "Calculating...";
+
+        fetch(window.CONTEXT_PATH + "/client/currency-converter/check-rate-ajax", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+            },
+            body:
+                "baseCurrency=" + encodeURIComponent(baseCurrency) +
+                "&targetCurrency=" + encodeURIComponent(targetCurrency)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Failed to retrieve conversion rate.");
+            }
+            return response.json();
+        })
+        .then(data => {
+            const rate = Number(data.convertedAmount);
+
+            if (isNaN(rate) || rate <= 0) {
+                resultBox.textContent = "Unable to calculate conversion.";
+                showDashboardConvertError(errorBox, "Unable to calculate conversion. Please try again.");
+                return;
+            }
+
+            const convertedAmount = amount * rate;
+
+            resultBox.innerHTML =
+                Number(amount).toFixed(2) + " " + data.baseCurrency +
+                " = <strong>" + convertedAmount.toFixed(2) +
+                "</strong> " + data.targetCurrency;
+
+            showDashboardConvertSuccess(successBox, "Conversion successful.");
+        })
+        .catch(error => {
+            resultBox.textContent = "Conversion failed. Please try again.";
+            showDashboardConvertError(errorBox, "Conversion failed. Please try again.");
+            console.error("Dashboard converter error:", error);
+        });
+    });
+}
+
+function showDashboardConvertError(errorBox, message) {
+    if (!errorBox) return;
+
+    errorBox.textContent = message;
+    errorBox.classList.add("show");
+
+    clearTimeout(convertErrorTimer);
+
+    convertErrorTimer = setTimeout(() => {
+        clearDashboardConvertError(errorBox);
+    }, 3000);
+}
+
+function clearDashboardConvertError(errorBox) {
+    if (!errorBox) return;
+
+    errorBox.textContent = "";
+    errorBox.classList.remove("show");
+}
+
+function showDashboardConvertSuccess(successBox, message) {
+    if (!successBox) return;
+
+    successBox.textContent = message;
+    successBox.classList.add("show");
+
+    clearTimeout(convertSuccessTimer);
+
+    convertSuccessTimer = setTimeout(() => {
+        clearDashboardConvertSuccess(successBox);
+    }, 3000);
+}
+
+function clearDashboardConvertSuccess(successBox) {
+    if (!successBox) return;
+
+    successBox.textContent = "";
+    successBox.classList.remove("show");
+}
+
+
+/* ================================================= */
 /* Dashboard Currency Rates - Check Rate Logic       */
-/* Related purpose:                                  */
-/* - Reuse the dashboard Currency Rates card         */
-/* - Keep client-currency.js unchanged               */
-/* - Works only for dashboard card elements          */
 /* ================================================= */
 
 document.addEventListener("DOMContentLoaded", function () {
     setupDashboardCheckRateCard();
 });
+
+let checkRateErrorTimer;
 
 function setupDashboardCheckRateCard() {
     const checkRateBtn = document.getElementById("checkRateBtn");
@@ -243,7 +339,6 @@ function setupDashboardCheckRateCard() {
     const fetchedAtEl = document.getElementById("checkRateFetchedAt");
     const errorBox = document.getElementById("checkRateError");
 
-    // Exit safely if dashboard card is not present
     if (!checkRateBtn || !baseCurrencyInput || !targetCurrencyInput || !resultValue || !rateDateEl || !fetchedAtEl) {
         return;
     }
@@ -263,9 +358,10 @@ function setupDashboardCheckRateCard() {
         }
 
         if (baseCurrency === targetCurrency) {
-            resultValue.innerHTML = "1 " + baseCurrency + " = <strong>1.0000</strong> " + targetCurrency;
-            rateDateEl.textContent = "Today";
-            fetchedAtEl.textContent = new Date().toLocaleString();
+            resultValue.textContent = "Invalid currency selection.";
+            rateDateEl.textContent = "Not available";
+            fetchedAtEl.textContent = "Not available";
+            showDashboardCheckRateError(errorBox, "Base and target currency must not be the same.");
             return;
         }
 
@@ -309,12 +405,20 @@ function setupDashboardCheckRateCard() {
 
 function showDashboardCheckRateError(errorBox, message) {
     if (!errorBox) return;
+
     errorBox.textContent = message;
-    errorBox.style.display = "block";
+    errorBox.classList.add("show");
+
+    clearTimeout(checkRateErrorTimer);
+
+    checkRateErrorTimer = setTimeout(() => {
+        clearDashboardCheckRateError(errorBox);
+    }, 3000);
 }
 
 function clearDashboardCheckRateError(errorBox) {
     if (!errorBox) return;
+
     errorBox.textContent = "";
-    errorBox.style.display = "none";
+    errorBox.classList.remove("show");
 }

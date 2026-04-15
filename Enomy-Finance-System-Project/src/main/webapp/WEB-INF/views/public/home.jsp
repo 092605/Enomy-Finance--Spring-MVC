@@ -54,15 +54,23 @@
                         financial growth easily with Enomy Finance.
                     </p>
 
-                    <div class="hero-buttons mt-4">
-                        <a href="${contextPath}/landing-converter" class="btn btn-glow me-3">
-                            Try Currency Converter
-                        </a>
-
-                        <a href="${contextPath}/login" class="btn btn-outline-light">
-                            Sign Up
-                        </a>
-                    </div>
+				<div class="hero-buttons mt-4">
+				    <a href="${contextPath}/landing-converter" class="btn btn-glow me-3">
+				        Try Currency Converter
+				    </a>
+				
+				    <c:if test="${not isLoggedIn}">
+				        <a href="${contextPath}/signup" class="btn btn-outline-light">
+				            Sign Up
+				        </a>
+				    </c:if>
+				
+				    <c:if test="${isLoggedIn}">
+				        <a href="${contextPath}/client/dashboard" class="btn btn-outline-light">
+				            Go to Dashboard
+				        </a>
+				    </c:if>
+				</div>
 
                 </div>
 

@@ -3,22 +3,21 @@
 ========================= */
 .currency-page {
     padding: 24px;
-     min-height: calc(100vh - 220px);
-    
+    min-height: calc(100vh - 220px);
 }
 
 .cc-narrow {
-    max-width: 550px;   /* 🔥 control width here */
-    margin: 0 auto;     /* center inside column */
+    max-width: 550px;
+    margin: 0 auto;
 }
 
 
 /* =========================
    RESULT CARD SPACING
 ========================= */
-.currency-result-card 
+.currency-result-card
 .currency-card-inner {
-    padding: 42px 46px;  /* top/bottom | left/right */
+    padding: 42px 46px;
 }
 
 
@@ -42,7 +41,6 @@
     color: #fff;
     margin: 0;
 }
-
 
 
 /* =========================
@@ -385,10 +383,112 @@
 
 
 /* =========================
-   INLINE MESSAGES
+   INLINE FEEDBACK MESSAGES
 ========================= */
-.inline-error-message {
+.inline-error-message,
+.inline-success-message {
     margin-top: 16px;
+    padding: 0 0.9rem;
+
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+
+    font-size: 0.82rem;
+    font-weight: 600;
+    line-height: 1.4;
+
+    border-radius: 12px;
+
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+
+    opacity: 0;
+    transform: translateY(0);
+    max-height: 0;
+    overflow: hidden;
+    pointer-events: none;
+
+    transition:
+        opacity 0.28s ease,
+        transform 0.28s ease,
+        max-height 0.28s ease,
+        padding-top 0.28s ease,
+        padding-bottom 0.28s ease,
+        margin-top 0.28s ease,
+        border-color 0.28s ease,
+        box-shadow 0.28s ease;
+}
+
+.inline-error-message.show,
+.inline-success-message.show {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 120px;
+    padding-top: 0.72rem;
+    padding-bottom: 0.72rem;
+    pointer-events: auto;
+}
+
+.inline-error-message.hide,
+.inline-success-message.hide {
+    opacity: 0;
+    transform: translateY(-10px);
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    pointer-events: none;
+}
+
+/* ERROR */
+.inline-error-message {
+    color: #ff7aa2;
+    background: rgba(255, 77, 109, 0.08);
+    border: 1px solid rgba(255, 77, 109, 0.28);
+    box-shadow: 0 6px 18px rgba(255, 77, 109, 0.15);
+}
+
+.inline-error-message::before {
+    content: "";
+    width: 4px;
+    align-self: stretch;
+    border-radius: 999px;
+    background: linear-gradient(180deg, #ff4d6d, #ff85a2);
+    flex-shrink: 0;
+}
+
+.inline-error-message::after {
+    content: "⚠";
+    font-size: 0.95rem;
+    line-height: 1;
+    color: #ff8fab;
+    flex-shrink: 0;
+}
+
+/* SUCCESS */
+.inline-success-message {
+    color: #8dffbf;
+    background: rgba(34, 197, 94, 0.10);
+    border: 1px solid rgba(34, 197, 94, 0.30);
+    box-shadow: 0 6px 18px rgba(34, 197, 94, 0.14);
+}
+
+.inline-success-message::before {
+    content: "";
+    width: 4px;
+    align-self: stretch;
+    border-radius: 999px;
+    background: linear-gradient(180deg, #22c55e, #86efac);
+    flex-shrink: 0;
+}
+
+.inline-success-message::after {
+    content: "✔";
+    font-size: 0.95rem;
+    line-height: 1;
+    color: #86efac;
+    flex-shrink: 0;
 }
 
 
@@ -454,11 +554,8 @@
     padding: 0.75rem 0.85rem;
     margin-bottom: 1rem;
     border-radius: 12px;
-
-    /* 🎯 blue → purple → pink gradient */
     background: linear-gradient(90deg, #2563eb 0%, #7c3aed 50%, #d946ef 100%);
-
-   border: none;
+    border: none;
     box-shadow: 0 8px 20px rgba(124, 58, 237, 0.35);
 }
 
@@ -491,7 +588,6 @@
 /* =========================
    SECTION DIVIDER / BLOCKS
 ========================= */
-/* dashed divider like investment card */
 .cc-section-divider {
     border-top: 3px dashed rgba(255,255,255,0.26);
     height: 0;
@@ -499,7 +595,6 @@
     opacity: 1;
 }
 
-/* sections */
 .cc-section-block {
     display: flex;
     flex-direction: column;
@@ -584,20 +679,15 @@
 .cc-top-strip--grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-
-    /* remove pill look */
     border-radius: 10px;
     overflow: hidden;
-
     border: 1px solid rgba(255,255,255,0.15);
     background: rgba(255,255,255,0.04);
 }
 
-/* each cell */
 .cc-top-cell {
     padding: 0;
     text-align: center;
-
     border-right: 1px solid rgba(255,255,255,0.12);
 }
 
@@ -605,40 +695,67 @@
     border-right: 0;
 }
 
-/* HEADER (label part) */
 .cc-top-label {
     display: block;
     padding: 10px 8px;
-
     background: rgba(255,255,255,0.12);
     color: #fff;
-
     font-size: 0.9rem;
     font-weight: 700;
-
     border-bottom: 1px solid rgba(255,255,255,0.12);
 }
 
-/* VALUE (bottom part) */
 .cc-top-value {
     display: block;
     padding: 12px 8px;
-
     font-size: 1.1rem;
     font-weight: 800;
     color: #fff;
 }
 
-/* ONLY header (label) of 2nd & 3rd column */
 .cc-top-cell:nth-child(2) .cc-top-label,
 .cc-top-cell:nth-child(3) .cc-top-label {
     background: rgba(255, 255, 255, 0.18);
 }
 
+
+/* =========================
+   RESULT CARD SUCCESS GLOW
+========================= */
+.cc-result-card--success {
+    border: 1px solid rgba(134, 239, 172, 0.22);
+    box-shadow:
+        0 0 0 1px rgba(134, 239, 172, 0.06),
+        0 0 30px rgba(34, 197, 94, 0.18),
+        0 16px 40px rgba(0, 0, 0, 0.30);
+    animation: ccResultGlowPulse 1.5s ease-in-out 2;
+}
+
+@keyframes ccResultGlowPulse {
+    0% {
+        box-shadow:
+            0 0 0 1px rgba(134, 239, 172, 0.04),
+            0 0 18px rgba(34, 197, 94, 0.10),
+            0 12px 34px rgba(0, 0, 0, 0.28);
+    }
+    50% {
+        box-shadow:
+            0 0 0 1px rgba(134, 239, 172, 0.10),
+            0 0 36px rgba(34, 197, 94, 0.24),
+            0 18px 44px rgba(0, 0, 0, 0.34);
+    }
+    100% {
+        box-shadow:
+            0 0 0 1px rgba(134, 239, 172, 0.06),
+            0 0 26px rgba(34, 197, 94, 0.16),
+            0 16px 40px rgba(0, 0, 0, 0.30);
+    }
+}
+
+
 /* =========================
    WELCOME SECTION
 ========================= */
-
 .currency-panel-card {
     display: flex;
     flex-direction: column;
@@ -646,60 +763,53 @@
 }
 
 .currency-card-inner {
-    padding:40px;
+    padding: 40px;
 }
 
 .currency-hero-actions {
     margin-top: auto;
 }
 
-.currency-card-title h3{
-	margin-top:40px;
-	
+.currency-card-title h3 {
+    margin-top: 40px;
 }
 
 
-/* ===================================== */
-/* WELCOME HERO SPACING + TYPOGRAPHY */
-/* ===================================== */
-
+/* =====================================
+   WELCOME HERO SPACING + TYPOGRAPHY
+===================================== */
 .currency-welcome-card .currency-card-inner {
-    padding: 2.5rem 2.5rem; /* increase inner spacing */
+    padding: 2.5rem 2.5rem;
 }
 
-/* Badge spacing */
 .currency-welcome-card .currency-badge {
     margin-bottom: 3rem;
     font-size: 0.9rem;
 }
 
-/* Title bigger */
 .currency-welcome-card .currency-card-title {
-    font-size: 2rem;         /* bigger */
+    font-size: 2rem;
     font-weight: 700;
     margin-bottom: 1.2rem;
 }
 
-/* Description more readable */
 .currency-welcome-card .currency-card-text {
     font-size: 1.05rem;
     line-height: 1.7;
     margin-bottom: 2rem;
-    max-width: 480px; /* keeps it clean */
+    max-width: 480px;
 }
 
-/* Buttons spacing */
 .currency-welcome-card .currency-hero-actions {
     display: flex;
     gap: 1rem;
 }
 
-/* Make buttons slightly larger */
 .currency-welcome-card .btn-glow,
 .currency-welcome-card .btn-glow-outline {
     padding: 0.75rem 1.4rem;
     font-size: 0.95rem;
-    margin-top:50px;
+    margin-top: 50px;
 }
 
 
@@ -707,13 +817,10 @@
    CHECK RATE CALCULATOR CARD
    (WELCOME SECTION)
 ========================= */
-
-/* Container behavior inside card */
 .currency-checkrate-card .currency-card-inner {
     display: flex;
     flex-direction: column;
     gap: 16px;
-    
 }
 
 .currency-checkrate-card {
@@ -721,31 +828,25 @@
     margin-left: 10%;
 }
 
-/* Result preview box */
 .currency-checkrate-preview-box {
     margin-top: 6px;
     min-height: 92px;
-
     border: 1px solid rgba(255,255,255,0.08);
     background: rgba(255,255,255,0.04);
     border-radius: 18px;
-
     padding: 16px 18px;
-
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-/* Placeholder */
 .currency-checkrate-placeholder {
     color: rgba(255,255,255,0.55);
     font-size: 15px;
     font-weight: 500;
-    height:15px !important;
+    height: 15px !important;
 }
 
-/* Result text */
 .currency-checkrate-preview-title {
     font-size: 12px;
     font-weight: 700;
@@ -760,19 +861,15 @@
     line-height: 1.5;
 }
 
-/* Button + sync layout */
 .currency-checkrate-actions {
     margin-top: 10px;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-
     flex-wrap: wrap;
 }
 
-/* Sync text */
 .currency-checkrate-sync {
     font-size: 12px;
     line-height: 1.4;
@@ -784,10 +881,11 @@
     font-weight: 700;
 }
 
-.currency-card-header-row .currency-mini-badge{
-	width:150px;
-	height:50px;
+.currency-card-header-row .currency-mini-badge {
+    width: 150px;
+    height: 50px;
 }
+
 
 /* =========================
    AMOUNT INPUT FIELD
@@ -831,6 +929,112 @@
     -moz-appearance: textfield;
 }
 
+
+/* =========================
+   TRANSACTION HISTORY SCROLL
+========================= */
+.currency-history-scroll {
+    max-height: 460px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 6px;
+}
+
+/* Custom scrollbar */
+.currency-history-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+.currency-history-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.currency-history-scroll::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #ff4fd8, #7d59ff);
+    border-radius: 999px;
+}
+
+.currency-history-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: #7d59ff transparent;
+}
+
+
+/* =========================
+   HISTORY FILTER BAR
+========================= */
+.currency-history-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+/* Each input group */
+.currency-history-filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 180px;
+    flex: 1 1 180px;
+}
+
+/* Date input */
+.history-date-input {
+    height: 48px;
+    padding: 10px 14px;
+    font-size: 14px;
+}
+
+/* Button container */
+.currency-history-filter-actions {
+    display: flex;
+    align-items: flex-end;
+    height: 100%;
+}
+
+/* Make clear button align nicely */
+.currency-history-filter-actions .btn-glow-outline {
+    height: 48px;
+    padding: 0 18px;
+}
+
+
+/* =========================
+   TABLE HEADER STICKY (PREMIUM)
+========================= */
+.currency-history-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: rgba(20, 16, 50, 0.95);
+    backdrop-filter: blur(6px);
+}
+
+
+/* =========================
+   FILTER EMPTY STATE (OPTIONAL FUTURE)
+========================= */
+.currency-history-no-results {
+    text-align: center;
+    padding: 20px;
+    color: rgba(255,255,255,0.6);
+    display: none;
+}
+
+.currency-history-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+
+    background: rgba(17, 24, 39, 0.95); /* match your dark theme */
+    backdrop-filter: blur(6px);
+
+    /* optional polish */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
 
 /* =========================
    RESPONSIVE

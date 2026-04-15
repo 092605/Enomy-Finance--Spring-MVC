@@ -53,7 +53,14 @@ public class AuthController {
         // check if email already exists
         User existingUser = userDao.findByEmail(email);
         if (existingUser != null) {
-            model.addAttribute("error", "Email is already registered.");
+            model.addAttribute("error", "Email is already registered. Please use another email.");
+            return "auth/signup";
+        }
+        
+        // check if Username already exists
+        User existingByFullName = userDao.findByFullName(fullName);
+        if (existingByFullName != null) {
+            model.addAttribute("error", "Username is already taken.");
             return "auth/signup";
         }
 

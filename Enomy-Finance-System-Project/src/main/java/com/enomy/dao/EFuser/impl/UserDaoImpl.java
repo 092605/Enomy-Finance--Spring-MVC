@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import com.enomy.dao.EFuser.UserDao;
 import com.enomy.model.EFuser.User;
@@ -136,5 +137,21 @@ public class UserDaoImpl implements UserDao {
     public void softDeleteUser(Long userId) {
         String sql = "UPDATE users SET is_deleted = 1, enabled = 0 WHERE id = ?";
         jdbcTemplate.update(sql, userId);
+    }
+    
+    @Override
+    public User findByFullName(String fullName) {
+        String sql = """
+            SELECT * FROM users
+            WHERE full_name = ?
+              AND (is_deleted = 0 OR is_deleted IS NULL)
+            LIMIT 1
+        """;
+
+        try {
+            return jdbcTemplate.queryForObject(sql, userRowMapper, fullName);
+        } catch (EmptyResultDataAccessException e) {
+            return null; // no user found
+        }
     }
 }

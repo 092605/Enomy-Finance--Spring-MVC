@@ -11,6 +11,9 @@ import com.enomy.model.EFuser.User;
 import com.enomy.security.CustomUserDetails;
 import com.enomy.service.client.InvestmentService;
 
+import java.util.Map;
+import com.enomy.dto.investment.PlanDetailsDTO;
+
 @Controller
 public class ClientDashboardController {
 
@@ -32,10 +35,13 @@ public class ClientDashboardController {
             savedQuoteCount = investmentService.countSavedQuotes(user.getId());
         }
 
+        Map<String, PlanDetailsDTO> activePlanDetailsMap = investmentService.getAllActivePlanDetails();
+
         model.addAttribute("fullName", userDetails.getFullName());
         model.addAttribute("loggedInEmail", userDetails.getUsername());
         model.addAttribute("activePage", "dashboard");
         model.addAttribute("savedQuoteCount", savedQuoteCount);
+        model.addAttribute("activePlanDetailsMap", activePlanDetailsMap);
 
         return "client/client-dashboard";
     }

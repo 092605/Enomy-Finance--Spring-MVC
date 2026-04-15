@@ -58,15 +58,16 @@ public class SecurityConfig {
                     DispatcherType.ERROR
                 ).permitAll()
                 .requestMatchers(
-                    "/",
-                    "/about",
-                    "/landing-converter",
-                    "/landing-investment",
-                    "/login",
-                    "/signup",
-                    "/error",
-                    "/resources/**"
-                ).permitAll()
+                	    "/",
+                	    "/about",
+                	    "/landing-converter",
+                	    "/landing-investment",
+                	    "/public/check-rate-ajax",
+                	    "/login",
+                	    "/signup",
+                	    "/error",
+                	    "/resources/**"
+                	).permitAll()
                 .requestMatchers("/client/**").hasRole("CLIENT")
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()

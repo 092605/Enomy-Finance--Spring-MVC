@@ -102,8 +102,8 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/navbar-behaviour.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/auth.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/public/navbar-behaviour.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/public/auth.js"></script>
 
 </body>
 </html>

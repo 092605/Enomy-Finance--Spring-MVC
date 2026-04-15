@@ -19,40 +19,41 @@ public class CurrencyTransactionDaoImpl implements CurrencyTransactionDao {
 
     @Override
     public void save(CurrencyTransaction transaction) {
-        String sql = """
-            INSERT INTO currency_transaction (
-                transaction_number,
-                user_id,
-                transaction_type,
-                base_currency,
-                target_currency,
-                input_amount,
-                exchange_rate_used,
-                converted_amount,
-                fee_rate_applied,
-                fee_value,
-                final_amount,
-                rule_set_id,
-                status
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """;
+    	String sql = """
+    		    INSERT INTO currency_transaction (
+    		        transaction_number,
+    		        user_id,
+    		        transaction_type,
+    		        base_currency,
+    		        target_currency,
+    		        input_amount,
+    		        exchange_rate_used,
+    		        converted_amount,
+    		        fee_rate_applied,
+    		        fee_value,
+    		        final_amount,
+    		        rule_set_id,
+    		        status,
+    		        created_at
+    		    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    		""";
 
-        jdbcTemplate.update(
-            sql,
-            transaction.getTransactionNumber(),
-            transaction.getUserId(),
-            transaction.getTransactionType(),
-            transaction.getBaseCurrency(),
-            transaction.getTargetCurrency(),
-            transaction.getInputAmount(),
-            transaction.getExchangeRateUsed(),
-            transaction.getConvertedAmount(),
-            transaction.getFeeRateApplied(),
-            transaction.getFeeValue(),
-            transaction.getFinalAmount(),
-            transaction.getRuleSetId(),
-            transaction.getStatus()
-        );
+    	jdbcTemplate.update(sql,
+    		    transaction.getTransactionNumber(),
+    		    transaction.getUserId(),
+    		    transaction.getTransactionType(),
+    		    transaction.getBaseCurrency(),
+    		    transaction.getTargetCurrency(),
+    		    transaction.getInputAmount(),
+    		    transaction.getExchangeRateUsed(),
+    		    transaction.getConvertedAmount(),
+    		    transaction.getFeeRateApplied(),
+    		    transaction.getFeeValue(),
+    		    transaction.getFinalAmount(),
+    		    transaction.getRuleSetId(),
+    		    transaction.getStatus(),
+    		    transaction.getCreatedAt() 
+    		);
     }
 
     @Override
@@ -255,7 +256,17 @@ public class CurrencyTransactionDaoImpl implements CurrencyTransactionDao {
         transaction.setFinalAmount(rs.getDouble("final_amount"));
         transaction.setRuleSetId(rs.getLong("rule_set_id"));
         transaction.setStatus(rs.getString("status"));
-        transaction.setCreatedAt(rs.getTimestamp("created_at"));
+        transaction.setCreatedAt(rs.getObject("created_at", java.time.LocalDateTime.class)
+                .atZone(java.time.ZoneId.systemDefault())
+                .toInstant()
+                .toEpochMilli() == 0 ? null :
+                new java.util.Date(
+                    rs.getObject("created_at", java.time.LocalDateTime.class)
+                      .atZone(java.time.ZoneId.systemDefault())
+                      .toInstant()
+                      .toEpochMilli()
+                )
+        );
         return transaction;
     }
 }

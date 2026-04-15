@@ -26,24 +26,31 @@
 
                 <div class="col-lg-6">
                     <div class="about-page-content">
-                        <span class="about-badge">Landing Investment</span>
-                        <h1 class="about-page-title">Landing Investment Module Projection</h1>
+                        <span class="about-badge">Smart Investment Planning</span>
+                        <h1 class="about-page-title">Investment Growth & Savings Projection</h1>
                         <p class="about-page-text">
-                            Enomy Finance is a modern web-based financial planning platform designed
-                            to help users convert currencies, plan savings, and estimate investment growth
-                            using simple and practical digital tools.
+                            Enomy Finance provides powerful investment planning tools designed to help you
+                             forecast your financial future with confidence. Generate personalized projections
+                              based on your initial investment, monthly contributions, and selected investment plan.
                         </p>
                         <p class="about-page-text">
-                            Our goal is to make financial planning easier to understand, more accessible,
-                            and more useful for students, beginners, and everyday users who want better
-                            control over their money decisions.
+                            Our system calculates estimated returns over 1, 5, and 10 years, giving you a clear 
+                            view of potential growth, profits, fees, and taxes. Whether you are a beginner or an
+                             experienced investor, our platform simplifies complex financial data into easy-to-understand insights.
                         </p>
+
+                        <div class="mt-4">
+                            <a href="${pageContext.request.contextPath}/client/investment"
+                               class="btn-glow text-decoration-none">
+                                Try Investment Now
+                            </a>
+                        </div>
                     </div>
                 </div>
 
                 <div class="col-lg-6">
                     <div class="about-page-image-wrap card-glass">
-                        <img src="${pageContext.request.contextPath}/resources/images/AboutImage Main.png"
+                        <img src="${pageContext.request.contextPath}/resources/images/Investment Landing.png"
                              alt="About Enomy Finance"
                              class="img-fluid about-page-image">
                     </div>
