@@ -392,4 +392,68 @@ public class InvestmentController {
         SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy, hh:mm a");
         return formatter.format(timestamp);
     }
+    
+    
+ // =========================
+ // AJAX CALCULATE PROJECTION
+ // =========================
+ @PostMapping(value = "/client/investment/calculate-ajax", produces = "application/json")
+ @ResponseBody
+ public ResponseEntity<?> calculateProjectionAjax(
+         @RequestBody InvestmentRequestDTO request) {
+
+     try {
+         InvestmentResponseDTO response = investmentService.calculateProjection(request);
+
+         Map<String, Object> result = new LinkedHashMap<>();
+         result.put("success", true);
+         result.put("message", "Calculation successful.");
+         result.put("planType", response.getPlanType());
+         result.put("oneYear", buildYearResultMap(response.getOneYear()));
+         result.put("fiveYears", buildYearResultMap(response.getFiveYears()));
+         result.put("tenYears", buildYearResultMap(response.getTenYears()));
+
+         return ResponseEntity.ok(result);
+
+     } catch (IllegalArgumentException e) {
+
+         Map<String, Object> error = new LinkedHashMap<>();
+         error.put("success", false);
+         error.put("message", e.getMessage());
+
+         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+     }
+ }
+ 
+//=========================
+//AJAX SAVE QUOTE
+//=========================
+@PostMapping(value = "/client/investment/save-ajax", produces = "application/json")
+@ResponseBody
+public ResponseEntity<?> saveQuoteAjax(
+      @RequestBody InvestmentRequestDTO request,
+      Principal principal) {
+
+  try {
+      User user = getLoggedInUser(principal);
+      investmentService.saveQuote(user.getId(), request);
+
+      int savedQuoteCount = investmentService.countSavedQuotes(user.getId());
+
+      Map<String, Object> result = new LinkedHashMap<>();
+      result.put("success", true);
+      result.put("message", "Investment quote has been successfully saved.");
+      result.put("savedQuoteCount", savedQuoteCount);
+
+      return ResponseEntity.ok(result);
+
+  } catch (IllegalArgumentException e) {
+      Map<String, Object> error = new LinkedHashMap<>();
+      error.put("success", false);
+      error.put("message", e.getMessage());
+
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+  }
+}
+ 
 }

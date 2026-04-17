@@ -329,11 +329,18 @@ public class AdminCurrencyServiceImpl implements AdminCurrencyService {
                     throw new IllegalArgumentException("Fee brackets must not overlap.");
                 }
 
-                if (!previous.getMaxAmount().equals(current.getMinAmount())) {
+                double expectedNextMin = roundToTwoDecimals(previous.getMaxAmount() + 0.01);
+                double actualMin = roundToTwoDecimals(current.getMinAmount());
+
+                if (actualMin != expectedNextMin) {
                     throw new IllegalArgumentException("Fee brackets must be continuous with no gaps.");
                 }
             }
         }
+    }
+    
+    private double roundToTwoDecimals(double value) {
+        return Math.round(value * 100.0) / 100.0;
     }
 
     private List<ConversionFeeRule> sortRules(List<ConversionFeeRule> rules) {

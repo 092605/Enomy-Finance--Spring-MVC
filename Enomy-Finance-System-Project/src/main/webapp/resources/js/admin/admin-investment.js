@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
     restoreWizardStepFromConfig();
 
     initActiveTaxSettingsSwitcher();
+    initHistoryTaxSettingsSwitcher();
 
     initTaxHistoryModal();
     initPlanHistoryModal();
@@ -212,7 +213,6 @@ function initWizardFlow() {
         });
     });
 
-    // This handles the main button on the Tax Selection step.
     if (taxSelectionPrimaryBtn) {
         taxSelectionPrimaryBtn.addEventListener("click", function () {
             const selectedTaxMode = getSelectedTaxMode();
@@ -231,7 +231,6 @@ function initWizardFlow() {
         });
     }
 
-    // This saves the embedded grouped tax form draft and returns to Tax Selection.
     if (saveEmbeddedTaxBtn) {
         saveEmbeddedTaxBtn.addEventListener("click", function () {
             if (!validateEmbeddedTaxForm()) {
@@ -246,14 +245,12 @@ function initWizardFlow() {
         });
     }
 
-    // This lets the admin edit the saved embedded tax settings again.
     if (editEmbeddedTaxBtn) {
         editEmbeddedTaxBtn.addEventListener("click", function () {
             showWizardStep("tax-form");
         });
     }
 
-    // This finishes the flow using the embedded grouped tax values.
     if (finalCreateActivateBtn) {
         finalCreateActivateBtn.addEventListener("click", function () {
             submitPlanRuleFormWithNewTax();
@@ -462,10 +459,13 @@ function initActiveTaxSettingsSwitcher() {
 
 // This shows only the selected active tax panel.
 function showActiveTaxPanel(panelId) {
-    const panels = document.querySelectorAll(".investment-tax-view-panel");
+    const container = document.getElementById("activeTaxTypeDropdown")?.closest(".investment-card-inner");
+    if (!container) return;
+
+    const panels = container.querySelectorAll(".investment-tax-view-panel");
     panels.forEach((panel) => panel.classList.remove("active"));
 
-    const target = document.getElementById(panelId);
+    const target = container.querySelector("#" + CSS.escape(panelId));
     if (target) {
         target.classList.add("active");
     }
@@ -478,23 +478,73 @@ function updateActiveTaxQuickRate(panelId) {
 
     const rateMap = {
         "active-tax-none": "0%",
-        "active-tax-flat": getRateTextFromPanel("active-tax-flat"),
-        "active-tax-progressive": getRateTextFromPanel("active-tax-progressive")
+        "active-tax-flat": getRateTextFromPanel("active-tax-flat", "activeTaxTypeDropdown"),
+        "active-tax-progressive": getRateTextFromPanel("active-tax-progressive", "activeTaxTypeDropdown")
     };
 
     quickRate.textContent = rateMap[panelId] || "0%";
 }
 
-// This reads the first available tax rate text from a selected active tax panel.
-function getRateTextFromPanel(panelId) {
-    const panel = document.getElementById(panelId);
+// This reads the first available tax rate text from a selected panel within a given container.
+function getRateTextFromPanel(panelId, dropdownId) {
+    const dropdown = document.getElementById(dropdownId);
+    if (!dropdown) return "0%";
+
+    const container = dropdown.closest(".investment-card-inner");
+    if (!container) return "0%";
+
+    const panel = container.querySelector("#" + CSS.escape(panelId));
     if (!panel) return "0%";
 
-    const rateBox = panel.querySelector(".investment-tax-input-display strong");
-    if (!rateBox) return "0%";
+    const strongs = panel.querySelectorAll(".investment-tax-input-display strong");
+    if (!strongs.length) return "0%";
 
-    const text = rateBox.textContent ? rateBox.textContent.trim() : "";
+    if (panelId === "active-tax-progressive") {
+        const lowerRate = strongs[0] ? strongs[0].textContent.trim() : "0.00%";
+        const upperRate = strongs[2] ? strongs[2].textContent.trim() : "0.00%";
+        return `${lowerRate} - ${upperRate}`;
+    }
+
+    const text = strongs[0] ? strongs[0].textContent.trim() : "";
     return text || "0%";
+}
+
+
+/* =========================
+   HISTORY MODAL - TAX SWITCHER
+========================= */
+
+// This wires the Tax History modal selector to switch visible grouped tax panels.
+function initHistoryTaxSettingsSwitcher() {
+    const select = document.getElementById("historyTaxTypeSelect");
+    if (!select) return;
+
+    const applySelection = () => {
+        const panelId = select.value;
+        const modal = document.getElementById("taxHistoryDetailsModal");
+        if (!modal) return;
+
+        modal.querySelectorAll(".investment-tax-view-panel").forEach(panel => {
+            panel.classList.remove("active");
+        });
+
+        const target = modal.querySelector("#" + CSS.escape(panelId));
+        if (target) {
+            target.classList.add("active");
+        }
+
+        const quickRate = document.getElementById("historyTaxQuickRate");
+        const activeItem = document.querySelector(
+            `#historyTaxTypeDropdown .custom-dropdown-item[data-value="${panelId}"]`
+        );
+
+        if (quickRate && activeItem) {
+            quickRate.textContent = activeItem.getAttribute("data-rate") || "0%";
+        }
+    };
+
+    select.addEventListener("change", applySelection);
+    applySelection();
 }
 
 
@@ -509,23 +559,109 @@ function initTaxHistoryModal() {
 
     taxButtons.forEach((button) => {
         button.addEventListener("click", function () {
-            setText("history-tax-type", button.getAttribute("data-tax-type") || "-");
-            setText("history-tax-free-allowance", formatMoney(button.getAttribute("data-tax-free-allowance")));
-            setText("history-lower-tax-rate", formatPercent(button.getAttribute("data-lower-tax-rate")));
-            setText("history-lower-tax-threshold", formatMoney(button.getAttribute("data-lower-tax-threshold")));
-            setText("history-upper-tax-rate", formatPercent(button.getAttribute("data-upper-tax-rate")));
-            setText("history-upper-tax-threshold", formatMoney(button.getAttribute("data-upper-tax-threshold")));
 
-            // This supports new grouped tax activation using taxSetId, with fallback to old tax id if still present.
-            const hiddenSetId = document.getElementById("activateTaxSetId");
-            const hiddenRowId = document.getElementById("activateTaxSettingsId");
+            const taxSetId = button.getAttribute("data-tax-set-id") || "";
 
-            if (hiddenSetId) {
-                hiddenSetId.value = button.getAttribute("data-tax-set-id") || "";
+            // =========================
+            // NONE
+            // =========================
+            const none = {
+                allowance: button.getAttribute("data-none-tax-free-allowance"),
+                lowerRate: button.getAttribute("data-none-lower-tax-rate"),
+                lowerThreshold: button.getAttribute("data-none-lower-tax-threshold"),
+                upperRate: button.getAttribute("data-none-upper-tax-rate"),
+                upperThreshold: button.getAttribute("data-none-upper-tax-threshold")
+            };
+
+            // =========================
+            // FLAT
+            // =========================
+            const flat = {
+                allowance: button.getAttribute("data-flat-tax-free-allowance"),
+                lowerRate: button.getAttribute("data-flat-lower-tax-rate"),
+                lowerThreshold: button.getAttribute("data-flat-lower-tax-threshold"),
+                upperRate: button.getAttribute("data-flat-upper-tax-rate"),
+                upperThreshold: button.getAttribute("data-flat-upper-tax-threshold")
+            };
+
+            // =========================
+            // PROGRESSIVE
+            // =========================
+            const progressive = {
+                allowance: button.getAttribute("data-progressive-tax-free-allowance"),
+                lowerRate: button.getAttribute("data-progressive-lower-tax-rate"),
+                lowerThreshold: button.getAttribute("data-progressive-lower-tax-threshold"),
+                upperRate: button.getAttribute("data-progressive-upper-tax-rate"),
+                upperThreshold: button.getAttribute("data-progressive-upper-tax-threshold")
+            };
+
+            // =========================
+            // VERSION BADGE
+            // =========================
+            const versionBadge = document.getElementById("history-tax-version-badge");
+            if (versionBadge) {
+                versionBadge.textContent = taxSetId ? `Version ${taxSetId}` : "Version -";
             }
 
-            if (hiddenRowId) {
-                hiddenRowId.value = button.getAttribute("data-tax-id") || "";
+            // =========================
+            // DEFAULT VIEW = NONE
+            // =========================
+            const hiddenSelect = document.getElementById("historyTaxTypeSelect");
+            if (hiddenSelect) {
+                hiddenSelect.value = "history-tax-none";
+                hiddenSelect.dispatchEvent(new Event("change", { bubbles: true }));
+            }
+
+            // =========================
+            // UPDATE DROPDOWN RATE LABELS
+            // =========================
+            const flatItem = document.querySelector('[data-value="history-tax-flat"]');
+            const progItem = document.querySelector('[data-value="history-tax-progressive"]');
+
+            if (flatItem) {
+                flatItem.setAttribute("data-rate", formatPercent(flat.lowerRate));
+            }
+
+            if (progItem) {
+                progItem.setAttribute(
+                    "data-rate",
+                    `${formatPercent(progressive.lowerRate)} - ${formatPercent(progressive.upperRate)}`
+                );
+            }
+
+            // =========================
+            // FILL NONE PANEL
+            // =========================
+            setText("history-none-tax-free-allowance", formatMoney(none.allowance));
+            setText("history-none-lower-tax-rate", formatPercent(none.lowerRate));
+            setText("history-none-lower-tax-threshold", formatMoney(none.lowerThreshold));
+            setText("history-none-upper-tax-rate", formatPercent(none.upperRate));
+            setText("history-none-upper-tax-threshold", formatMoney(none.upperThreshold));
+
+            // =========================
+            // FILL FLAT PANEL
+            // =========================
+            setText("history-flat-tax-free-allowance", formatMoney(flat.allowance));
+            setText("history-flat-lower-tax-rate", formatPercent(flat.lowerRate));
+            setText("history-flat-lower-tax-threshold", formatMoney(flat.lowerThreshold));
+            setText("history-flat-upper-tax-rate", formatPercent(flat.upperRate));
+            setText("history-flat-upper-tax-threshold", formatMoney(flat.upperThreshold));
+
+            // =========================
+            // FILL PROGRESSIVE PANEL
+            // =========================
+            setText("history-progressive-tax-free-allowance", formatMoney(progressive.allowance));
+            setText("history-progressive-lower-tax-rate", formatPercent(progressive.lowerRate));
+            setText("history-progressive-lower-tax-threshold", formatMoney(progressive.lowerThreshold));
+            setText("history-progressive-upper-tax-rate", formatPercent(progressive.upperRate));
+            setText("history-progressive-upper-tax-threshold", formatMoney(progressive.upperThreshold));
+
+            // =========================
+            // ACTIVATE BUTTON
+            // =========================
+            const hiddenSetId = document.getElementById("activateTaxSetId");
+            if (hiddenSetId) {
+                hiddenSetId.value = taxSetId;
             }
 
             const activateBtn = document.getElementById("openActivateConfirmBtn");
@@ -553,9 +689,9 @@ function initPlanHistoryModal() {
             const planSetId = button.getAttribute("data-plan-set-id");
             if (!planSetId || !window.planHistoryDetails) return;
 
-            const basic = window.planHistoryDetails[planSetId + "_BASIC"];
-            const plus = window.planHistoryDetails[planSetId + "_PLUS"];
-            const managed = window.planHistoryDetails[planSetId + "_MANAGED"];
+			const basic = window.planHistoryDetails[planSetId + "_BASIC_SAVINGS"];
+			const plus = window.planHistoryDetails[planSetId + "_SAVINGS_PLUS"];
+			const managed = window.planHistoryDetails[planSetId + "_MANAGED_STOCKS"];
 
             fillPlanModalSection("basic", basic);
             fillPlanModalSection("plus", plus);
@@ -634,12 +770,10 @@ function initActivateConfirmFlow() {
     }
 }
 
-
-
-
-/* =========================
+/*
+ =========================
    Dropdown showing quick rate
-========================= */
+========================= 
 
 document.addEventListener("DOMContentLoaded", function () {
     const activeTaxDropdown = document.getElementById("activeTaxTypeDropdown");
@@ -680,4 +814,4 @@ document.addEventListener("DOMContentLoaded", function () {
             activeItem.getAttribute("data-rate")
         );
     }
-});
+});*/

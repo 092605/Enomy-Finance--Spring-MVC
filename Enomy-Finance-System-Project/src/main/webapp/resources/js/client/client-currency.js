@@ -1,30 +1,15 @@
 console.log("currency-converter.js loaded");
 
 document.addEventListener("DOMContentLoaded", function () {
-    setupCheckRateMessageTimer();
+    autoHideServerRenderedMessages();
     setupTransactionTypeNavSync();
     setupCheckRateAjax();
     setupConfirmButtonLoadingState();
 });
 
-function setupCheckRateMessageTimer() {
-    const messageBox = document.getElementById("checkRateMessage");
-    const timestampLabel = document.getElementById("checkRateTimestamp");
-
-    if (messageBox) {
-        if (timestampLabel) {
-            const now = new Date();
-            timestampLabel.textContent = now.toLocaleString();
-        }
-
-        setTimeout(() => {
-            messageBox.style.transition = "opacity 0.5s ease";
-            messageBox.style.opacity = "0";
-
-            setTimeout(() => {
-                messageBox.style.display = "none";
-            }, 500);
-        }, 5000);
+function autoHideServerRenderedMessages() {
+    if (typeof autoHideRenderedInlineMessages === "function") {
+        autoHideRenderedInlineMessages(3000);
     }
 }
 
@@ -49,9 +34,11 @@ function highlightModuleNav(type) {
 
     navLinks.forEach(link => {
         const text = link.textContent.trim().toLowerCase();
+
         if (type === "buy" && text.includes("buy")) {
             link.classList.add("active");
         }
+
         if (type === "sell" && text.includes("sell")) {
             link.classList.add("active");
         }
@@ -62,9 +49,6 @@ function highlightModuleNav(type) {
 /* ================================================= */
 /* CHECK RATE AJAX - WELCOME CARD                    */
 /* ================================================= */
-
-let checkRateErrorTimer;
-let checkRateHideTimer;
 
 function setupCheckRateAjax() {
     const checkRateBtn = document.getElementById("checkRateBtn");
@@ -83,13 +67,19 @@ function setupCheckRateAjax() {
         const baseCurrency = (baseCurrencyInput.value || "").trim();
         const targetCurrency = (targetCurrencyInput.value || "").trim();
 
-        clearCheckRateError(errorBox);
+        if (typeof clearInlineMessage === "function") {
+            clearInlineMessage(errorBox);
+        }
 
         if (!baseCurrency || !targetCurrency) {
             resultValue.textContent = "Please select both currencies.";
             rateDateEl.textContent = "Not available";
             fetchedAtEl.textContent = "Not available";
-            showCheckRateError(errorBox, "Please select both base and target currencies.");
+
+            if (typeof showInlineError === "function") {
+                showInlineError(errorBox, "Please select both base and target currencies.");
+            }
+
             return;
         }
 
@@ -97,7 +87,11 @@ function setupCheckRateAjax() {
             resultValue.textContent = "Invalid currency selection.";
             rateDateEl.textContent = "Not available";
             fetchedAtEl.textContent = "Not available";
-            showCheckRateError(errorBox, "Base and target currency must not be the same.");
+
+            if (typeof showInlineError === "function") {
+                showInlineError(errorBox, "Base and target currency must not be the same.");
+            }
+
             return;
         }
 
@@ -121,7 +115,9 @@ function setupCheckRateAjax() {
             return response.json();
         })
         .then(data => {
-            clearCheckRateError(errorBox);
+            if (typeof clearInlineMessage === "function") {
+                clearInlineMessage(errorBox);
+            }
 
             resultValue.innerHTML =
                 "1 " + data.baseCurrency + " = <strong>" +
@@ -135,39 +131,14 @@ function setupCheckRateAjax() {
             resultValue.textContent = "Unable to retrieve rate.";
             rateDateEl.textContent = "Not available";
             fetchedAtEl.textContent = "Not available";
-            showCheckRateError(errorBox, "Unable to retrieve rate. Please try again.");
+
+            if (typeof showInlineError === "function") {
+                showInlineError(errorBox, "Unable to retrieve rate. Please try again.");
+            }
+
             console.error(error);
         });
     });
-}
-
-function showCheckRateError(errorBox, message) {
-    if (!errorBox) return;
-
-    clearTimeout(checkRateErrorTimer);
-    clearTimeout(checkRateHideTimer);
-
-    errorBox.textContent = message;
-    errorBox.classList.remove("hide");
-    errorBox.classList.add("show");
-
-    checkRateErrorTimer = setTimeout(() => {
-        clearCheckRateError(errorBox);
-    }, 3000);
-}
-
-function clearCheckRateError(errorBox) {
-    if (!errorBox) return;
-
-    clearTimeout(checkRateHideTimer);
-
-    errorBox.classList.remove("show");
-    errorBox.classList.add("hide");
-
-    checkRateHideTimer = setTimeout(() => {
-        errorBox.textContent = "";
-        errorBox.classList.remove("hide");
-    }, 280);
 }
 
 
@@ -201,8 +172,5 @@ function setupConfirmButtonLoadingState() {
         });
     });
 }
-
-
-
 
 

@@ -15,6 +15,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/public/theme.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/public/inline-messages.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/client/client-dashboard.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/client/client-investment.css">
 </head>
@@ -36,41 +37,14 @@
                     <h2 class="investment-page-subtitle">Investment Plan</h2>
                 </div>
 
-                <c:if test="${not empty calculationError}">
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        ${calculationError}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                </c:if>
-
-                <c:if test="${not empty saveSuccessMessage}">
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        ${saveSuccessMessage}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                </c:if>
-
-                <c:if test="${not empty saveErrorMessage}">
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        ${saveErrorMessage}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                </c:if>
-
-                <!-- ===================================================== -->
-                <!-- SECTION 1: MAIN INVESTMENT CALCULATOR VIEW             -->
-                <!-- Note: existing important IDs/classes are preserved     -->
-                <!-- ===================================================== -->
                 <section class="investment-section-view" id="investmentMainSection">
                     <section class="investment-split-card">
                         <div class="row g-4 align-items-start">
 
-                            <!-- LEFT GROUP -->
                             <div class="col-lg-9">
 
                                 <div class="row g-4 investment-split-row">
 
-                                    <!-- Left stacked side -->
                                     <div class="col-lg-6">
                                         <div class="row g-4">
 
@@ -83,7 +57,6 @@
 
                                                             <form action="${pageContext.request.contextPath}/client/investment/calculate" method="post">
 
-                                                                <!-- Row 1: Initial + Monthly -->
                                                                 <div class="row">
                                                                     <div class="col-md-6">
                                                                         <div class="investment-form-group">
@@ -118,7 +91,6 @@
                                                                     </div>
                                                                 </div>
 
-                                                                <!-- Row 2: Dropdown + Button -->
                                                                 <div class="row align-items-end">
                                                                     <c:set var="selectedPlanType" value="${empty investmentRequest.planType ? 'BASIC_SAVINGS' : investmentRequest.planType}" />
 
@@ -165,6 +137,10 @@
                                                                 </div>
 
                                                             </form>
+
+															<div id="investmentCalcError" class="inline-error-message mt-3"></div>
+															<div id="investmentCalcSuccess" class="inline-success-message mt-3"></div>
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -202,7 +178,6 @@
                                                                     <span class="plan-highlight" id="planReturns">${planDetails.predictedReturnsPerYear}</span>
                                                                 </span>
                                                             </li>
-
                                                             <li>
                                                                 <span class="plan-bullet"></span>
                                                                 <span>Estimated tax:
@@ -211,7 +186,6 @@
                                                                     </span>
                                                                 </span>
                                                             </li>
-
                                                             <li>
                                                                 <span class="plan-bullet"></span>
                                                                 <span>RBSX group fees per month:
@@ -250,6 +224,27 @@
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </h3>
+
+                                                <c:if test="${not empty saveSuccessMessage}">
+                                                    <div class="inline-success-message show mt-3">
+                                                        ${saveSuccessMessage}
+                                                    </div>
+                                                </c:if>
+
+                                                <c:if test="${not empty saveErrorMessage}">
+                                                    <div class="inline-error-message show mt-3">
+                                                        ${saveErrorMessage}
+                                                    </div>
+                                                </c:if>
+
+                                                <c:if test="${hasCalculated and empty calculationError}">
+                                                    <div class="inline-success-message show mt-2">
+                                                        Calculation successful. Review the result below.
+                                                    </div>
+                                                </c:if>
+                                                
+                                                <div id="investmentResultError" class="inline-error-message mt-3"></div>
+												<div id="investmentResultSuccess" class="inline-success-message mt-3"></div>
 
                                                 <div class="result-range-tabs">
                                                     <button type="button" class="result-tab-btn active" data-year="oneYear">1 Year</button>
@@ -333,12 +328,19 @@
                                                         Discard
                                                     </a>
 
-                                                    <form action="${pageContext.request.contextPath}/client/investment/save" method="post" class="m-0">
-                                                        <input type="hidden" name="planType" value="${investmentRequest.planType}">
-                                                        <input type="hidden" name="initialLumpSum" value="${investmentRequest.initialLumpSum}">
-                                                        <input type="hidden" name="monthlyInvestment" value="${investmentRequest.monthlyInvestment}">
-                                                        <button type="submit" class="btn-glow result-save-btn">Save Quote</button>
-                                                    </form>
+												<form action="${pageContext.request.contextPath}/client/investment/save"
+												      method="post"
+												      class="m-0"
+												      id="saveQuoteForm">
+												
+												    <input type="hidden" name="planType" id="saveQuotePlanType" value="${investmentRequest.planType}">
+												    <input type="hidden" name="initialLumpSum" id="saveQuoteInitialLumpSum" value="${investmentRequest.initialLumpSum}">
+												    <input type="hidden" name="monthlyInvestment" id="saveQuoteMonthlyInvestment" value="${investmentRequest.monthlyInvestment}">
+												
+												    <button type="submit" class="btn-glow result-save-btn" id="saveQuoteBtn">
+												        Save Quote
+												    </button>
+												</form>
 
                                                 </div>
 
@@ -391,7 +393,6 @@
 
                             </div>
 
-                            <!-- RIGHT SEPARATE CARD -->
                             <div class="col-lg-3">
                                 <div class="saved-quotes-side-panel">
                                     <div class="card-glow dashboard-card saved-quotes-summary-card">
@@ -410,7 +411,6 @@
                                     </div>
 
                                     <div class="saved-quotes-list-wrap d-none">
-                                        <!-- future expanded list goes here -->
                                     </div>
                                 </div>
                             </div>
@@ -419,10 +419,6 @@
                     </section>
                 </section>
 
-                <!-- ===================================================== -->
-                <!-- SECTION 2: SAVED QUOTES LIST VIEW                     -->
-                <!-- Note: added as same-page section, no route change     -->
-                <!-- ===================================================== -->
                 <section class="investment-section-view d-none" id="investmentQuotesSection">
                     <div class="investment-quotes-panel">
                         <div class="investment-card-inner investment-quotes-card">
@@ -519,128 +515,116 @@
         </div>
     </div>
 
-<!-- ===================================================== -->
-<!-- SAVED QUOTE MODAL CARD                                -->
-<!-- Note:
-     - Reuses the result-card structure style
-     - Adds Quote ID and Saved Date at the top
-     - Modal values will be filled by JS from AJAX endpoint
-<!-- ===================================================== -->
-<div class="investment-quote-modal-overlay d-none" id="investmentQuoteModalOverlay">
-    <div class="investment-quote-modal-card investment-quote-result-modal-card" id="investmentQuoteModalCard">
+    <div class="investment-quote-modal-overlay d-none" id="investmentQuoteModalOverlay">
+        <div class="investment-quote-modal-card investment-quote-result-modal-card" id="investmentQuoteModalCard">
 
-        <div class="investment-quote-modal-head">
-            <div class="w-100">
-                <p class="investment-quote-modal-kicker">Saved Quote Details</p>
-                <h3 class="result-plan-title investment-quote-result-title" id="modalResultPlanTitle">Investment Result</h3>
+            <div class="investment-quote-modal-head">
+                <div class="w-100">
+                    <p class="investment-quote-modal-kicker">Saved Quote Details</p>
+                    <h3 class="result-plan-title investment-quote-result-title" id="modalResultPlanTitle">Investment Result</h3>
 
-                <div class="investment-quote-meta-row">
-                    <div class="investment-quote-meta-pill">
-                        <span class="investment-quote-meta-label">Quote ID</span>
-                        <strong class="investment-quote-meta-value" id="modalQuoteId">-</strong>
+                    <div class="investment-quote-meta-row">
+                        <div class="investment-quote-meta-pill">
+                            <span class="investment-quote-meta-label">Quote ID</span>
+                            <strong class="investment-quote-meta-value" id="modalQuoteId">-</strong>
+                        </div>
+
+                        <div class="investment-quote-meta-pill">
+                            <span class="investment-quote-meta-label">Saved Date</span>
+                            <strong class="investment-quote-meta-value" id="modalQuoteCreated">-</strong>
+                        </div>
                     </div>
+                </div>
 
-                    <div class="investment-quote-meta-pill">
-                        <span class="investment-quote-meta-label">Saved Date</span>
-                        <strong class="investment-quote-meta-value" id="modalQuoteCreated">-</strong>
+                <button type="button"
+                        class="investment-quote-modal-close"
+                        id="closeQuoteModalBtn"
+                        aria-label="Close modal">
+                    ×
+                </button>
+            </div>
+
+            <div class="investment-quote-modal-body">
+
+                <div class="result-range-tabs investment-quote-result-tabs">
+                    <button type="button" class="result-tab-btn modal-result-tab-btn active" data-modal-year="oneYear">1 Year</button>
+                    <button type="button" class="result-tab-btn modal-result-tab-btn" data-modal-year="fiveYears">5 Years</button>
+                    <button type="button" class="result-tab-btn modal-result-tab-btn" data-modal-year="tenYears">10 Years</button>
+                </div>
+
+                <div class="result-summary-table">
+                    <div class="result-summary-row">
+                        <span class="result-label">Initial Lump Sum</span>
+                        <span class="result-value" id="modalResultInitialLumpSum">£0.00</span>
+                    </div>
+                    <div class="result-summary-row">
+                        <span class="result-label">Monthly Investment</span>
+                        <span class="result-value" id="modalResultMonthlyInvestment">£0.00</span>
+                    </div>
+                </div>
+
+                <div class="result-total-invested">
+                    <span>Total Invested Amount</span>
+                    <strong id="modalResultTotalInvested">£0.00</strong>
+                </div>
+
+                <div class="result-dashed-divider"></div>
+
+                <div class="result-section">
+                    <h4 class="result-section-title">Return &amp; Profits</h4>
+                    <div class="result-grid-two">
+                        <div class="result-metric-block">
+                            <span class="result-metric-label">Min Return</span>
+                            <span class="result-metric-value" id="modalResultMinReturn">£0.00</span>
+                        </div>
+
+                        <div class="result-metric-block">
+                            <span class="result-metric-label">Min Profit</span>
+                            <span class="result-metric-value" id="modalResultMinProfit">£0.00</span>
+                        </div>
+
+                        <div class="result-metric-block">
+                            <span class="result-metric-label">Max Return</span>
+                            <span class="result-metric-value" id="modalResultMaxReturn">£0.00</span>
+                        </div>
+
+                        <div class="result-metric-block">
+                            <span class="result-metric-label">Max Profit</span>
+                            <span class="result-metric-value" id="modalResultMaxProfit">£0.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-dashed-divider"></div>
+
+                <div class="result-section">
+                    <h4 class="result-section-title">Tax &amp; Fee</h4>
+                    <div class="result-grid-two">
+                        <div class="result-metric-block">
+                            <span class="result-metric-label">Min Tax</span>
+                            <span class="result-metric-value" id="modalResultMinTax">£0.00</span>
+                        </div>
+
+                        <div class="result-metric-block">
+                            <span class="result-metric-label">Monthly Fee</span>
+                            <span class="result-metric-value" id="modalResultMonthlyFee">£0.00</span>
+                        </div>
+
+                        <div class="result-metric-block">
+                            <span class="result-metric-label">Max Tax</span>
+                            <span class="result-metric-value" id="modalResultMaxTax">£0.00</span>
+                        </div>
+
+                        <div class="result-metric-block">
+                            <span class="result-metric-label">Total Fee</span>
+                            <span class="result-metric-value" id="modalResultTotalFee">£0.00</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <button type="button"
-                    class="investment-quote-modal-close"
-                    id="closeQuoteModalBtn"
-                    aria-label="Close modal">
-                ×
-            </button>
         </div>
-
-        <div class="investment-quote-modal-body">
-
-            <!-- Result tabs -->
-            <div class="result-range-tabs investment-quote-result-tabs">
-                <button type="button" class="result-tab-btn modal-result-tab-btn active" data-modal-year="oneYear">1 Year</button>
-                <button type="button" class="result-tab-btn modal-result-tab-btn" data-modal-year="fiveYears">5 Years</button>
-                <button type="button" class="result-tab-btn modal-result-tab-btn" data-modal-year="tenYears">10 Years</button>
-            </div>
-
-            <!-- Summary -->
-            <div class="result-summary-table">
-                <div class="result-summary-row">
-                    <span class="result-label">Initial Lump Sum</span>
-                    <span class="result-value" id="modalResultInitialLumpSum">£0.00</span>
-                </div>
-                <div class="result-summary-row">
-                    <span class="result-label">Monthly Investment</span>
-                    <span class="result-value" id="modalResultMonthlyInvestment">£0.00</span>
-                </div>
-            </div>
-
-            <!-- Total invested -->
-            <div class="result-total-invested">
-                <span>Total Invested Amount</span>
-                <strong id="modalResultTotalInvested">£0.00</strong>
-            </div>
-
-            <div class="result-dashed-divider"></div>
-
-            <!-- Return & Profits -->
-            <div class="result-section">
-                <h4 class="result-section-title">Return &amp; Profits</h4>
-                <div class="result-grid-two">
-                    <div class="result-metric-block">
-                        <span class="result-metric-label">Min Return</span>
-                        <span class="result-metric-value" id="modalResultMinReturn">£0.00</span>
-                    </div>
-
-                    <div class="result-metric-block">
-                        <span class="result-metric-label">Min Profit</span>
-                        <span class="result-metric-value" id="modalResultMinProfit">£0.00</span>
-                    </div>
-
-                    <div class="result-metric-block">
-                        <span class="result-metric-label">Max Return</span>
-                        <span class="result-metric-value" id="modalResultMaxReturn">£0.00</span>
-                    </div>
-
-                    <div class="result-metric-block">
-                        <span class="result-metric-label">Max Profit</span>
-                        <span class="result-metric-value" id="modalResultMaxProfit">£0.00</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="result-dashed-divider"></div>
-
-            <!-- Tax & Fee -->
-            <div class="result-section">
-                <h4 class="result-section-title">Tax &amp; Fee</h4>
-                <div class="result-grid-two">
-                    <div class="result-metric-block">
-                        <span class="result-metric-label">Min Tax</span>
-                        <span class="result-metric-value" id="modalResultMinTax">£0.00</span>
-                    </div>
-
-                    <div class="result-metric-block">
-                        <span class="result-metric-label">Monthly Fee</span>
-                        <span class="result-metric-value" id="modalResultMonthlyFee">£0.00</span>
-                    </div>
-
-                    <div class="result-metric-block">
-                        <span class="result-metric-label">Max Tax</span>
-                        <span class="result-metric-value" id="modalResultMaxTax">£0.00</span>
-                    </div>
-
-                    <div class="result-metric-block">
-                        <span class="result-metric-label">Total Fee</span>
-                        <span class="result-metric-value" id="modalResultTotalFee">£0.00</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
-</div>
 
     <script>
         window.planDetailsData = {
@@ -673,10 +657,10 @@
             }
         };
     </script>
-    
 
-    <script src="${pageContext.request.contextPath}/resources/js/client/client-investment.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/client/client-dashboard.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/public/inline-messages.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/client/client-investment.js"></script>
 
 </body>
 </html>

@@ -228,7 +228,7 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="currency-admin-label">Search</label>
-                                                <input type="text" class="currency-admin-input" id="txnSearch" placeholder="User ID or Transaction Number">
+                                                <input type="text" class="currency-admin-input" id="txnSearch" placeholder="Transaction Number">
                                             </div>
                                         </div>
 

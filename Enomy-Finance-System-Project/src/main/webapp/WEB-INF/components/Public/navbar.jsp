@@ -65,20 +65,20 @@
                                data-bs-toggle="dropdown"
                                aria-expanded="false">
 
-								<div class="logged-user-avatar" id="navbarProfileAvatar">
-								    <img
-								        id="navbarProfileImage"
-								        src="${navbarAvatarSrc}"
-								        alt="User Avatar"
-								        class="${empty navbarProfileImagePath ? 'd-none' : ''}" />
-								
-								    <span
-								        id="navbarProfileInitial"
-								        class="${empty navbarProfileImagePath ? '' : 'd-none'}">${navbarInitial}</span>
-								</div>
+                                <div class="logged-user-avatar" id="navbarProfileAvatar">
+                                    <img
+                                        id="navbarProfileImage"
+                                        src="${navbarAvatarSrc}"
+                                        alt="User Avatar"
+                                        class="${empty navbarProfileImagePath ? 'd-none' : ''}" />
+
+                                    <span
+                                        id="navbarProfileInitial"
+                                        class="${empty navbarProfileImagePath ? '' : 'd-none'}">${navbarInitial}</span>
+                                </div>
 
                                 <div class="logged-user-meta">
-                                    <span class="logged-user-name">${navbarFullName}</span>
+                                    <span class="logged-user-name">${navbarDisplayName}</span>
                                     <span class="logged-user-role">
                                         <c:choose>
                                             <c:when test="${navbarRole eq 'CLIENT'}">Client Account</c:when>
@@ -122,7 +122,25 @@
                                         <li>
                                             <a class="dropdown-item account-item"
                                                href="${pageContext.request.contextPath}/admin/dashboard">
-                                                Go to Dashboard
+                                                Dashboard
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item account-item"
+                                               href="${pageContext.request.contextPath}/admin/investment">
+                                                Investment Rules
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item account-item"
+                                               href="${pageContext.request.contextPath}/admin/currency">
+                                                Currency Converter
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item account-item"
+                                               href="${pageContext.request.contextPath}/admin/transaction-history">
+                                                Transaction History
                                             </a>
                                         </li>
                                     </c:when>
@@ -131,10 +149,11 @@
                                 <li><hr class="dropdown-divider"></li>
 
                                 <li>
-                                    <a class="dropdown-item account-item"
-                                       href="${pageContext.request.contextPath}/logout">
-                                        Logout
-                                    </a>
+                                    <form action="${pageContext.request.contextPath}/logout" method="post" class="m-0">
+                                        <button type="submit" class="dropdown-item account-item">
+                                            Logout
+                                        </button>
+                                    </form>
                                 </li>
                             </ul>
                         </li>

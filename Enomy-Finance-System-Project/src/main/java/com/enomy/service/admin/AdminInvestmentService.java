@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.enomy.model.investment.PlanRules;
 import com.enomy.model.investment.TaxSettings;
+import com.enomy.dto.investment.TaxSetHistoryDTO;
 
 public interface AdminInvestmentService {
 
@@ -26,7 +27,8 @@ public interface AdminInvestmentService {
 
     List<PlanRules> getAllPlanRulesHistory();
 
-    List<TaxSettings> getAllTaxSettingsHistory();
+    // ✅ UPDATED: now returns grouped tax set DTO
+    List<TaxSetHistoryDTO> getAllTaxSettingsHistory();
 
     List<PlanRules> getPlanRuleSetByPlanSetId(Long planSetId);
 

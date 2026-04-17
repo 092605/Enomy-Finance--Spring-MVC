@@ -1,16 +1,18 @@
 /* ================================================= */
 /* CLIENT INVESTMENT PAGE SCRIPT                     */
-/* Note:
-   - Existing dropdown/result hooks are preserved
-   - Added:
-   - same-page section switching
-   - AJAX saved quote modal result card
-   - modal 1yr / 5yrs / 10yrs tab switching
+/* Note: This version keeps your investment page behavior and adds AJAX calculation, AJAX save, and result-card reset after successful save. */
 /* ================================================= */
 
 document.addEventListener("DOMContentLoaded", function () {
     /* ============================================= */
+    /* SHARED INLINE MESSAGE AUTO-HIDE               */
+    /* Note: This block keeps support for any server-rendered success or error messages that still use the shared inline message system. */
+    /* ============================================= */
+    initializeInlineMessagesAutoHide();
+
+    /* ============================================= */
     /* INVESTMENT PLAN DROPDOWN + PLAN DETAILS       */
+    /* Note: This block keeps the custom dropdown behavior and updates the plan details card when the selected plan changes. */
     /* ============================================= */
     const dropdown = document.getElementById("investmentPlanDropdown");
 
@@ -83,24 +85,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     /* ============================================= */
-    /* AUTO HIDE ALERTS                              */
-    /* ============================================= */
-    setTimeout(() => {
-        const alerts = document.querySelectorAll(".alert");
-        alerts.forEach(alert => {
-            alert.classList.remove("show");
-            alert.classList.add("fade");
-
-            setTimeout(() => {
-                if (alert && alert.parentNode) {
-                    alert.remove();
-                }
-            }, 300);
-        });
-    }, 5000);
-
-    /* ============================================= */
     /* SHARED MONEY FORMATTER                        */
+    /* Note: This helper keeps all investment amounts displayed consistently in pound format. */
     /* ============================================= */
     function formatMoney(value) {
         return "£" + Number(value || 0).toLocaleString(undefined, {
@@ -110,7 +96,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     /* ============================================= */
-    /* MAIN RESULT CARD TAB SWITCHING                */
+    /* RESULT CARD HELPERS                           */
+    /* Note: These helpers control the main result card values and tab switching for 1, 5, and 10 year results. */
     /* ============================================= */
     function getResultPlanDisplayName(planType) {
         if (planType === "BASIC_SAVINGS") return "Basic Savings Plan";
@@ -160,6 +147,185 @@ document.addEventListener("DOMContentLoaded", function () {
         if (resultTotalFee) resultTotalFee.textContent = formatMoney(store.dataset[prefix + "TotalFee"]);
     }
 
+    function updateResultDataStoreFromAjax(response) {
+        const store = document.getElementById("resultDataStore");
+        if (!store) return;
+
+        const one = response.oneYear || {};
+        const five = response.fiveYears || {};
+        const ten = response.tenYears || {};
+
+        store.dataset.planType = response.planType || "";
+
+        store.dataset.oneInitial = one.initialLumpSum ?? 0;
+        store.dataset.oneMonthly = one.monthlyInvestment ?? 0;
+        store.dataset.oneTotal = one.totalInvested ?? 0;
+        store.dataset.oneMinReturn = one.minReturn ?? 0;
+        store.dataset.oneMaxReturn = one.maxReturn ?? 0;
+        store.dataset.oneMinProfit = one.minProfit ?? 0;
+        store.dataset.oneMaxProfit = one.maxProfit ?? 0;
+        store.dataset.oneMinTax = one.minTax ?? 0;
+        store.dataset.oneMaxTax = one.maxTax ?? 0;
+        store.dataset.oneMonthlyFee = one.monthlyFee ?? 0;
+        store.dataset.oneTotalFee = one.totalFee ?? 0;
+
+        store.dataset.fiveInitial = five.initialLumpSum ?? 0;
+        store.dataset.fiveMonthly = five.monthlyInvestment ?? 0;
+        store.dataset.fiveTotal = five.totalInvested ?? 0;
+        store.dataset.fiveMinReturn = five.minReturn ?? 0;
+        store.dataset.fiveMaxReturn = five.maxReturn ?? 0;
+        store.dataset.fiveMinProfit = five.minProfit ?? 0;
+        store.dataset.fiveMaxProfit = five.maxProfit ?? 0;
+        store.dataset.fiveMinTax = five.minTax ?? 0;
+        store.dataset.fiveMaxTax = five.maxTax ?? 0;
+        store.dataset.fiveMonthlyFee = five.monthlyFee ?? 0;
+        store.dataset.fiveTotalFee = five.totalFee ?? 0;
+
+        store.dataset.tenInitial = ten.initialLumpSum ?? 0;
+        store.dataset.tenMonthly = ten.monthlyInvestment ?? 0;
+        store.dataset.tenTotal = ten.totalInvested ?? 0;
+        store.dataset.tenMinReturn = ten.minReturn ?? 0;
+        store.dataset.tenMaxReturn = ten.maxReturn ?? 0;
+        store.dataset.tenMinProfit = ten.minProfit ?? 0;
+        store.dataset.tenMaxProfit = ten.maxProfit ?? 0;
+        store.dataset.tenMinTax = ten.minTax ?? 0;
+        store.dataset.tenMaxTax = ten.maxTax ?? 0;
+        store.dataset.tenMonthlyFee = ten.monthlyFee ?? 0;
+        store.dataset.tenTotalFee = ten.totalFee ?? 0;
+    }
+
+    function showResultActions() {
+        const resultActions = document.querySelector(".result-actions");
+        if (resultActions) {
+            resultActions.classList.remove("d-none");
+        }
+    }
+
+    function hideResultActions() {
+        const resultActions = document.querySelector(".result-actions");
+        if (resultActions) {
+            resultActions.classList.add("d-none");
+        }
+    }
+
+    function activateMainResultTab(yearKey) {
+        const tabButtons = document.querySelectorAll(".result-tab-btn:not(.modal-result-tab-btn)");
+        tabButtons.forEach(btn => btn.classList.remove("active"));
+
+        const targetButton = document.querySelector(`.result-tab-btn:not(.modal-result-tab-btn)[data-year="${yearKey}"]`);
+        if (targetButton) {
+            targetButton.classList.add("active");
+        }
+    }
+
+	function resetResultCardToDefault() {
+	    const store = document.getElementById("resultDataStore");
+	    if (store) {
+	        store.dataset.planType = "";
+
+	        store.dataset.oneInitial = 0;
+	        store.dataset.oneMonthly = 0;
+	        store.dataset.oneTotal = 0;
+	        store.dataset.oneMinReturn = 0;
+	        store.dataset.oneMaxReturn = 0;
+	        store.dataset.oneMinProfit = 0;
+	        store.dataset.oneMaxProfit = 0;
+	        store.dataset.oneMinTax = 0;
+	        store.dataset.oneMaxTax = 0;
+	        store.dataset.oneMonthlyFee = 0;
+	        store.dataset.oneTotalFee = 0;
+
+	        store.dataset.fiveInitial = 0;
+	        store.dataset.fiveMonthly = 0;
+	        store.dataset.fiveTotal = 0;
+	        store.dataset.fiveMinReturn = 0;
+	        store.dataset.fiveMaxReturn = 0;
+	        store.dataset.fiveMinProfit = 0;
+	        store.dataset.fiveMaxProfit = 0;
+	        store.dataset.fiveMinTax = 0;
+	        store.dataset.fiveMaxTax = 0;
+	        store.dataset.fiveMonthlyFee = 0;
+	        store.dataset.fiveTotalFee = 0;
+
+	        store.dataset.tenInitial = 0;
+	        store.dataset.tenMonthly = 0;
+	        store.dataset.tenTotal = 0;
+	        store.dataset.tenMinReturn = 0;
+	        store.dataset.tenMaxReturn = 0;
+	        store.dataset.tenMinProfit = 0;
+	        store.dataset.tenMaxProfit = 0;
+	        store.dataset.tenMinTax = 0;
+	        store.dataset.tenMaxTax = 0;
+	        store.dataset.tenMonthlyFee = 0;
+	        store.dataset.tenTotalFee = 0;
+	    }
+
+	    const resultPlanTitle = document.getElementById("resultPlanTitle");
+	    if (resultPlanTitle) {
+	        resultPlanTitle.textContent = "Investment Result";
+	    }
+
+	    activateMainResultTab("oneYear");
+	    updateResultCard("oneYear");
+	    hideResultActions();
+
+	    const savePlanType = document.getElementById("saveQuotePlanType");
+	    const saveInitialLumpSum = document.getElementById("saveQuoteInitialLumpSum");
+	    const saveMonthlyInvestment = document.getElementById("saveQuoteMonthlyInvestment");
+
+	    if (savePlanType) savePlanType.value = "";
+	    if (saveInitialLumpSum) saveInitialLumpSum.value = "0";
+	    if (saveMonthlyInvestment) saveMonthlyInvestment.value = "0";
+
+	    const initialInvestmentInput = document.getElementById("initialInvestment");
+	    const monthlyContributionInput = document.getElementById("monthlyContribution");
+	    const investmentPlanValue = document.getElementById("investmentPlanValue");
+	    const investmentPlanDropdown = document.getElementById("investmentPlanDropdown");
+	    const selectedValue = investmentPlanDropdown
+	        ? investmentPlanDropdown.querySelector(".selected-value")
+	        : null;
+	    const dropdownItems = investmentPlanDropdown
+	        ? investmentPlanDropdown.querySelectorAll(".custom-dropdown-item")
+	        : [];
+
+	    if (initialInvestmentInput) initialInvestmentInput.value = "0";
+	    if (monthlyContributionInput) monthlyContributionInput.value = "0";
+	    if (investmentPlanValue) investmentPlanValue.value = "BASIC_SAVINGS";
+
+	    if (selectedValue) {
+	        selectedValue.textContent = "Basic Savings Plan";
+	    }
+
+	    dropdownItems.forEach(item => {
+	        item.classList.remove("active");
+	        if (item.getAttribute("data-value") === "BASIC_SAVINGS") {
+	            item.classList.add("active");
+	        }
+	    });
+
+	    if (typeof window.planDetailsData !== "undefined") {
+	        const basicPlan = window.planDetailsData["BASIC_SAVINGS"];
+
+	        if (basicPlan) {
+	            const titleEl = document.getElementById("planDetailsTitle");
+	            const maxInvestmentEl = document.getElementById("planMaxInvestment");
+	            const minMonthlyEl = document.getElementById("planMinMonthly");
+	            const minLumpSumEl = document.getElementById("planMinLumpSum");
+	            const returnsEl = document.getElementById("planReturns");
+	            const taxEl = document.getElementById("planTax");
+	            const feesEl = document.getElementById("planFees");
+
+	            if (titleEl) titleEl.textContent = basicPlan.title;
+	            if (maxInvestmentEl) maxInvestmentEl.textContent = basicPlan.maximumInvestmentPerYear;
+	            if (minMonthlyEl) minMonthlyEl.textContent = basicPlan.minimumMonthlyInvestment;
+	            if (minLumpSumEl) minLumpSumEl.textContent = basicPlan.minimumInitialInvestmentLumpSum;
+	            if (returnsEl) returnsEl.textContent = basicPlan.predictedReturnsPerYear;
+	            if (taxEl) taxEl.innerHTML = basicPlan.estimatedTax;
+	            if (feesEl) feesEl.textContent = basicPlan.groupFeesPerMonth;
+	        }
+	    }
+	}
+
     const tabButtons = document.querySelectorAll(".result-tab-btn:not(.modal-result-tab-btn)");
     tabButtons.forEach(button => {
         button.addEventListener("click", function () {
@@ -174,7 +340,175 @@ document.addEventListener("DOMContentLoaded", function () {
     updateResultCard("oneYear");
 
     /* ============================================= */
+    /* AJAX CALCULATOR SUBMIT                        */
+    /* Note: This block converts the calculator to AJAX so errors and success messages can animate like the currency check-rate card. */
+    /* ============================================= */
+    function setupInvestmentCalculatorAjax() {
+        const form = document.querySelector('form[action*="/client/investment/calculate"]');
+        const errorEl = document.getElementById("investmentCalcError");
+        const successEl = document.getElementById("investmentCalcSuccess");
+
+        if (!form || !errorEl || !successEl) {
+            return;
+        }
+
+        form.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            if (typeof clearInlineMessage === "function") {
+                clearInlineMessage(errorEl);
+                clearInlineMessage(successEl);
+            }
+
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn ? submitBtn.textContent : "";
+
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = "Calculating...";
+            }
+
+            const payload = {
+                planType: document.getElementById("investmentPlanValue")?.value || "",
+                initialLumpSum: parseFloat(document.getElementById("initialInvestment")?.value || "0"),
+                monthlyInvestment: parseFloat(document.getElementById("monthlyContribution")?.value || "0")
+            };
+
+            fetch(form.action + "-ajax", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(async response => {
+                const data = await response.json().catch(() => null);
+
+                if (!response.ok || !data) {
+                    throw new Error((data && data.message) || "Unable to calculate projection.");
+                }
+
+                return data;
+            })
+            .then(data => {
+                if (!data.success) {
+                    if (typeof showInlineError === "function") {
+                        showInlineError(errorEl, data.message || "Unable to calculate projection.");
+                    }
+                    return;
+                }
+
+                updateResultDataStoreFromAjax(data);
+                syncSaveQuoteFormValues(payload);
+                activateMainResultTab("oneYear");
+                updateResultCard("oneYear");
+                showResultActions();
+
+                if (typeof showInlineSuccess === "function") {
+                    showInlineSuccess(successEl, data.message || "Calculation successful.");
+                }
+            })
+            .catch(error => {
+                if (typeof showInlineError === "function") {
+                    showInlineError(errorEl, error.message || "Something went wrong. Please try again.");
+                }
+            })
+            .finally(() => {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalBtnText || "Calculate Projection";
+                }
+            });
+        });
+    }
+
+    /* ============================================= */
+    /* AJAX SAVE QUOTE                               */
+    /* Note: This block saves the current calculated quote without page reload, updates the saved quote count, and resets the result card after success. */
+    /* ============================================= */
+    function setupSaveQuoteAjax() {
+        const saveForm = document.getElementById("saveQuoteForm");
+        const saveBtn = document.getElementById("saveQuoteBtn");
+        const errorEl = document.getElementById("investmentResultError");
+        const successEl = document.getElementById("investmentResultSuccess");
+        const savedQuoteCountEl = document.querySelector(".SumCount");
+
+        if (!saveForm || !saveBtn || !errorEl || !successEl) {
+            return;
+        }
+
+        saveForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            if (typeof clearInlineMessage === "function") {
+                clearInlineMessage(errorEl);
+                clearInlineMessage(successEl);
+            }
+
+            const payload = {
+                planType: document.getElementById("saveQuotePlanType")?.value || "",
+                initialLumpSum: parseFloat(document.getElementById("saveQuoteInitialLumpSum")?.value || "0"),
+                monthlyInvestment: parseFloat(document.getElementById("saveQuoteMonthlyInvestment")?.value || "0")
+            };
+
+            const originalText = saveBtn.textContent;
+            saveBtn.disabled = true;
+            saveBtn.textContent = "Saving...";
+
+            fetch(saveForm.action + "-ajax", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(async response => {
+                const data = await response.json().catch(() => null);
+
+                if (!response.ok || !data) {
+                    throw new Error((data && data.message) || "Unable to save quote.");
+                }
+
+                return data;
+            })
+            .then(data => {
+                if (!data.success) {
+                    if (typeof showInlineError === "function") {
+                        showInlineError(errorEl, data.message || "Unable to save quote.");
+                    }
+                    return;
+                }
+
+                if (savedQuoteCountEl && typeof data.savedQuoteCount !== "undefined") {
+                    savedQuoteCountEl.textContent = data.savedQuoteCount;
+                }
+
+                resetResultCardToDefault();
+
+                if (typeof showInlineSuccess === "function") {
+                    showInlineSuccess(successEl, data.message || "Investment quote has been successfully saved.");
+                }
+            })
+            .catch(error => {
+                if (typeof showInlineError === "function") {
+                    showInlineError(errorEl, error.message || "Something went wrong while saving.");
+                }
+            })
+            .finally(() => {
+                saveBtn.disabled = false;
+                saveBtn.textContent = originalText;
+            });
+        });
+    }
+
+    setupInvestmentCalculatorAjax();
+    setupSaveQuoteAjax();
+
+    /* ============================================= */
     /* SAME-PAGE SECTION SWITCHING                   */
+    /* Note: This block keeps the main calculator view and saved quotes view switching on the same page. */
     /* ============================================= */
     const investmentMainSection = document.getElementById("investmentMainSection");
     const investmentQuotesSection = document.getElementById("investmentQuotesSection");
@@ -232,6 +566,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /* ============================================= */
     /* MODAL RESULT CARD DATA + SWITCHING            */
+    /* Note: This block keeps the saved-quote result modal working with the existing quote-details AJAX endpoint. */
     /* ============================================= */
     let modalQuoteData = null;
 
@@ -296,6 +631,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /* ============================================= */
     /* SAVED QUOTE MODAL CARD                        */
+    /* Note: This block keeps the saved quote modal opening, closing, and loading quote data asynchronously. */
     /* ============================================= */
     const quoteModalOverlay = document.getElementById("investmentQuoteModalOverlay");
     const closeQuoteModalBtn = document.getElementById("closeQuoteModalBtn");
@@ -314,33 +650,33 @@ document.addEventListener("DOMContentLoaded", function () {
         document.body.classList.remove("quote-modal-open");
     }
 
-	async function fetchSavedQuoteDetails(quoteId) {
-	    const contextPath = window.location.pathname.split("/client/")[0] || "";
-	    const url = `${contextPath}/client/investment/quotes/${quoteId}/details`;
+    async function fetchSavedQuoteDetails(quoteId) {
+        const contextPath = window.location.pathname.split("/client/")[0] || "";
+        const url = `${contextPath}/client/investment/quotes/${quoteId}/details`;
 
-	    const response = await fetch(url, {
-	        method: "GET",
-	        headers: {
-	            "X-Requested-With": "XMLHttpRequest",
-	            "Accept": "application/json"
-	        }
-	    });
+        const response = await fetch(url, {
+            method: "GET",
+            headers: {
+                "X-Requested-With": "XMLHttpRequest",
+                "Accept": "application/json"
+            }
+        });
 
-	    const rawText = await response.text();
+        const rawText = await response.text();
 
-	    let data;
-	    try {
-	        data = JSON.parse(rawText);
-	    } catch (e) {
-	        throw new Error("Server did not return JSON. Response starts with: " + rawText.substring(0, 120));
-	    }
+        let data;
+        try {
+            data = JSON.parse(rawText);
+        } catch (e) {
+            throw new Error("Server did not return JSON. Response starts with: " + rawText.substring(0, 120));
+        }
 
-	    if (!response.ok || !data.success) {
-	        throw new Error(data.message || "Unable to load saved quote details.");
-	    }
+        if (!response.ok || !data.success) {
+            throw new Error(data.message || "Unable to load saved quote details.");
+        }
 
-	    return data;
-	}
+        return data;
+    }
 
     quoteViewButtons.forEach(button => {
         button.addEventListener("click", async function () {
@@ -393,3 +729,35 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+/* ============================================= */
+/* SAVE QUOTE FORM SYNC                          */
+/* Note: This function keeps the Save Quote hidden inputs synced with the latest AJAX calculation request values. */
+/* ============================================= */
+function syncSaveQuoteFormValues(payload) {
+    const savePlanType = document.getElementById("saveQuotePlanType");
+    const saveInitialLumpSum = document.getElementById("saveQuoteInitialLumpSum");
+    const saveMonthlyInvestment = document.getElementById("saveQuoteMonthlyInvestment");
+
+    if (savePlanType) {
+        savePlanType.value = payload.planType || "";
+    }
+
+    if (saveInitialLumpSum) {
+        saveInitialLumpSum.value = payload.initialLumpSum ?? 0;
+    }
+
+    if (saveMonthlyInvestment) {
+        saveMonthlyInvestment.value = payload.monthlyInvestment ?? 0;
+    }
+}
+
+/* ============================================= */
+/* INLINE MESSAGE INITIALIZER                    */
+/* Note: This function keeps support for any JSP-rendered shared messages that still need auto-hide behavior. */
+/* ============================================= */
+function initializeInlineMessagesAutoHide() {
+    if (typeof autoHideRenderedInlineMessages === "function") {
+        autoHideRenderedInlineMessages(3000);
+    }
+}

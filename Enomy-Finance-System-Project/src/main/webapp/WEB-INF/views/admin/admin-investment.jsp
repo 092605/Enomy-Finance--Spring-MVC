@@ -11,6 +11,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/public/theme.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/public/components.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/client/client-dashboard.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/admin-investment.css">
 </head>
@@ -32,29 +33,6 @@
                 <h2 class="investment-page-subtitle">Admin Investment Rules</h2>
             </div>
 
-            <!-- GLOBAL ALERTS -->
-            <c:if test="${not empty successMessage}">
-                <div class="alert alert-success investment-alert-success mb-4">
-                    ${successMessage}
-                </div>
-            </c:if>
-
-            <c:if test="${not empty errorMessage}">
-                <div class="alert alert-danger investment-alert-error mb-4">
-                    ${errorMessage}
-                </div>
-            </c:if>
-
-            <c:if test="${not empty formErrors}">
-                <div class="alert alert-danger investment-alert-error mb-4">
-                    <strong>Please check the following:</strong>
-                    <ul class="mb-0 mt-2">
-                        <c:forEach var="err" items="${formErrors}">
-                            <li>${err}</li>
-                        </c:forEach>
-                    </ul>
-                </div>
-            </c:if>
 
             <!-- PREP ACTIVE PLANS -->
             <c:set var="activeBasic" value="${null}" />
@@ -1516,66 +1494,77 @@
                 </c:choose>
             </c:if>
 
-            <!-- TAX HISTORY -->
-            <c:if test="${activeHistoryTab eq 'tax'}">
-                <c:choose>
-                    <c:when test="${not empty taxSettingsHistory}">
+<!-- TAX HISTORY -->
+<c:if test="${activeHistoryTab eq 'tax'}">
+    <c:choose>
+        <c:when test="${not empty taxSettingsHistory}">
 
-                        <!-- Scrollable container added here -->
-                        <div class="table-responsive investment-history-scroll">
-                            <table class="table investment-history-table">
-                                <thead>
-                                    <tr>
-                                        <th>Version</th>
-                                        <th>Date Created</th>
-                                        <th>Date Last Used</th>
-                                        <th>Status</th>
-                                        <th>View</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <c:forEach var="tax" items="${taxSettingsHistory}">
-                                        <tr>
-                                            <td>Version ${tax.taxSetId}</td>
-                                            <td><fmt:formatDate value="${tax.createdAt}" pattern="MMM dd, yyyy hh:mm a"/></td>
-                                            <td><fmt:formatDate value="${tax.createdAt}" pattern="MMM dd, yyyy hh:mm a"/></td>
-                                            <td>
-                                                <span class="investment-status-badge ${tax.active ? 'active' : 'inactive'}">
-                                                    ${tax.active ? 'Active' : 'Inactive'}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <button type="button"
-                                                        class="btn-glow-outline btn-sm view-tax-history-btn"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#taxHistoryDetailsModal"
-                                                        data-tax-set-id="${tax.taxSetId}"
-                                                        data-tax-id="${tax.id}"
-                                                        data-tax-type="${tax.taxType}"
-                                                        data-tax-free-allowance="${tax.taxFreeAllowance}"
-                                                        data-lower-tax-rate="${tax.lowerTaxRate}"
-                                                        data-lower-tax-threshold="${tax.lowerTaxThreshold}"
-                                                        data-upper-tax-rate="${tax.upperTaxRate}"
-                                                        data-upper-tax-threshold="${tax.upperTaxThreshold}"
-                                                        data-is-active="${tax.active}">
-                                                    View
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </c:forEach>
-                                </tbody>
-                            </table>
-                        </div>
+            <div class="table-responsive investment-history-scroll">
+                <table class="table investment-history-table">
+                    <thead>
+                        <tr>
+                            <th>Version</th>
+                            <th>Date Created</th>
+                            <th>Date Last Used</th>
+                            <th>Status</th>
+                            <th>View</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach var="taxSet" items="${taxSettingsHistory}">
+                            <tr>
+                                <td>Version ${taxSet.taxSetId}</td>
+                                <td><fmt:formatDate value="${taxSet.createdAt}" pattern="MMM dd, yyyy hh:mm a"/></td>
+                                <td><fmt:formatDate value="${taxSet.createdAt}" pattern="MMM dd, yyyy hh:mm a"/></td>
+                                <td>
+                                    <span class="investment-status-badge ${taxSet.active ? 'active' : 'inactive'}">
+                                        ${taxSet.active ? 'Active' : 'Inactive'}
+                                    </span>
+                                </td>
+                                <td>
+                                    <button type="button"
+                                            class="btn-glow-outline btn-sm view-tax-history-btn"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#taxHistoryDetailsModal"
 
-                    </c:when>
-                    <c:otherwise>
-                        <div class="investment-empty-state">
-                            <h4>No tax settings history yet</h4>
-                            <p>Saved tax settings versions will appear here.</p>
-                        </div>
-                    </c:otherwise>
-                </c:choose>
-            </c:if>
+                                            data-tax-set-id="${taxSet.taxSetId}"
+                                            data-is-active="${taxSet.active}"
+
+                                            data-none-tax-free-allowance="${taxSet.noneTax.taxFreeAllowance}"
+                                            data-none-lower-tax-rate="${taxSet.noneTax.lowerTaxRate}"
+                                            data-none-lower-tax-threshold="${taxSet.noneTax.lowerTaxThreshold}"
+                                            data-none-upper-tax-rate="${taxSet.noneTax.upperTaxRate}"
+                                            data-none-upper-tax-threshold="${taxSet.noneTax.upperTaxThreshold}"
+
+                                            data-flat-tax-free-allowance="${taxSet.flatTax.taxFreeAllowance}"
+                                            data-flat-lower-tax-rate="${taxSet.flatTax.lowerTaxRate}"
+                                            data-flat-lower-tax-threshold="${taxSet.flatTax.lowerTaxThreshold}"
+                                            data-flat-upper-tax-rate="${taxSet.flatTax.upperTaxRate}"
+                                            data-flat-upper-tax-threshold="${taxSet.flatTax.upperTaxThreshold}"
+
+                                            data-progressive-tax-free-allowance="${taxSet.progressiveTax.taxFreeAllowance}"
+                                            data-progressive-lower-tax-rate="${taxSet.progressiveTax.lowerTaxRate}"
+                                            data-progressive-lower-tax-threshold="${taxSet.progressiveTax.lowerTaxThreshold}"
+                                            data-progressive-upper-tax-rate="${taxSet.progressiveTax.upperTaxRate}"
+                                            data-progressive-upper-tax-threshold="${taxSet.progressiveTax.upperTaxThreshold}">
+                                        View
+                                    </button>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+
+        </c:when>
+        <c:otherwise>
+            <div class="investment-empty-state">
+                <h4>No tax settings history yet</h4>
+                <p>Saved tax settings versions will appear here.</p>
+            </div>
+        </c:otherwise>
+    </c:choose>
+</c:if>
 
         </div>
     </div>
@@ -1723,25 +1712,187 @@
         <div class="modal-content investment-modal-card">
             <div class="modal-body">
                 <div class="investment-modal-head">
-                    <h3>Tax Settings Details</h3>
+                    <div>
+                        <h3>Tax Settings Details</h3>
+                        <p class="investment-card-text mb-0">Review the selected tax settings version.</p>
+                    </div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
-                <div class="investment-tax-display modal-tax-display">
-                    <div class="investment-tax-display-item"><span>Tax Type</span><strong id="history-tax-type">-</strong></div>
-                    <div class="investment-tax-display-item"><span>Tax Free Allowance</span><strong id="history-tax-free-allowance">-</strong></div>
-                    <div class="investment-tax-display-item"><span>Lower Tax Rate</span><strong id="history-lower-tax-rate">-</strong></div>
-                    <div class="investment-tax-display-item"><span>Lower Threshold</span><strong id="history-lower-tax-threshold">-</strong></div>
-                    <div class="investment-tax-display-item"><span>Upper Tax Rate</span><strong id="history-upper-tax-rate">-</strong></div>
-                    <div class="investment-tax-display-item"><span>Upper Threshold</span><strong id="history-upper-tax-threshold">-</strong></div>
+                <div class="investment-panel-card w-100 mt-3">
+                    <div class="investment-card-inner">
+
+                        <div class="investment-card-head">
+                            <div>
+                                <h3 class="investment-card-title">Selected Tax Settings</h3>
+                                <p class="investment-card-text">Details of the tax settings version selected from history.</p>
+                            </div>
+
+                            <span class="investment-version-badge" id="history-tax-version-badge">
+                                Version -
+                            </span>
+                        </div>
+
+                        <!-- TAX TYPE SWITCHER -->
+                        <div class="investment-tax-switcher">
+                            <div class="investment-tax-switch-top">
+
+                                <div class="custom-dropdown investment-tax-custom-dropdown" id="historyTaxTypeDropdown">
+                                    <input type="hidden" id="historyTaxTypeSelect" value="history-tax-none">
+
+                                    <button type="button" class="custom-dropdown-toggle">
+                                        <span class="selected-value">None</span>
+                                        <span class="dropdown-arrow">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <polyline points="6 9 12 15 18 9"></polyline>
+                                            </svg>
+                                        </span>
+                                    </button>
+
+                                    <div class="custom-dropdown-menu">
+                                        <div class="custom-dropdown-item active"
+                                             data-value="history-tax-none"
+                                             data-rate="0%">
+                                            None
+                                        </div>
+
+                                        <div class="custom-dropdown-item"
+                                             data-value="history-tax-flat"
+                                             data-rate="0.00%">
+                                            Flat
+                                        </div>
+
+                                        <div class="custom-dropdown-item"
+                                             data-value="history-tax-progressive"
+                                             data-rate="0.00% - 0.00%">
+                                            Progressive
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="investment-tax-rate-preview">
+                                    <span id="historyTaxQuickRate">0%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- NONE PANEL -->
+                        <div class="investment-tax-view-panel active" id="history-tax-none">
+                            <div class="investment-tax-main-box">
+                                <span>Tax Free Allowance</span>
+                                <strong id="history-none-tax-free-allowance">£0.00</strong>
+                            </div>
+
+                            <div class="investment-tax-subsection">
+                                <h4>Lower</h4>
+
+                                <div class="investment-tax-input-display">
+                                    <span>Lower Tax Rate</span>
+                                    <strong id="history-none-lower-tax-rate">0.00%</strong>
+                                </div>
+
+                                <div class="investment-tax-input-display">
+                                    <span>Lower Threshold</span>
+                                    <strong id="history-none-lower-tax-threshold">0.00</strong>
+                                </div>
+                            </div>
+
+                            <div class="investment-tax-subsection">
+                                <h4>Upper</h4>
+
+                                <div class="investment-tax-input-display">
+                                    <span>Upper Tax Rate</span>
+                                    <strong id="history-none-upper-tax-rate">0.00%</strong>
+                                </div>
+
+                                <div class="investment-tax-input-display">
+                                    <span>Upper Threshold</span>
+                                    <strong id="history-none-upper-tax-threshold">0.00</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FLAT PANEL -->
+                        <div class="investment-tax-view-panel" id="history-tax-flat">
+                            <div class="investment-tax-main-box">
+                                <span>Tax Free Allowance</span>
+                                <strong id="history-flat-tax-free-allowance">£0.00</strong>
+                            </div>
+
+                            <div class="investment-tax-subsection">
+                                <h4>Lower</h4>
+
+                                <div class="investment-tax-input-display">
+                                    <span>Lower Tax Rate</span>
+                                    <strong id="history-flat-lower-tax-rate">0.00%</strong>
+                                </div>
+
+                                <div class="investment-tax-input-display">
+                                    <span>Lower Threshold</span>
+                                    <strong id="history-flat-lower-tax-threshold">0.00</strong>
+                                </div>
+                            </div>
+
+                            <div class="investment-tax-subsection">
+                                <h4>Upper</h4>
+
+                                <div class="investment-tax-input-display">
+                                    <span>Upper Tax Rate</span>
+                                    <strong id="history-flat-upper-tax-rate">0.00%</strong>
+                                </div>
+
+                                <div class="investment-tax-input-display">
+                                    <span>Upper Threshold</span>
+                                    <strong id="history-flat-upper-tax-threshold">0.00</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- PROGRESSIVE PANEL -->
+                        <div class="investment-tax-view-panel" id="history-tax-progressive">
+                            <div class="investment-tax-main-box">
+                                <span>Tax Free Allowance</span>
+                                <strong id="history-progressive-tax-free-allowance">£0.00</strong>
+                            </div>
+
+                            <div class="investment-tax-subsection">
+                                <h4>Lower</h4>
+
+                                <div class="investment-tax-input-display">
+                                    <span>Lower Tax Rate</span>
+                                    <strong id="history-progressive-lower-tax-rate">0.00%</strong>
+                                </div>
+
+                                <div class="investment-tax-input-display">
+                                    <span>Lower Threshold</span>
+                                    <strong id="history-progressive-lower-tax-threshold">0.00</strong>
+                                </div>
+                            </div>
+
+                            <div class="investment-tax-subsection">
+                                <h4>Upper</h4>
+
+                                <div class="investment-tax-input-display">
+                                    <span>Upper Tax Rate</span>
+                                    <strong id="history-progressive-upper-tax-rate">0.00%</strong>
+                                </div>
+
+                                <div class="investment-tax-input-display">
+                                    <span>Upper Threshold</span>
+                                    <strong id="history-progressive-upper-tax-threshold">0.00</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
 
                 <form id="activateTaxSettingsForm"
-			      action="${pageContext.request.contextPath}/admin/investment/tax-settings/activate"
-			      method="post">
-			    <input type="hidden" name="taxSetId" id="activateTaxSetId">
-			    <input type="hidden" name="fromChangeFlow" value="${fromChangeFlow}">
-			</form>
+                      action="${pageContext.request.contextPath}/admin/investment/tax-settings/activate"
+                      method="post">
+                    <input type="hidden" name="taxSetId" id="activateTaxSetId">
+                    <input type="hidden" name="fromChangeFlow" value="${fromChangeFlow}">
+                </form>
 
                 <div class="investment-action-row justify-content-end mt-4">
                     <button type="button" class="btn-glow-outline" data-bs-dismiss="modal">Close</button>
@@ -1799,8 +1950,9 @@
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/dashboard.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/public/components.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/admin/admin-investment.js"></script>
+
 
 </body>
 </html>

@@ -1,9 +1,9 @@
 /* ===================================== */
 /* SAVINGS & INVESTMENT PAGE             */
 /* Note:
-   - Existing important classes are preserved
-   - Added quotes list + modal styles only
-/* ===================================== */
+   - Existing important classes are preserved.
+   - Added quotes list + modal styles only.
+===================================== */
 
 .savings-page {
     padding: 2.2rem 2rem 2rem;
@@ -110,6 +110,18 @@
     width: 90%;
     max-width: 520px;
     margin-right: auto;
+}
+
+/* ===================================== */
+/* INLINE MESSAGE COMPATIBILITY          */
+/* Note: This block allows shared inline success and error messages to animate without being clipped by investment card containers. */
+/* ===================================== */
+
+.investment-card-inner,
+.investment-panel-block,
+.result-box,
+.Inv-Calc {
+    overflow: visible;
 }
 
 /* ===================================== */
@@ -690,9 +702,9 @@
 /* ===================================== */
 /* QUOTE MODAL CARD                      */
 /* Note:
-   - merged base + result modal extension
-   - compact version
-/* ===================================== */
+   - merged base + result modal extension.
+   - compact version.
+===================================== */
 
 .investment-quote-modal-overlay {
     position: fixed;
@@ -894,6 +906,7 @@
         grid-template-columns: 1fr;
     }
 }
+
 /* ===================================== */
 /* RESPONSIVE                            */
 /* ===================================== */

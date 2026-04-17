@@ -1,0 +1,111 @@
+/* =========================
+   INLINE FEEDBACK MESSAGES
+========================= */
+.inline-error-message,
+.inline-success-message {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    padding: 0 0.9rem;
+
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+
+    font-size: 0.82rem;
+    font-weight: 600;
+    line-height: 1.4;
+
+    border-radius: 12px;
+
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+
+    opacity: 0;
+    transform: translateY(-12px);
+    max-height: 0;
+    overflow: hidden;
+    pointer-events: none;
+
+    transition:
+        opacity 0.5s ease,
+        transform 0.5s ease,
+        max-height 0.5s ease,
+        padding-top 0.5s ease,
+        padding-bottom  0.5s ease,
+        margin-top 0.5s ease,
+        margin-bottom  0.5s ease,
+        border-color 0.5s ease,
+        box-shadow  0.5s ease;
+}
+
+.inline-error-message.show,
+.inline-success-message.show {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 120px;
+    padding-top: 0.72rem;
+    padding-bottom: 0.72rem;
+    pointer-events: auto;
+}
+
+.inline-error-message.hide,
+.inline-success-message.hide {
+    opacity: 0;
+    transform: translateY(-12px);
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    pointer-events: none;
+}
+
+/* ERROR */
+.inline-error-message {
+    color: #ff7aa2;
+    background: rgba(255, 77, 109, 0.08);
+    border: 1px solid rgba(255, 77, 109, 0.28);
+    box-shadow: 0 6px 18px rgba(255, 77, 109, 0.15);
+}
+
+.inline-error-message::before {
+    content: "";
+    width: 4px;
+    align-self: stretch;
+    border-radius: 999px;
+    background: linear-gradient(180deg, #ff4d6d, #ff85a2);
+    flex-shrink: 0;
+}
+
+.inline-error-message::after {
+    content: "⚠";
+    font-size: 0.95rem;
+    line-height: 1;
+    color: #ff8fab;
+    flex-shrink: 0;
+}
+
+/* SUCCESS */
+.inline-success-message {
+    color: #8dffbf;
+    background: rgba(34, 197, 94, 0.10);
+    border: 1px solid rgba(34, 197, 94, 0.30);
+    box-shadow: 0 6px 18px rgba(34, 197, 94, 0.14);
+}
+
+.inline-success-message::before {
+    content: "";
+    width: 4px;
+    align-self: stretch;
+    border-radius: 999px;
+    background: linear-gradient(180deg, #22c55e, #86efac);
+    flex-shrink: 0;
+}
+
+.inline-success-message::after {
+    content: "✔";
+    font-size: 0.95rem;
+    line-height: 1;
+    color: #86efac;
+    flex-shrink: 0;
+}

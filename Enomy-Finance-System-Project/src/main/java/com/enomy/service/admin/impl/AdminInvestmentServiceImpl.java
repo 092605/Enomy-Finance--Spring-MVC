@@ -1,6 +1,8 @@
 package com.enomy.service.admin.impl;
 
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,7 @@ import com.enomy.dao.investment.TaxSettingsDao;
 import com.enomy.model.investment.PlanRules;
 import com.enomy.model.investment.TaxSettings;
 import com.enomy.service.admin.AdminInvestmentService;
+import com.enomy.dto.investment.TaxSetHistoryDTO;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -58,15 +61,44 @@ public class AdminInvestmentServiceImpl implements AdminInvestmentService {
 
  // This gets all tax rows for history.
     @Override
-    public List<TaxSettings> getAllTaxSettingsHistory() {
-        List<TaxSettings> history = new ArrayList<>(taxSettingsDao.findAllTaxSettingsOrdered());
+    public List<TaxSetHistoryDTO> getAllTaxSettingsHistory() {
 
-        history.sort(
-            Comparator.comparing(TaxSettings::isActive).reversed()
-                      .thenComparing(TaxSettings::getCreatedAt, Comparator.reverseOrder())
-        );
+        List<TaxSettings> rows = taxSettingsDao.findAllTaxSettingsOrdered();
 
-        return history;
+        Map<Long, TaxSetHistoryDTO> grouped = new HashMap<>();
+
+        for (TaxSettings row : rows) {
+
+            Long setId = row.getTaxSetId();
+
+            TaxSetHistoryDTO dto = grouped.get(setId);
+
+            if (dto == null) {
+                dto = new TaxSetHistoryDTO();
+                dto.setTaxSetId(setId);
+                dto.setCreatedAt(row.getCreatedAt());
+                dto.setActive(row.isActive());
+                grouped.put(setId, dto);
+            }
+
+            switch (row.getTaxType()) {
+                case "NONE":
+                    dto.setNoneTax(row);
+                    break;
+                case "FLAT":
+                    dto.setFlatTax(row);
+                    break;
+                case "PROGRESSIVE":
+                    dto.setProgressiveTax(row);
+                    break;
+            }
+        }
+
+        return grouped.values().stream()
+            .sorted(Comparator
+                .comparing(TaxSetHistoryDTO::isActive).reversed()
+                .thenComparing(TaxSetHistoryDTO::getCreatedAt, Comparator.reverseOrder()))
+            .toList();
     }
 
     // This gets all rows under one plan set version.

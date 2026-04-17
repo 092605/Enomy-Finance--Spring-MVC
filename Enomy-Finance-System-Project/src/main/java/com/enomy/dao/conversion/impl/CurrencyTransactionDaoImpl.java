@@ -256,17 +256,7 @@ public class CurrencyTransactionDaoImpl implements CurrencyTransactionDao {
         transaction.setFinalAmount(rs.getDouble("final_amount"));
         transaction.setRuleSetId(rs.getLong("rule_set_id"));
         transaction.setStatus(rs.getString("status"));
-        transaction.setCreatedAt(rs.getObject("created_at", java.time.LocalDateTime.class)
-                .atZone(java.time.ZoneId.systemDefault())
-                .toInstant()
-                .toEpochMilli() == 0 ? null :
-                new java.util.Date(
-                    rs.getObject("created_at", java.time.LocalDateTime.class)
-                      .atZone(java.time.ZoneId.systemDefault())
-                      .toInstant()
-                      .toEpochMilli()
-                )
-        );
+        transaction.setCreatedAt(rs.getTimestamp("created_at"));
         return transaction;
     }
 }

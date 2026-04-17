@@ -17,6 +17,7 @@ import com.enomy.model.investment.PlanRules;
 import com.enomy.model.investment.TaxSettings;
 import com.enomy.security.CustomUserDetails;
 import com.enomy.service.admin.AdminInvestmentService;
+import com.enomy.dto.investment.TaxSetHistoryDTO;
 
 @Controller
 @RequestMapping("/admin/investment")
@@ -241,16 +242,16 @@ public class AdminInvestmentController {
         model.addAttribute("activeTaxSettings", activeTaxSettings);
     }
 
-    // This loads grouped history data and full row data for modal display.
+
+ // This loads grouped history data and full row data for modal display.
     private void loadSharedHistoryData(Model model) {
         List<PlanRules> allPlanRows = adminInvestmentService.getAllPlanRulesHistory();
-        List<TaxSettings> allTaxRows = adminInvestmentService.getAllTaxSettingsHistory();
+        List<TaxSetHistoryDTO> taxHistoryRows = adminInvestmentService.getAllTaxSettingsHistory();
 
         model.addAttribute("allPlanRuleRowsForModal", allPlanRows);
-        model.addAttribute("allTaxRowsForModal", allTaxRows);
 
         model.addAttribute("planRulesHistory", buildPlanHistorySummaryRows(allPlanRows));
-        model.addAttribute("taxSettingsHistory", buildTaxHistorySummaryRows(allTaxRows));
+        model.addAttribute("taxSettingsHistory", taxHistoryRows);
     }
 
     // This creates one summary row per plan_set_id so the plan history table does not repeat 3 rows.
@@ -268,20 +269,6 @@ public class AdminInvestmentController {
         return new ArrayList<>(grouped.values());
     }
 
-    // This creates one summary row per tax_set_id so the tax history table does not repeat 3 rows.
-    private List<TaxSettings> buildTaxHistorySummaryRows(List<TaxSettings> allRows) {
-        Map<Long, TaxSettings> grouped = new LinkedHashMap<>();
-
-        if (allRows != null) {
-            for (TaxSettings row : allRows) {
-                if (row.getTaxSetId() != null && !grouped.containsKey(row.getTaxSetId())) {
-                    grouped.put(row.getTaxSetId(), row);
-                }
-            }
-        }
-
-        return new ArrayList<>(grouped.values());
-    }
 
     // This preserves grouped embedded tax inputs after a failed wizard submit.
     private Map<String, String> buildEmbeddedTaxDraftMap(Map<String, String> formData) {
