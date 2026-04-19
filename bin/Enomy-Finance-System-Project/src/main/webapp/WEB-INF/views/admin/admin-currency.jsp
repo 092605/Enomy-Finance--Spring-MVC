@@ -11,8 +11,8 @@
     <title>Admin Currency Converter | Enomy Finance</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/theme.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/dashboard.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/public/theme.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/client/client-dashboard.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/admin-currency.css">
     
     
@@ -228,7 +228,7 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="currency-admin-label">Search</label>
-                                                <input type="text" class="currency-admin-input" id="txnSearch" placeholder="User ID or Transaction Number">
+                                                <input type="text" class="currency-admin-input" id="txnSearch" placeholder="Transaction Number">
                                             </div>
                                         </div>
 
@@ -320,8 +320,7 @@
 
         </main>
 
-        <jsp:include page="/WEB-INF/components/Authenticated/footer.jsp" />
-
+<jsp:include page="/WEB-INF/components/Authenticated/client/footer.jsp" />
     </div>
 </div>
 

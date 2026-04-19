@@ -11,8 +11,7 @@
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/public/theme.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/public/about.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/public/navbar.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/public/footer.css">
+     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/public/components.css">
 </head>
 <body>
 

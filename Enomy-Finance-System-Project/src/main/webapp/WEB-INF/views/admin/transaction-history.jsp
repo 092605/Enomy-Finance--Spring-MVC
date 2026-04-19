@@ -9,7 +9,8 @@
     <title>Admin Transaction History | Enomy Finance</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/public/theme.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/public/theme.css">
+     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/public/components.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/client/client-dashboard.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/admin-transaction-history.css">
 </head>

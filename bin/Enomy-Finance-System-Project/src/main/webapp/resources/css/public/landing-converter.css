@@ -1,0 +1,289 @@
+/* =========================
+   LANDING CONVERTER SECTION
+========================= */
+.landing-converter-tools-section {
+    padding: 8px 0 80px;
+}
+
+
+
+
+/* =========================
+   SHARED PANEL CARD
+========================= */
+.currency-panel-card {
+    background: rgba(15, 12, 36, 0.88);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 26px;
+    box-shadow: 0 12px 34px rgba(0, 0, 0, 0.28);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.currency-card-inner {
+    padding: 34px;
+}
+
+.currency-card-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+}
+
+
+/* =========================
+   HEADER / BADGE
+========================= */
+.currency-card-header-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.currency-mini-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 150px;
+    min-height: 50px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.9);
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+    white-space: nowrap;
+}
+
+
+/* =========================
+   FORM ELEMENTS
+========================= */
+.currency-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.82);
+    margin-bottom: 8px;
+}
+
+.currency-select {
+    width: 100%;
+    height: 52px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 14px;
+    color: #fff;
+    padding: 12px 14px;
+    outline: none;
+    box-shadow: none;
+    transition: all 0.25s ease;
+}
+
+.currency-select:focus {
+    border-color: rgba(214, 70, 239, 0.65);
+    box-shadow: 0 0 0 3px rgba(214, 70, 239, 0.12);
+    background: rgba(255,255,255,0.08);
+}
+
+.currency-select option {
+    color: #111;
+}
+
+
+/* =========================
+   CHECK RATE CARD
+========================= */
+
+.check-rate-error {
+    color: #ff6b8a;
+    font-weight: 600;
+}
+
+.currency-checkrate-preview-box.error {
+    border: 1px solid rgba(255, 107, 138, 0.4);
+    background: rgba(255, 107, 138, 0.08);
+}
+
+
+.currency-checkrate-card .currency-card-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.currency-checkrate-preview-box {
+    margin-top: 6px;
+    min-height: 92px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.04);
+    border-radius: 18px;
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.currency-checkrate-preview-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 6px;
+}
+
+.currency-checkrate-preview-value {
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.currency-checkrate-actions {
+    margin-top: 10px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.currency-checkrate-btn {
+    min-width: 170px;
+}
+
+.currency-checkrate-sync {
+    font-size: 12px;
+    line-height: 1.45;
+    color: rgba(255,255,255,0.68);
+    text-align: left;
+}
+
+.currency-checkrate-sync strong {
+    color: #fff;
+    font-weight: 700;
+}
+
+
+/* =========================
+   PUBLIC NOTE
+========================= */
+.landing-converter-public-note {
+    margin-top: 6px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.7);
+    padding-top: 4px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+
+/* =========================
+   RULE META
+========================= */
+.currency-rule-meta {
+    margin-bottom: 14px;
+}
+
+.currency-rule-meta strong {
+    color: #fff;
+    display: block;
+    margin-bottom: 6px;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.currency-rule-meta p,
+.currency-empty-text {
+    color: rgba(255,255,255,0.74);
+    margin: 0;
+    line-height: 1.6;
+}
+
+
+/* =========================
+   TABLE
+========================= */
+.currency-rules-table {
+    margin-bottom: 0;
+    color: #fff;
+}
+
+.currency-rules-table thead th {
+    background: rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.9);
+    border: none;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 14px 16px;
+}
+
+.currency-rules-table td {
+    border-color: rgba(255,255,255,0.08);
+    background: transparent;
+    color: rgba(255,255,255,0.82);
+    vertical-align: middle;
+    padding: 14px 16px;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 991.98px) {
+    .landing-converter-tools-section {
+        padding: 0 0 64px;
+    }
+
+    .currency-card-inner {
+        padding: 28px;
+    }
+
+    .currency-card-header-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .currency-mini-badge {
+        min-width: auto;
+        min-height: auto;
+        padding: 8px 14px;
+    }
+
+    .currency-checkrate-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .currency-checkrate-btn {
+        width: 100%;
+        min-width: auto;
+    }
+
+    .currency-checkrate-sync {
+        width: 100%;
+    }
+}
+
+@media (max-width: 575px) {
+    .currency-card-inner {
+        padding: 22px;
+    }
+
+    .currency-card-title {
+        font-size: 20px;
+    }
+
+    .currency-checkrate-preview-value {
+        font-size: 14px;
+    }
+
+    .currency-rule-meta strong {
+        font-size: 16px;
+    }
+}

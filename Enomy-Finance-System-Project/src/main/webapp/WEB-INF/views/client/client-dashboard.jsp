@@ -12,6 +12,8 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/public/theme.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/public/components.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/public/inline-messages.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/client/client-dashboard.css">
 </head>
 
@@ -507,8 +509,9 @@
         }
     };
 </script>
-<script src="${pageContext.request.contextPath}/resources/js/client/client-dashboard.js"></script>
 		<script src="${pageContext.request.contextPath}/resources/js/client/client-dashboard.js"></script>
+		<script src="${pageContext.request.contextPath}/resources/js/public/inline-messages.js"></script>
+		<script src="${pageContext.request.contextPath}/resources/js/public/components.js"></script>
 
 </body>
 </html>
