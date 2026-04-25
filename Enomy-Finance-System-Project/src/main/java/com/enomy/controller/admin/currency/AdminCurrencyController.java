@@ -9,6 +9,101 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.enomy.security.CustomUserDetails;
 import com.enomy.service.admin.AdminCurrencyService;
 
+
+/*
+ * =========================================================
+ * ADMIN CURRENCY PAGE CONTROLLER
+ * =========================================================
+ *
+ * File Name:
+ * AdminCurrencyController.java
+ *
+ * Purpose:
+ * This controller handles administrator-side Currency
+ * Management page routing and initial page data loading
+ * for the Enomy Finance system.
+ *
+ * Overview:
+ * This controller is responsible for preparing and
+ * rendering the Admin Currency Management module.
+ *
+ * It loads:
+ * - Active conversion rule sets
+ * - Active conversion fee brackets
+ * - Historical conversion rule records
+ * - Historical fee bracket records
+ * - Currency transaction history preview
+ * - Shared authenticated administrator information
+ *
+ * The controller also prepares reusable page state
+ * variables used for:
+ * - Sidebar navigation highlighting
+ * - Active section switching
+ * - Shared topbar rendering
+ *
+ * Main Responsibilities:
+ * - Load admin currency management page
+ * - Retrieve active conversion rule sets
+ * - Retrieve active fee rule brackets
+ * - Retrieve conversion rule history
+ * - Retrieve all fee rules for modal display
+ * - Retrieve transaction history preview
+ * - Supply authenticated admin information
+ * - Configure active page and navigation states
+ * - Prepare shared page rendering data
+ *
+ * Connected JSP:
+ * - admin/admin-currency.jsp
+ *
+ * Connected JavaScript:
+ * - admin-currency.js
+ *
+ * Connected Service:
+ * - AdminCurrencyService
+ *
+ * Connected Models:
+ * - ConversionRuleSet
+ * - ConversionFeeRule
+ * - CurrencyTransaction
+ *
+ * Main Features:
+ * - Active rule monitoring
+ * - Fee bracket monitoring
+ * - Conversion rule history preview
+ * - Transaction history preview
+ * - Sidebar navigation state management
+ * - Shared admin topbar support
+ * - Shared page initialization workflows
+ *
+ * Main Data Loaded:
+ * - activeRuleSet
+ * - activeFeeRules
+ * - activeMinAmount
+ * - activeMaxAmount
+ * - nextRuleSetIdPreview
+ * - conversionRuleHistory
+ * - allFeeRulesForModal
+ * - transactionHistory
+ *
+ * Connected API Controller:
+ * - AdminCurrencyApiController
+ *
+ * Security:
+ * This controller is protected by Spring Security
+ * and accessible only to authenticated ADMIN users.
+ *
+ * Base Route:
+ * /admin/currency
+ *
+ * Module:
+ * Web Development Foundations (WDF)
+ *
+ * System:
+ * Enomy Finance Web Application
+ *
+ * =========================================================
+ */
+
 @Controller
 @RequestMapping("/admin/currency")
 public class AdminCurrencyController {

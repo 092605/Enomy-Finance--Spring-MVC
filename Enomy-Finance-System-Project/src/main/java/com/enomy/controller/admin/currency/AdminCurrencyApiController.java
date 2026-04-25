@@ -13,6 +13,110 @@ import com.enomy.model.conversion.ConversionRuleSet;
 import com.enomy.model.conversion.CurrencyTransaction;
 import com.enomy.service.admin.AdminCurrencyService;
 
+/*
+ * =========================================================
+ * ADMIN CURRENCY API CONTROLLER
+ * =========================================================
+ *
+ * File Name:
+ * AdminCurrencyApiController.java
+ *
+ * Purpose:
+ * This REST API controller handles AJAX-based
+ * administrator operations for the Currency
+ * Management module of the Enomy Finance system.
+ *
+ * Overview:
+ * This controller provides backend API endpoints
+ * used by the admin currency module for:
+ * - Conversion rule management
+ * - Fee bracket management
+ * - Rule history retrieval
+ * - Rule activation workflows
+ * - Currency rate filtering
+ * - Transaction history filtering
+ *
+ * The controller communicates directly with
+ * frontend JavaScript using JSON-based API responses.
+ *
+ * Main Responsibilities:
+ * - Retrieve active conversion rule sets
+ * - Retrieve active fee brackets
+ * - Create and activate conversion rule sets
+ * - Retrieve conversion rule history
+ * - Retrieve specific rule details
+ * - Activate historical rule sets
+ * - Filter currency exchange rate records
+ * - Filter currency transaction history
+ * - Handle AJAX request processing
+ * - Return structured JSON responses
+ * - Handle API exception responses
+ *
+ * Connected Frontend:
+ * - admin/admin-currency.jsp
+ * - admin-currency.js
+ *
+ * Connected Service:
+ * - AdminCurrencyService
+ *
+ * Connected Models:
+ * - ConversionRuleSet
+ * - ConversionFeeRule
+ * - CurrencyTransaction
+ *
+ * Connected DTOs:
+ * - AdminCurrencyRateRowDTO
+ * - CreateRuleSetRequest
+ * - RatesFilterRequest
+ * - TransactionsFilterRequest
+ *
+ * Main API Sections:
+ * - Active Rule Section
+ * - Rule History Section
+ * - Rates Section
+ * - Transactions Section
+ *
+ * Main Features:
+ * - Active rule monitoring
+ * - Fee bracket monitoring
+ * - Conversion rule creation
+ * - Historical rule inspection
+ * - Rule activation workflows
+ * - Exchange rate filtering
+ * - Transaction history filtering
+ * - Modal detail retrieval
+ * - AJAX-powered admin workflows
+ * - JSON response handling
+ *
+ * Main API Endpoints:
+ *
+ * GET
+ * - /admin/api/currency/active-rule
+ * - /admin/api/currency/rules/history
+ * - /admin/api/currency/rules/{ruleSetId}
+ *
+ * POST
+ * - /admin/api/currency/rules
+ * - /admin/api/currency/rules/{ruleSetId}/activate
+ * - /admin/api/currency/rates/filter
+ * - /admin/api/currency/transactions/filter
+ *
+ * Security:
+ * This controller is protected by Spring Security
+ * and accessible only to authenticated ADMIN users.
+ *
+ * API Base Route:
+ * /admin/api/currency
+ *
+ * Module:
+ * Web Development Foundations (WDF)
+ *
+ * System:
+ * Enomy Finance Web Application
+ *
+ * =========================================================
+ */
+
 @RestController
 @RequestMapping("/admin/api/currency")
 public class AdminCurrencyApiController {

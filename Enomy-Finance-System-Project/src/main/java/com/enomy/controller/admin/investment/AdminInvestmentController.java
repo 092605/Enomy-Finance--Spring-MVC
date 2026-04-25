@@ -19,6 +19,96 @@ import com.enomy.security.CustomUserDetails;
 import com.enomy.service.admin.AdminInvestmentService;
 import com.enomy.dto.investment.TaxSetHistoryDTO;
 
+
+/*
+ * =========================================================
+ * ADMIN INVESTMENT CONTROLLER
+ * =========================================================
+ *
+ * File Name:
+ * AdminInvestmentController.java
+ *
+ * Purpose:
+ * This controller handles administrator-side
+ * Savings and Investment management workflows
+ * for the Enomy Finance system.
+ *
+ * Overview:
+ * The controller manages:
+ * - Investment plan rule management
+ * - Tax settings management
+ * - Plan rule history viewing
+ * - Tax settings history viewing
+ * - Plan rule creation workflows
+ * - Tax activation workflows
+ * - Multi-step wizard processing
+ * - Shared admin investment page rendering
+ *
+ * Main Responsibilities:
+ * - Load admin investment module
+ * - Load active plan rules
+ * - Load grouped tax settings
+ * - Create new plan rule sets
+ * - Create and activate tax settings
+ * - Activate historical tax settings
+ * - Manage multi-step plan wizard
+ * - Prepare shared page data
+ * - Retrieve history records
+ * - Handle administrator form submissions
+ *
+ * Connected JSP:
+ * - admin/admin-investment.jsp
+ *
+ * Connected JavaScript:
+ * - admin-investment.js
+ *
+ * Connected Service:
+ * - AdminInvestmentService
+ *
+ * Connected Models:
+ * - PlanRules
+ * - TaxSettings
+ *
+ * Connected DTOs:
+ * - TaxSetHistoryDTO
+ *
+ * Main Page Sections:
+ * - Active Rules
+ * - Plan Rules Wizard
+ * - Tax Settings
+ * - History
+ *
+ * Main Features:
+ * - Active investment plan monitoring
+ * - Active grouped tax settings monitoring
+ * - Investment plan creation wizard
+ * - Embedded tax configuration workflow
+ * - Standalone tax settings creation
+ * - Historical plan rule viewing
+ * - Historical tax settings viewing
+ * - Plan rule activation workflows
+ * - Tax settings activation workflows
+ * - Shared modal data preparation
+ * - Dynamic page state switching
+ *
+ * Security:
+ * This controller is protected by Spring Security
+ * and accessible only to authenticated ADMIN users.
+ *
+ * Base Route:
+ * /admin/investment
+ *
+ * Module:
+ * Web Development Foundations (WDF)
+ *
+ * System:
+ * Enomy Finance Web Application
+ *
+ * =========================================================
+ */
+
+
+
 @Controller
 @RequestMapping("/admin/investment")
 public class AdminInvestmentController {

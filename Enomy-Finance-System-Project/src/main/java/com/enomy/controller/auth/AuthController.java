@@ -12,6 +12,93 @@ import com.enomy.model.EFuser.User;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+/*
+ * =========================================================
+ * AUTHENTICATION CONTROLLER
+ * =========================================================
+ *
+ * File Name:
+ * AuthController.java
+ *
+ * Purpose:
+ * This controller handles authentication-related
+ * public workflows for the Enomy Finance system.
+ *
+ * Overview:
+ * This controller is responsible for:
+ * - Loading login page
+ * - Loading signup page
+ * - Processing user registration
+ * - Validating signup form inputs
+ * - Creating new client accounts
+ * - Handling registration error messages
+ *
+ * Main Responsibilities:
+ * - Render login page
+ * - Render signup page
+ * - Validate password confirmation
+ * - Validate unique email registration
+ * - Validate unique username registration
+ * - Encrypt user passwords
+ * - Create new client accounts
+ * - Save user records to the database
+ * - Return authentication success/error messages
+ *
+ * Connected JSP:
+ * - auth/login.jsp
+ * - auth/signup.jsp
+ *
+ * Connected DAO:
+ * - UserDao
+ *
+ * Connected Models:
+ * - User
+ *
+ * Connected Security Components:
+ * - PasswordEncoder
+ * - BCryptPasswordEncoder
+ *
+ * Main Features:
+ * - Public login page routing
+ * - Public signup page routing
+ * - Client account registration
+ * - Password confirmation validation
+ * - Duplicate email validation
+ * - Duplicate username validation
+ * - BCrypt password encryption
+ * - Success and error message handling
+ * - Default CLIENT role assignment
+ *
+ * Main Routes:
+ *
+ * GET
+ * - /login
+ * - /signup
+ *
+ * POST
+ * - /signup
+ *
+ * Security:
+ * These routes are publicly accessible.
+ *
+ * Password Security:
+ * User passwords are encrypted using
+ * BCryptPasswordEncoder before storage.
+ *
+ * Default User Role:
+ * Newly registered accounts are automatically
+ * assigned the CLIENT role.
+ *
+ * Module:
+ * Web Development Foundations (WDF)
+ *
+ * System:
+ * Enomy Finance Web Application
+ *
+ * =========================================================
+ */
+
+
 @Controller
 public class AuthController {
 

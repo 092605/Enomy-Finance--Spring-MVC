@@ -24,6 +24,120 @@ import com.enomy.model.EFuser.User;
 import com.enomy.model.investment.InvestmentQuote;
 import com.enomy.service.client.InvestmentService;
 
+/*
+=========================================================
+CLIENT INVESTMENT CONTROLLER
+=========================================================
+
+File Name:
+InvestmentController.java
+
+Purpose:
+This controller handles the authenticated client-side
+Savings and Investment module of the Enomy Finance system.
+
+Overview:
+This controller manages the complete investment
+projection workflow including:
+- Investment projection calculation
+- Investment quote saving
+- Saved quote retrieval
+- Saved quote detail viewing
+- AJAX-based investment operations
+- Investment result rendering
+
+The controller also prepares shared page data,
+topbar information, active page states,
+saved quote information, and investment result data
+for the client investment module.
+
+Main Responsibilities:
+- Load investment page
+- Calculate investment projections
+- Save investment quotes
+- Retrieve saved quotes
+- Retrieve saved quote details
+- Handle AJAX calculation workflows
+- Handle AJAX save workflows
+- Prepare default page state
+- Retrieve authenticated user information
+- Prepare shared page model attributes
+
+Connected JSP:
+- client/savings-investment.jsp
+- client/investment-saved-quotes.jsp
+- client/investment-quote-details.jsp
+
+Connected JavaScript:
+- client-investment.js
+- client-dashboard.js
+
+Connected Services:
+- InvestmentService
+
+Connected DAO:
+- UserDao
+
+Connected Models:
+- User
+- InvestmentQuote
+
+Connected DTOs:
+- InvestmentRequestDTO
+- InvestmentResponseDTO
+- YearlyInvestmentResultDTO
+
+Main Features:
+- Investment projection calculation
+- Multi-year investment forecasting
+- Saved investment quote management
+- AJAX-based calculation workflow
+- AJAX-based save workflow
+- Saved quote detail modal workflow
+- Plan detail preview display
+- Shared topbar rendering
+- Investment result rendering
+- Validation and error handling
+
+Supported Investment Plans:
+- BASIC_SAVINGS
+- SAVINGS_PLUS
+- MANAGED_STOCKS
+
+Main Sections:
+- Investment Calculator
+- Projection Results
+- Saved Quotes
+- Quote Detail Modal
+
+Main Routes:
+
+GET
+- /client/investment
+- /client/investment/quotes
+- /client/investment/quotes/{quoteId}
+- /client/investment/quotes/{quoteId}/details
+
+POST
+- /client/investment/calculate
+- /client/investment/save
+- /client/investment/calculate-ajax
+- /client/investment/save-ajax
+
+Security:
+This controller is protected by Spring Security
+and accessible only to authenticated CLIENT users.
+
+Module:
+Web Development Foundations (WDF)
+
+System:
+Enomy Finance Web Application
+
+=========================================================
+*/
+
+
 @Controller
 public class InvestmentController {
 

@@ -14,6 +14,83 @@ import com.enomy.service.client.InvestmentService;
 import java.util.Map;
 import com.enomy.dto.investment.PlanDetailsDTO;
 
+/*
+=========================================================
+CLIENT DASHBOARD CONTROLLER
+=========================================================
+
+File Name:
+ClientDashboardController.java
+
+Purpose:
+This controller handles the Client Dashboard page
+of the Enomy Finance system.
+
+Overview:
+This controller is responsible for loading and
+preparing personalized dashboard data for
+authenticated client users.
+
+The dashboard provides:
+- Client welcome information
+- Saved investment quote statistics
+- Active investment plan previews
+- Shared authenticated user information
+
+Main Responsibilities:
+- Load client dashboard page
+- Retrieve authenticated client information
+- Retrieve saved quote statistics
+- Retrieve active investment plan details
+- Supply shared dashboard model attributes
+- Prepare dashboard page state
+
+Connected JSP:
+- client/client-dashboard.jsp
+
+Connected Services:
+- InvestmentService
+
+Connected DAO:
+- UserDao
+
+Connected Models:
+- User
+
+Connected DTOs:
+- PlanDetailsDTO
+
+Main Features:
+- Personalized client dashboard
+- Saved quote count monitoring
+- Active investment plan preview display
+- Shared topbar user information
+- Dashboard navigation state management
+
+Main Data Loaded:
+- fullName
+- loggedInEmail
+- activePage
+- savedQuoteCount
+- activePlanDetailsMap
+
+Security:
+This controller is protected by Spring Security
+and accessible only to authenticated CLIENT users.
+
+Main Route:
+GET /client/dashboard
+
+Module:
+Web Development Foundations (WDF)
+
+System:
+Enomy Finance Web Application
+
+=========================================================
+*/
+
+
 @Controller
 public class ClientDashboardController {
 
@@ -46,3 +123,6 @@ public class ClientDashboardController {
         return "client/client-dashboard";
     }
 }
+
+
+

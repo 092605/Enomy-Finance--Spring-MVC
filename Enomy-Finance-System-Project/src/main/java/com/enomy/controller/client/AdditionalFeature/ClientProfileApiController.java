@@ -24,6 +24,105 @@ import com.enomy.model.EFuser.LoginActivity;
 import com.enomy.model.EFuser.User;
 import com.enomy.service.client.ClientProfileService;
 
+/*
+=========================================================
+CLIENT PROFILE API CONTROLLER
+=========================================================
+
+File Name:
+ClientProfileApiController.java
+
+Purpose:
+This REST API controller handles AJAX-based
+client profile management operations for the
+Enomy Finance system.
+
+Overview:
+This controller provides backend API endpoints
+used by the client profile module for:
+- Profile information retrieval
+- Profile information updates
+- Password updates
+- Profile photo management
+- Login activity retrieval
+- Account deletion workflows
+
+The controller communicates directly with
+frontend JavaScript using JSON-based API responses.
+
+Main Responsibilities:
+- Retrieve authenticated client profile data
+- Update client profile information
+- Update account password securely
+- Update profile avatar/photo
+- Remove profile avatar/photo
+- Retrieve login activity records
+- Retrieve failed login attempt records
+- Soft delete client accounts
+- Handle AJAX request processing
+- Return structured JSON responses
+- Handle validation and error responses
+
+Connected Frontend:
+- client-profile.jsp
+- client-profile.js
+
+Connected Service:
+- ClientProfileService
+
+Connected Models:
+- User
+- LoginActivity
+
+Connected DTOs:
+- ClientProfilePageDTO
+- ProfileInfoUpdateDTO
+- ChangePasswordDTO
+- ProfileAvatarUpdateDTO
+
+Main Features:
+- Profile information management
+- Password security management
+- Profile photo management
+- Login activity monitoring
+- Failed login tracking
+- AJAX-powered profile workflows
+- Validation handling
+- Account deletion workflow
+- JSON response handling
+
+Main API Endpoints:
+
+GET
+- /client/api/profile
+- /client/api/profile/login-activity
+
+PUT
+- /client/api/profile/info
+- /client/api/profile/password
+- /client/api/profile/photo
+
+DELETE
+- /client/api/profile
+- /client/api/profile/photo
+
+Security:
+This controller is protected by Spring Security
+and accessible only to authenticated CLIENT users.
+
+API Base Route:
+/client/api/profile
+
+Module:
+Web Development Foundations (WDF)
+
+System:
+Enomy Finance Web Application
+
+=========================================================
+*/
+
+
 @RestController
 @RequestMapping("/client/api/profile")
 public class ClientProfileApiController {

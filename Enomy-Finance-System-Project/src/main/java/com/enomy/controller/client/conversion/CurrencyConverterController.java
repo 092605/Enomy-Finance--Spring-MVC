@@ -25,6 +25,119 @@ import com.enomy.service.client.CurrencyConverterService;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+/*
+=========================================================
+CLIENT CURRENCY CONVERTER CONTROLLER
+=========================================================
+
+File Name:
+CurrencyConverterController.java
+
+Purpose:
+This controller handles the authenticated client-side
+Currency Converter module of the Enomy Finance system.
+
+Overview:
+This controller manages the complete currency conversion
+workflow for authenticated client users including:
+- Currency rate checking
+- Currency conversion calculation
+- Transaction confirmation
+- Receipt generation
+- Transaction history viewing
+- BUY and SELL conversion workflows
+
+The controller also prepares shared page data,
+topbar information, active navigation states,
+and conversion card states for the JSP page.
+
+Main Responsibilities:
+- Load currency converter page
+- Load BUY conversion workflow
+- Load SELL conversion workflow
+- Load welcome/home section
+- Load transaction history section
+- Handle exchange rate checking
+- Handle AJAX exchange rate requests
+- Calculate currency conversions
+- Confirm currency transactions
+- Generate transaction receipts
+- Reset/cancel conversion workflows
+- Retrieve authenticated user information
+- Prepare shared page model attributes
+
+Connected JSP:
+- client/currency-converter.jsp
+
+Connected JavaScript:
+- currency-converter.js
+- client-dashboard.js
+
+Connected Services:
+- CurrencyConverterService
+
+Connected DAO:
+- UserDao
+
+Connected Models:
+- User
+
+Connected DTOs:
+- CheckRateResponseDTO
+- ConversionRuleSetDTO
+- CurrencyConversionRequestDTO
+- CurrencyConversionResponseDTO
+- TransactionReceiptDTO
+
+Main Features:
+- BUY currency conversion workflow
+- SELL currency conversion workflow
+- Exchange rate checking
+- AJAX-based rate checking
+- Conversion calculation
+- Receipt generation
+- Transaction history viewing
+- Conversion rule preview display
+- Shared topbar rendering
+- Navigation state management
+- Conversion card state management
+
+Main Sections:
+- Welcome Section
+- Converter Section
+- Transaction History Section
+
+Main Routes:
+
+GET
+- /client/currency-converter
+- /client/currency-converter/home
+- /client/currency-converter/buy
+- /client/currency-converter/sell
+- /client/currency-converter/history
+- /client/currency-converter/cancel
+- /client/currency-converter/okay
+
+POST
+- /client/currency-converter/check-rate
+- /client/currency-converter/check-rate-ajax
+- /client/currency-converter/calculate
+- /client/currency-converter/confirm
+
+Security:
+This controller is protected by Spring Security
+and accessible only to authenticated CLIENT users.
+
+Module:
+Web Development Foundations (WDF)
+
+System:
+Enomy Finance Web Application
+
+=========================================================
+*/
+
+
 @Controller
 @RequestMapping("/client/currency-converter")
 public class CurrencyConverterController {

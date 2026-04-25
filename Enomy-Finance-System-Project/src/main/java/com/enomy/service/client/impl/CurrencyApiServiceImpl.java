@@ -30,7 +30,7 @@ public class CurrencyApiServiceImpl implements CurrencyApiService {
                 + targetCurrency;
 
         return fetchRateFromApi(urlString, targetCurrency);
-    }
+    }     
 
     @Override
     public Double getHistoricalExchangeRate(String baseCurrency, String targetCurrency, LocalDate date) {
