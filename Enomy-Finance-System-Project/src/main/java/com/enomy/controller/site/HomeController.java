@@ -100,7 +100,7 @@ public class HomeController {
     private CurrencyConverterService currencyConverterService;
 
     @GetMapping("/")
-    public String hopePage(Model model) {
+    public String homePage(Model model) {
         model.addAttribute("activePage", "home");
         return "public/home";
     }
